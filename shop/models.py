@@ -9,7 +9,7 @@ from django.conf import settings
 class Item(models.Model):
     #basic config of an item
     name = models.CharField(max_length=120)
-    price = models.DecimalField(max_digit=20, decimal_places=2)
+    price = models.DecimalField(max_digits=20, decimal_places=2)
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
