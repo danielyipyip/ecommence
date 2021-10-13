@@ -1,0 +1,6 @@
+<div>
+    <p>Product Name: {{ object.name }}</p>
+    <img src="{{ object.image.url }}" width="300" height="300" />
+    <p>Price: {{ object.price }}</p>
+    <a href="{% url 'shop:home-page' %}">Back to Home</a>
+</div>

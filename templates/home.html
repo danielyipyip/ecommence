@@ -2,8 +2,10 @@
 {% load staticfiles %}
 
 {% for item in page_obj %}
-    {{ item.name|capfirst }}
-    <div><img id = profileimg src="{{ item.image.url }}" alt="A Picture"/></div>
+    <a href="{{ item.get_absolute_url }}">
+        <p>Product - {{ item.name|capfirst }}</p>
+        <img id = profileimg src="{{ item.image.url }}" width="300" height="300"/>
+    </a>
 {% endfor %}
 
 <div class="pagination">

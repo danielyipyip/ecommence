@@ -8,3 +8,7 @@ class homePage(ListView):
     model = Item
     paginate_by=2
     template_name='home.html'
+
+class productDetailPage(DetailView):
+    model=Item
+    template_name="product_detail.html"
