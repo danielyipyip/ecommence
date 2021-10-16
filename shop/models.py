@@ -54,6 +54,9 @@ class Item(models.Model):
     def get_add_to_cart_url(self):
         return reverse('shop:add_to_cart', kwargs={'pk': self.id})
 
+    def get_remove_from_cart_url(self):
+        return reverse('shop:remove_from_cart', kwargs={'pk': self.id})
+
 #item in an order (split because of M:M relationship)
 class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
@@ -63,7 +66,7 @@ class OrderItem(models.Model):
     paid = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.quantity} of {self.item.name}'
+        return f'{self.user.username}: {self.quantity} of {self.item.name}'
 
 #a purchase order
 class Order(models.Model):

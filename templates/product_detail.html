@@ -4,4 +4,5 @@
     <p>Price: {{ object.price }}</p>
     <a href="{% url 'shop:home-page' %}">Back to Home</a>
     <a href="{{ object.get_add_to_cart_url }}" class="button">Add to Cart</a>
+    <a href="{{ object.get_remove_from_cart_url }}" class="button">delete item</a>
 </div>
