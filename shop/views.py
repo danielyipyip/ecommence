@@ -3,6 +3,10 @@ from django.views.generic import ListView, DetailView, View
 
 from shop.models import Item, Order, OrderItem
 
+from django.contrib.auth import logout
+from django.conf import settings
+from django.shortcuts import redirect
+
 # Create your views here.
 class homePage(ListView):
     model = Item
