@@ -41,7 +41,8 @@ class Item(models.Model):
     product_season=models.CharField(choices=season_choice, max_length=10)
     product_type=models.CharField(choices=type_choice, max_length=20)
     price = models.DecimalField(max_digits=20, decimal_places=2)
-    label = models.CharField(choices=label_choice, max_length=20, blank=True)
+    discounted_price = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True)
+    label = models.CharField(choices=label_choice, max_length=20, blank=True,  null=True)
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='product_images', blank=True)
 
@@ -52,7 +53,7 @@ class Item(models.Model):
         return reverse('shop:product-detail', kwargs={'pk': self.id})
 
     def get_add_to_cart_url(self):
-        return reverse('shop:add_to_cart', kwargs={'pk': self.id})
+        return reverse('shop:add_to_cart_product_detail', kwargs={'pk': self.id})
 
     def get_remove_from_cart_url(self):
         return reverse('shop:remove_from_cart', kwargs={'pk': self.id})
@@ -68,6 +69,14 @@ class OrderItem(models.Model):
     def __str__(self):
         return f'{self.user.username}: {self.quantity} of {self.item.name}'
 
+    def get_order_item_price(self):
+        if self.item.discounted_price:
+            return self.quantity*self.item.discounted_price
+        return self.quantity*self.item.price
+
+    def get_discount_amount(self):
+        return self.quantity*self.item.price-self.quantity*self.item.discounted_price
+
 #a purchase order
 class Order(models.Model):
     #model is associated with a user
@@ -81,5 +90,11 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_total_price(self):
+        total_price=0
+        for an_item in self.orderitems.all(): 
+            total_price+=an_item.get_order_item_price()
+        return total_price
 
 

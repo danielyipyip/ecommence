@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="table=responsive-xl">
+        <h2>Your Order: </h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for orderitem in object.orderitems.all %}
+                <tr>
+                    <th>{{ forloop.counter }}</th>
+                    <td>{{ orderitem.item.name }}</td>
+                    <td>
+                        <a href="{% url 'shop:quantity_reduce_shopping_cart' orderitem.item.pk %}" class="button">
+                            <i class="fas fa-minus mr-2"></i>
+                        </a>
+                         {{ orderitem.quantity }} 
+                        <a href="{% url 'shop:add_to_cart_shopping_cart' orderitem.item.pk %}" class="button">
+                            <i class="fas fa-plus ml-2"></i>
+                         </a>
+                    </td>
+                    {% if orderitem.item.discounted_price %}
+                        <td><del>{{ orderitem.item.price }}</del> {{ orderitem.item.discounted_price }}</td>
+                        <td>{{ orderitem.get_order_item_price }} 
+                            <span class="bandge badge-danger"> Saving ${{ orderitem.get_discount_amount }} </span>
+                            <a href="{% url 'shop:remove_from_cart_shopping_cart' orderitem.item.pk %}" class="button">
+                                <i class="fas fa-trash float-right"></i>
+                            </a>
+                        </td>
+                    {% else %}
+                        <td>{{ orderitem.item.price }}</td>
+                        <td>{{ orderitem.get_order_item_price }}
+                            <a href="{% url 'shop:remove_from_cart_shopping_cart' orderitem.item.pk %}" class="button">
+                                <i class="fas fa-trash float-right"></i>
+                            </a>
+                        </td>
+                    {% endif %}
+
+                {% empty %}
+                <tr>  
+                    <td>Your cart is empty</td>
+                </tr>  
+                    <td colspan="5">
+                        <a class="btn btn-primary float-right" href="#">Continue shopping</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                <!--last row: total price-->
+                <!--a smart way to check is cart empty-->
+                {% if object.get_total_price %}
+                <tr>
+                    <th>Total</th>
+                    <td colspan="5"><b>{{ object.get_total_price }}</b></td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <a class="btn btn-warning float-right ml-2" href="#">Proceed to checkout</a>
+                        <a class="btn btn-primary float-right" href="{% url 'shop:home-page' %}">Continue shopping</a>
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}
