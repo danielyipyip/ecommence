@@ -1,7 +1,9 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 
-from shop.models import Item, Order, OrderItem
+from shop.models import Item, Order, OrderItem, Address
+from.forms import CheckoutForm
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout
@@ -107,3 +109,35 @@ class shoppingCart(LoginRequiredMixin, View):
         order=Order.objects.get(user=self.request.user, paid=False)
         context={'object': order}
         return render(self.request, 'shopping_cart.html', context)
+
+class checkout_view(View):
+    def get(self, *args, **kwargs):
+        form=CheckoutForm()
+        context={'form': form}
+        return render(self.request, 'checkout.html', context)
+    def post(self, *args, **kwargs):
+        form=CheckoutForm(self.request.POST or None)
+        try: 
+            order=Order.objects.get(user=self.request.user, paid=False)
+        except ObjectDoesNotExist: 
+            messages.info(self.request, "Order not exist")
+        if form.is_valid():
+            ship_addr1=form.cleaned_data.get('ship_addr1')
+            ship_addr2=form.cleaned_data.get('ship_addr2')
+            ship_addr3=form.cleaned_data.get('ship_addr3')
+            ship_country=form.cleaned_data.get('ship_country')
+            ship_zip=form.cleaned_data.get('ship_zip')
+            payment_option=form.cleaned_data.get('payment_option')
+            ship_addr=Address(user=self.request.user, address_type='s', addr1=ship_addr1, 
+            addr2=ship_addr2, addr3=ship_addr3, country=ship_country, zip_code=ship_zip, )
+            print(ship_addr)
+            ship_addr.save()
+            order=Order.objects.get(user=self.request.user, paid=False)
+            order.ship_addr=ship_addr
+            order.save()
+            if payment_option=='C':
+                return redirect('shop:checkout')
+            elif payment_option=='P':
+                return redirect('shop:checkout')
+            else:
+                return redirect('shop:checkout')
