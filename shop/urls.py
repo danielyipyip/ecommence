@@ -4,7 +4,7 @@ from django.urls import path
 from .views import (
     add_to_cart, add_to_cart_product_detail, add_to_cart_shopping_cart, 
     remove_from_cart, quantity_reduce_shopping_cart, remove_from_cart_shopping_cart, 
-    homePage, productDetailPage, shoppingCart, checkout_view, 
+    homePage, productDetailPage, shoppingCart, checkout_view, payment_view
 )
 
 app_name='shop'
@@ -15,6 +15,7 @@ urlpatterns = [
     path('product/<int:pk>', productDetailPage.as_view(), name='product-detail'), 
     path('cart/', shoppingCart.as_view(), name="shopping-cart"), 
     path('checkout/', checkout_view.as_view(), name='checkout'), 
+    path('payment/', payment_view.as_view(), name='payment'),
 
     #path('add_to_cart/<int:pk>', add_to_cart, name="add_to_cart"), 
     path('product/add_to_cart/<int:pk>', add_to_cart_product_detail, name="add_to_cart_product_detail"), 

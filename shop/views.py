@@ -113,7 +113,8 @@ class shoppingCart(LoginRequiredMixin, View):
 class checkout_view(View):
     def get(self, *args, **kwargs):
         form=CheckoutForm()
-        context={'form': form}
+        order=Order.objects.get(user=self.request.user, paid=False) 
+        context={'form': form, 'object':order}
         return render(self.request, 'checkout.html', context)
     def post(self, *args, **kwargs):
         form=CheckoutForm(self.request.POST or None)
@@ -141,3 +142,10 @@ class checkout_view(View):
                 return redirect('shop:checkout')
             else:
                 return redirect('shop:checkout')
+
+class payment_view(View):
+    def get(self, *args, **kargs):
+        order=Order.objects.get(user=self.request.user, paid=False)
+        context={'object': order}
+        return render(self.request, 'payment.html', context)
+    
