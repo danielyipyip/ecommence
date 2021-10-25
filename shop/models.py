@@ -25,6 +25,7 @@ class Item(models.Model):
         ('shirt', 'shirt'), 
         ('jean', 'jeans'), 
         ('dress', 'dresses'), 
+        ('trousers', 'trousers'), 
         ('jacket', 'coats and jackets'), 
     ]
 
@@ -45,8 +46,10 @@ class Item(models.Model):
     discounted_price = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True)
     label = models.CharField(choices=label_choice, max_length=20, blank=True,  null=True)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='product_images', blank=True)
+    image = models.ImageField(upload_to='product_images', blank=True, height_field='image_height', width_field='image_width')
     stock=models.IntegerField(default=0)
+    image_height=models.PositiveIntegerField(default=600)
+    image_width=models.PositiveIntegerField(default=600)
 
     def __str__(self):
         return self.name

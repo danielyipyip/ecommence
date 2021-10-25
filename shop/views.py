@@ -15,7 +15,7 @@ from django.shortcuts import redirect
 # Create your views here.
 class homePage(ListView):
     model = Item
-    paginate_by=2
+    paginate_by=8
     template_name='home.html'
 
 class productDetailPage(DetailView):
