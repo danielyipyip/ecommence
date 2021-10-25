@@ -1,78 +1,102 @@
 {% load cart_templatetags %}
 
 <!--navigation bar-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <!--brnad-->
-    <a class="navbar-brand" href="{% url 'shop:home-page' %}">My Shop</a>
-    <!--toggler-->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHomepageTop"
-        arial-controls="navbarHomepageTop" arial-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <!--collapse-->
-    <div class="collapse navbar-collapse" id="navbarHomepageTop">
-        <!--bar items-->
-        <!--left-->
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Woman
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Dresses</a></li>
-                    <li><a class="dropdown-item" href="#">Shirts</a></li>
-                    <li><a class="dropdown-item" href="#">Trousers</a></li>
-                    <li><a class="dropdown-item" href="#">Skirts</a></li>
-                </ul>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Man
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Shirts</a></li>
-                    <li><a class="dropdown-item" href="#">T-shirts</a></li>
-                    <li><a class="dropdown-item" href="#">Jeans</a></li>
-                    <li><a class="dropdown-item" href="#">Trousers</a></li>
-                </ul>
-            </li>
-        </ul>
-        <!--right-->
-        <ul class="navbar-nav ml-auto">
-            {% if request.user.is_authenticated %}
-            <!--shopping cart-->
-            <li class="nav-item active">
-                <a href="{% url 'shop:shopping-cart' %}" class="nav-link">
-                    <span class="badge badge-danger">{{ request.user|cart_item_count }}</span>
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="clearfix d-none d-sm-inline-block"> Cart </span>
-                </a>
-            </li>
-            <!--logout-->
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'account_logout' %}">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span class="clearfix d-none d-sm-inline-block"> Logout </span>
-                </a>
-            </li>
-            {% else %}
-            <!--login-->
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'account_login' %}">
-                    <i class="fas fa-sign-in-alt"></i>
-                    <span class="clearfix d-none d-sm-inline-block"> Login </span>
-                </a>
-            </li>
-            <!--register-->
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'account_signup' %}">
-                    <i class="fas fa-user-plus"></i>
-                    <span class="clearfix d-none d-sm-inline-block"> SignUp </span>
-                </a>
-            </li>
-            {% endif %}
-        </ul>
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+    <!--container-->
+    <div class="container-fluid">
+        <!--brnad-->
+        <a class="navbar-brand" href="{% url 'shop:home-page' %}">My Shop</a>
+        <!--toggler-->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHomepageTop"
+            arial-controls="navbarHomepageTop" arial-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!--collapse-->
+        <div class="collapse navbar-collapse" id="navbarHomepageTop">
+            <!--bar items-->
+            <!--left-->
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Woman
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Dresses</a></li>
+                        <li><a class="dropdown-item" href="#">Shirts</a></li>
+                        <li><a class="dropdown-item" href="#">Trousers</a></li>
+                        <li><a class="dropdown-item" href="#">Skirts</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Man
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Shirts</a></li>
+                        <li><a class="dropdown-item" href="#">T-shirts</a></li>
+                        <li><a class="dropdown-item" href="#">Jeans</a></li>
+                        <li><a class="dropdown-item" href="#">Trousers</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Kids
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">T-shirts</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Sales
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Shirts</a></li>
+                        <li><a class="dropdown-item" href="#">T-shirts</a></li>
+                        <li><a class="dropdown-item" href="#">Jeans</a></li>
+                        <li><a class="dropdown-item" href="#">Trousers</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!--right-->
+            <ul class="navbar-nav ms-auto">
+                {% if request.user.is_authenticated %}
+                <!--shopping cart-->
+                <li class="nav-item d-flex active">
+                    <a href="{% url 'shop:shopping-cart' %}" class="nav-link">
+                        <span class="badge bg-danger">{{ request.user|cart_item_count }}</span>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+                    </a>
+                </li>
+                <!--logout-->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account_logout' %}">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="clearfix d-none d-sm-inline-block"> Logout </span>
+                    </a>
+                </li>
+                {% else %}
+                <!--login-->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account_login' %}">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span class="clearfix d-none d-sm-inline-block"> Login </span>
+                    </a>
+                </li>
+                <!--register-->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account_signup' %}">
+                        <i class="fas fa-user-plus"></i>
+                        <span class="clearfix d-none d-sm-inline-block"> SignUp </span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 </nav>

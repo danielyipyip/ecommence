@@ -1,10 +1,12 @@
+# import model need to be after django.setup()
+# But VS code auto-styling will tend to move .models import to top!!!
+
 import django
 from django.core.files import File
 from django.core.files.images import ImageFile
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce.settings')
-django.setup()
-# import model need to be after django.setup()
+django.setup(); 
 from shop.models import Item
 
 def populate():

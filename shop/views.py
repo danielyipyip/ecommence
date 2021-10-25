@@ -17,6 +17,7 @@ class homePage(ListView):
     model = Item
     paginate_by=8
     template_name='home.html'
+    ordering=['name']
 
 class productDetailPage(DetailView):
     model=Item
@@ -154,3 +155,6 @@ def payment_sucess(request):
 
 def payment_unsucess(request):
     return render(request, 'payment_unsucess.html')
+
+
+    
