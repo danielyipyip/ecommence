@@ -55,12 +55,12 @@
             // Or go to another URL:  actions.redirect('thank_you.html');
 
               //add to redirect, test?
-              window.location.replace("{% url 'shop:home-page' %}")
+              window.location.replace("{% url 'shop:payment-sucess' %}")
           });
         }, 
 
         onCancel: function(data){
-          window.location.replace("{% url 'shop:shopping-cart' %}")
+          window.location.replace("{% url 'shop:payment-unsucess' %}")
         }
       }).render('#paypal-button-container');
 

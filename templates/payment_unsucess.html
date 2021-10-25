@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block head_append %}
+<meta http-equiv="refresh" content="5;url={% url 'shop:shopping-cart' %}" />
+{% endblock head_append %}
+
+{% block content %}
+<h2>Payment is NOT sucessful, redirect to shopping cart in 5 seconds. </h2>
+<a href="{% url 'shop:shopping-cart' %}">Click here if page is not redirected</a>
+{% endblock content %}

@@ -149,3 +149,8 @@ class payment_view(View):
         context={'object': order}
         return render(self.request, 'payment.html', context)
     
+def payment_sucess(request):
+    return render(request, 'payment_sucess.html')
+
+def payment_unsucess(request):
+    return render(request, 'payment_unsucess.html')

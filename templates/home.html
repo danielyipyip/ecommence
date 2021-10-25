@@ -1,33 +1,49 @@
-
 {% extends "base.html" %}
 
 {% block content %}
 
-<!--each items-->
-{% for item in page_obj %}
-    <a href="{{ item.get_absolute_url }}">
-        <p>Product - {{ item.name|capfirst }}</p>
-        <img id = profileimg src="{{ item.image.url }}" width="300" height="300"/>
-    </a>
-{% endfor %}
+<div class="container">
+
+    <!--grid of items-->
+    <div class="row row-col=2">
+        
+    <!--each items-->
+    {% for item in page_obj %}
+    <div class="col-3">
+    <div class="card">
+        <a href="{{ item.get_absolute_url }}">
+            <img src="{{ item.image.url }}" class="card-img-top" width="300" height="300" />
+            <div class="card-body">
+                <h6 class="card-title">Product - {{ item.name|capfirst }}</h6>
+                <p class="class-text">{{ item.price }}</p>
+            </div>
+        </a>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
 
 <!--pageination-->
 <div class="pagination">
-<span class="step-links">
-    {% if page_obj.has_previous %}
+    <span class="step-links">
+        {% if page_obj.has_previous %}
         <a href="?page=1">&laquo; first</a>
         <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-    {% endif %}
+        {% endif %}
 
-    <span class="current">
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-    </span>
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
 
-    {% if page_obj.has_next %}
+        {% if page_obj.has_next %}
         <a href="?page={{ page_obj.next_page_number }}">next</a>
         <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-    {% endif %}
-</span>
+        {% endif %}
+    </span>
 </div>
+
+</div>
+
+
 
 {% endblock content %}
