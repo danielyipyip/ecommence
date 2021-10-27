@@ -2,15 +2,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block head_append %}
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
-    {% endblock head_append %}
-
 {% block content %}
-
-
 <form method='POST'>
     {% csrf_token %}
     {{ form|crispy }}

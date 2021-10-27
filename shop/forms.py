@@ -1,4 +1,6 @@
+import re
 from django import forms
+from django.forms.widgets import Textarea
 from .models import Item, OrderItem, Order
 from django_countries.fields import CountryField
 
@@ -25,3 +27,8 @@ class CheckoutForm(forms.Form):
     #use_default_billing = forms.BooleanField(required=False)
 
     payment_option = forms.ChoiceField(widget=forms.RadioSelect, choices=PAYMENT_CHOICES)
+
+class addProductForm(forms.ModelForm):
+    class Meta:
+        model=Item
+        fields=['name', 'product_season', 'product_type', 'price', 'discounted_price', 'label', 'description', 'image', 'stock']

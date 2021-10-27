@@ -1,9 +1,10 @@
+from typing import Tuple
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 
 from shop.models import Item, Order, OrderItem, Address
-from.forms import CheckoutForm
+from.forms import CheckoutForm, addProductForm
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout
@@ -22,6 +23,26 @@ class homePage(ListView):
 class productDetailPage(DetailView):
     model=Item
     template_name="product_detail.html"
+
+class productCategory(ListView):
+    model=Item
+    paginate_by=8
+    template_name='home.html'
+    def get_queryset(self):
+        filter_category=self.kwargs['category']
+        print(list(zip(*Item.type_choice)))
+        print (filter_category in zip(*Item.type_choice))
+        if filter_category in list(zip(*Item.type_choice)):
+            item_type = Item.objects.filter(product_type=filter_category)
+            return item_type
+        elif filter_category in Item.season_choice:
+            item_season = Item.objects.filter(product_season=filter_category)
+            return item_season
+        elif filter_category in Item.label_choice:
+            item_label = Item.objects.filter(label=filter_category)
+            return item_label
+        else:
+            return Item.objects.all()
 
 #does 2 things: (1)add to cart (2)quantity+1
 #@login_required
@@ -156,5 +177,30 @@ def payment_sucess(request):
 def payment_unsucess(request):
     return render(request, 'payment_unsucess.html')
 
+#need fix
+class itemListView(ListView):
+    model = Item
+    paginate_by=20
+    template_name='itemList_owner.html'
+    ordering=['pk']
+
+#maybe make a loaded form instead
+class update_item_view(DetailView):
+    model=Item
+    template_name="product_detail.html"
+
+class upload_new_item_view(View):
+    def get(self, *args, **kwargs):
+        my_pk=self.kwargs.get('pk', None)
+        if my_pk:
+            form=addProductForm(instance=Item.objects.get(pk=my_pk))
+        else:
+            form=addProductForm()
+        context={'form': form,}
+        return render(self.request, 'upload_item.html', context)
+    def post(self, *args, **kwargs):
+        form=addProductForm(self.request.POST or None)
+        new_item=form.save()
+        return redirect('shop:item-list')
 
     

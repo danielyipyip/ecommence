@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block head_append %}
+<style>
+    h5 {
+        display: inline-block;
+    }
+
+    .pagination {
+        justify-content: center;
+    }
+</style>
+{% endblock head_append %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <!--grid of items-->
+    <div>
+        <a href="{% url 'shop:upload-item' %}">
+            <i class="fas fa-upload" style="color:green">upload</i>
+        </a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#id</th>
+                <th scope="col">Item name</th>
+                <th scope="col">Price</th>
+                <th scope="col">description</th>
+                <th scope="col">season</th>
+                <th scope="col">type</th>
+                <th scope="col">label</th>
+                <th scope="col">Quantity</th>
+                <!--for edit button-->
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <!--each items-->
+            {% for item in page_obj %}
+            <tr>
+                <th>{{ item.pk }}</th>
+                <td>{{ item.name }}</td>
+                {% if item.discounted_price %}
+                <td><del>{{ item.price }}</del> {{ item.discounted_price }}</td>
+                {% else %}
+                <td>{{ item.price }}</td>
+                {% endif %}
+                <td>{{ item.description }}</td>
+                <td>{{ item.product_season }}</td>
+                <td>{{ item.product_type }}</td>
+                <td>{{ item.label }}</td>
+                <td>{{ item.stock }}</td>
+                <td>
+                    <a href="{% url 'shop:update-item' pk=item.pk %}">
+                        <i class="fas fa-edit"></i>Edit
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+    <div class="container m-4">
+        <!--pageination-->
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

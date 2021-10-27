@@ -13,13 +13,11 @@ from django_countries.fields import CountryField
 #products to be sold in the website
 class Item(models.Model):
     #choices
-    season_choice=[
-        ('spring', 'spring'), 
-        ('summer', 'summer'), 
-        ('autum', 'autum'), 
-        ('winter', 'winter'), 
-    ]
+    season_name=['spring', 'summer', 'autum', 'winter', ]
+    season_value=['spring', 'summer', 'autum', 'winter', ]
+    season_choice=list(zip(season_name, season_value))
         
+    
     type_choice=[
         ('tee', 't-shirt'), 
         ('shirt', 'shirt'), 
@@ -38,16 +36,19 @@ class Item(models.Model):
     ]
     #primary, secondary, danger???
 
-    #basic config of an item
+    #necessary
     name = models.CharField(max_length=120)
     product_season=models.CharField(choices=season_choice, max_length=10)
     product_type=models.CharField(choices=type_choice, max_length=20)
     price = models.DecimalField(max_digits=20, decimal_places=2)
+    image = models.ImageField(upload_to='product_images', blank=True, height_field='image_height', width_field='image_width', default="C:/Users/daniel/Workspace/ecommerce/media/product_images/white_tshirt.jpg")
+    #necessary but with default
+    stock=models.IntegerField(default=0)
+    #Not necessary
     discounted_price = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True)
     label = models.CharField(choices=label_choice, max_length=20, blank=True,  null=True)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='product_images', blank=True, height_field='image_height', width_field='image_width')
-    stock=models.IntegerField(default=0)
+    #place holder?
     image_height=models.PositiveIntegerField(default=600)
     image_width=models.PositiveIntegerField(default=600)
 
