@@ -17,23 +17,14 @@ class Item(models.Model):
     season_value=['spring', 'summer', 'autum', 'winter', ]
     season_choice=list(zip(season_name, season_value))
         
-    
-    type_choice=[
-        ('tee', 't-shirt'), 
-        ('shirt', 'shirt'), 
-        ('jean', 'jeans'), 
-        ('dress', 'dresses'), 
-        ('trousers', 'trousers'), 
-        ('jacket', 'coats and jackets'), 
-    ]
+    type_name=['tee', 'shirt', 'jean', 'dress', 'trousers', 'jacket', ]
+    type_value=['t-shirt', 'shirt', 'jeans', 'dresses', 'trousers', 'coats and jackets', ]
+    type_choice=list(zip(type_name, type_value))
 
     #label is like hit, new-arrival, best seller...
-    label_choice=[
-        ('new', 'new-arrival'), 
-        ('best', 'best-seller'), 
-        ('recom', 'recommended'), 
-        ('sales', 'sales'), 
-    ]
+    label_name=['new','best','recom','sales',]
+    label_value=['new-arrival','best-seller','recommended','sales',]
+    label_choice=list(zip(label_name,label_value))
     #primary, secondary, danger???
 
     #necessary

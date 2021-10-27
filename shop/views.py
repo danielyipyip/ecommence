@@ -30,15 +30,13 @@ class productCategory(ListView):
     template_name='home.html'
     def get_queryset(self):
         filter_category=self.kwargs['category']
-        print(list(zip(*Item.type_choice)))
-        print (filter_category in zip(*Item.type_choice))
-        if filter_category in list(zip(*Item.type_choice)):
+        if filter_category in (Item.type_name or Item.type_value):
             item_type = Item.objects.filter(product_type=filter_category)
             return item_type
-        elif filter_category in Item.season_choice:
+        elif filter_category in (Item.season_name or Item.season_value):
             item_season = Item.objects.filter(product_season=filter_category)
             return item_season
-        elif filter_category in Item.label_choice:
+        elif filter_category in (Item.label_name or Item.label_value):
             item_label = Item.objects.filter(label=filter_category)
             return item_label
         else:

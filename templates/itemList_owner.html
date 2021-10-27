@@ -19,9 +19,7 @@
 
     <!--grid of items-->
     <div>
-        <a href="{% url 'shop:upload-item' %}">
-            <i class="fas fa-upload" style="color:green">upload</i>
-        </a>
+
     </div>
     <table class="table table-striped">
         <thead>
@@ -35,7 +33,11 @@
                 <th scope="col">label</th>
                 <th scope="col">Quantity</th>
                 <!--for edit button-->
-                <th></th>
+                <th>
+                    <a href="{% url 'shop:upload-item' %}">
+                        <i class="fas fa-upload" style="color:green">upload</i>
+                    </a>
+                </th>
             </tr>
         </thead>
 
