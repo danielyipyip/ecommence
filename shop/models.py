@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.aggregates import Max
 from django.db.models.base import Model
 from django.conf import settings
+from django.db.models.fields import BooleanField
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
 
@@ -107,3 +108,15 @@ class Address(models.Model):
     country=CountryField()
     zip_code=models.CharField(max_length=20)
 
+#for shop owner access to store, is meant to NOT open to register (only admin can set)
+class UserProfile(models.Model):
+    #using choice field NOT bool field -> allow adding more roles
+    class role_choice(models.TextChoices):
+        STAFF='staff'
+        CUSTOMER='customer'
+    # This line is required. Links UserProfile to a User model instance.
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    roles = models.CharField(choices=role_choice.choices, default=role_choice.CUSTOMER)
+
+    def __str__(self):
+        return self.user.username
