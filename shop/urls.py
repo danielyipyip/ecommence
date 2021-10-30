@@ -6,8 +6,9 @@ from .views import (
     add_to_cart, add_to_cart_product_detail, add_to_cart_shopping_cart, 
     remove_from_cart, quantity_reduce_shopping_cart, remove_from_cart_shopping_cart, 
     homePage, productDetailPage, shoppingCart, checkout_view, payment_view, productCategory, 
+    home, 
     #owner side
-    itemListView, upload_new_item_view, update_item_view, 
+    itemListView, upload_new_item_view, update_item_view, OrdersListView
 )
 
 app_name='shop'
@@ -22,6 +23,7 @@ urlpatterns = [
     path('payment/sucess/', payment_sucess, name="payment-sucess"), 
     path('payment/unsucess/', payment_unsucess, name="payment-unsucess"), 
     path('category/<str:category>/', productCategory.as_view(), name="item-by-category"), 
+    path('home/', home, name='new-home-page'), 
 
     #path('add_to_cart/<int:pk>', add_to_cart, name="add_to_cart"), 
     #function rather than page: 
@@ -35,4 +37,6 @@ urlpatterns = [
     path('item_list/', itemListView.as_view(), name='item-list'), 
     path('upload_item/', upload_new_item_view.as_view(), name='upload-item'), 
     path('update_item/<int:pk>', upload_new_item_view.as_view(), name='update-item'), 
+    path('order_list/', OrdersListView.as_view(), name='order-list'), 
+    path('order_list/<str:all>', OrdersListView.as_view(), name='order-list-all'), 
 ]

@@ -85,7 +85,8 @@ class Order(models.Model):
     orderitems=models.ManyToManyField(OrderItem)
     #date of purchase
     orderDate = models.DateTimeField(blank=True, null=True)
-
+    #is the order fulfilled
+    complete = models.BooleanField(default=False)
     ship_addr=models.ForeignKey('Address', on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):

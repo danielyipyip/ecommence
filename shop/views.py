@@ -18,10 +18,13 @@ from .decorators import allowed_users
 admin_role_decorator=[login_required, allowed_users(allowed_roles='shop_admin')]
 
 # Create your views here.
+def home(request):
+    return render(request, "home.html")
+
 class homePage(ListView):
     model = Item
     paginate_by=8
-    template_name='home.html'
+    template_name='list_view.html'
     ordering=['name']
 
 class productDetailPage(DetailView):
@@ -47,7 +50,7 @@ class productCategory(ListView):
             return Item.objects.all()
 
 #does 2 things: (1)add to cart (2)quantity+1
-#@login_required
+@login_required
 def add_to_cart(request, pk):
     #get/create item, order, order_item
     item=get_object_or_404(Item, pk=pk)
@@ -95,6 +98,7 @@ def remove_from_cart(request, pk):
         pass
     return redirect("shop:home-page")
 
+@login_required
 def remove_from_cart_shopping_cart(request,pk):
     remove_from_cart(request, pk)
     return redirect("shop:shopping-cart")
@@ -124,17 +128,18 @@ def quantity_reduce(request, pk):
         #no order
         pass
     
+@login_required
 def quantity_reduce_shopping_cart(request,pk):
     quantity_reduce(request, pk)
     return redirect("shop:shopping-cart")
     
 class shoppingCart(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
-        order=Order.objects.get(user=self.request.user, paid=False)
+        order=Order.objects.filter(user=self.request.user, paid=False)
         context={'object': order}
         return render(self.request, 'shopping_cart.html', context)
 
-class checkout_view(View):
+class checkout_view(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         form=CheckoutForm()
         order=Order.objects.get(user=self.request.user, paid=False) 
@@ -167,7 +172,7 @@ class checkout_view(View):
             else:
                 return redirect('shop:checkout')
 
-class payment_view(View):
+class payment_view(LoginRequiredMixin, View):
     def get(self, *args, **kargs):
         order=Order.objects.get(user=self.request.user, paid=False)
         context={'object': order}
@@ -179,7 +184,6 @@ def payment_sucess(request):
 def payment_unsucess(request):
     return render(request, 'payment_unsucess.html')
 
-#need fix
 @method_decorator(admin_role_decorator, name='dispatch')
 class itemListView(ListView):
     model = Item
@@ -187,11 +191,12 @@ class itemListView(ListView):
     template_name='itemList_owner.html'
     ordering=['pk']
 
-#maybe make a loaded form instead
+@method_decorator(admin_role_decorator, name='dispatch')
 class update_item_view(DetailView):
     model=Item
     template_name="product_detail.html"
 
+@method_decorator(admin_role_decorator, name='dispatch')
 class upload_new_item_view(View):
     def get(self, *args, **kwargs):
         my_pk=self.kwargs.get('pk', None)
@@ -206,4 +211,16 @@ class upload_new_item_view(View):
         new_item=form.save()
         return redirect('shop:item-list')
 
+@method_decorator(admin_role_decorator, name='dispatch')
+class OrdersListView(ListView):
+    model = Order
+    paginate_by=20
+    template_name='itemList_owner.html'
+    ordering=['pk']
+    def get_queryset(self):
+        if 'all' in self.kwargs:
+            return Order.objects.all
+        else:
+            order_not_complete = Order.objects.filter(complete=False)
+            return order_not_complete
     
