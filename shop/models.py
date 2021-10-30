@@ -111,12 +111,14 @@ class Address(models.Model):
 #for shop owner access to store, is meant to NOT open to register (only admin can set)
 class UserProfile(models.Model):
     #using choice field NOT bool field -> allow adding more roles
-    class role_choice(models.TextChoices):
-        STAFF='staff'
-        CUSTOMER='customer'
+    #only after django 3
+    #class role_choice(models.TextChoices):
+    #    STAFF='staff'
+    #    CUSTOMER='customer'
+    role_choice=[('customer','customer'), ('staff','staff'), ]
     # This line is required. Links UserProfile to a User model instance.
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    roles = models.CharField(choices=role_choice.choices, default=role_choice.CUSTOMER)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_profile')
+    roles = models.CharField(max_length=20, choices=role_choice, default=role_choice[0][0])
 
     def __str__(self):
         return self.user.username

@@ -3,15 +3,19 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 
-from shop.models import Item, Order, OrderItem, Address
+from shop.models import Item, Order, OrderItem, Address, UserProfile
 from.forms import CheckoutForm, addProductForm
 
+from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 from django.shortcuts import redirect
+from .decorators import allowed_users
+
+admin_role_decorator=[login_required, allowed_users(allowed_roles='shop_admin')]
 
 # Create your views here.
 class homePage(ListView):
@@ -176,6 +180,7 @@ def payment_unsucess(request):
     return render(request, 'payment_unsucess.html')
 
 #need fix
+@method_decorator(admin_role_decorator, name='dispatch')
 class itemListView(ListView):
     model = Item
     paginate_by=20
