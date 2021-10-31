@@ -2,18 +2,42 @@
 
 {% block head_append %}
 <style>
-    .banner_container{
-        margin:0;
-        padding:0;
-    }
+
+
 </style>
+
 {% endblock head_append %}
 
 {% block content %}
 
-<div class="container-fluid banner_container">
-    <img src="/media/homepage_images/autum1.jpg" class="img-fluid" alt="banner image">
+<!--banner-->
+<div class="container-fluid">
+<div class="box banner_container">
+    <img src="/media/homepage_images/autum1.jpg" class="banner_image" alt="Flying Kites">
+    <span class="banner_content" >
+        <div class="banner_text">Ready for <br/>Winter?<br />
+        <a class="btn btn-danger banner_button" href="{% url 'shop:home-page' %}" role="button">Explore now &#10132</a>
+        </span>
+</span>
     
 </div>
+</div>
+<!--featured categories-->
+<div class="container">
+    <div class="row justify-content-content">
+        <div class="col-3">
+            a
+        </div>
+        <div class="col-3">
+            b
+        </div>
+        <div class="col-3">
+            c
+        </div>
+    </div>
+</div>
+
+<!--featured productes-->
+
 
 {% endblock content %}

@@ -14,9 +14,14 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-    <!--
-    <link rel="stylesheet" href="base_style.css">
-    -->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base_style.css' %}">
+
+    <!--for some font styles-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     {% block head_append %}
     {% endblock head_append %}
     <title>My Shop</title>
