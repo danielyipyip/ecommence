@@ -3,7 +3,6 @@
 {% block head_append %}
 <style>
 
-
 </style>
 
 {% endblock head_append %}
@@ -12,32 +11,89 @@
 
 <!--banner-->
 <div class="container-fluid">
-<div class="box banner_container">
-    <img src="/media/homepage_images/autum1.jpg" class="banner_image" alt="Flying Kites">
-    <span class="banner_content" >
-        <div class="banner_text">Ready for <br/>Winter?<br />
-        <a class="btn btn-danger banner_button" href="{% url 'shop:home-page' %}" role="button">Explore now &#10132</a>
+    <div class="box banner_container">
+        <img src="/media/homepage_images/autum1.jpg" class="banner_image" alt="Flying Kites">
+        <span class="banner_content">
+            <div class="banner_text">Ready for <br />Winter?<br />
+                <a class="btn btn-danger banner_button" href="{% url 'shop:home-page' %}" role="button">Explore now
+                    &#10132</a>
         </span>
-</span>
-    
-</div>
-</div>
-<!--featured categories-->
-<div class="container">
-    <div class="row justify-content-content">
-        <div class="col-3">
-            a
-        </div>
-        <div class="col-3">
-            b
-        </div>
-        <div class="col-3">
-            c
-        </div>
+        </span>
+
     </div>
 </div>
 
-<!--featured productes-->
+<div class="container mt-5">
+    <div style="padding-right: 10%; padding-left: 10%;">
+        <!--featured categories-->
+        <div class="row justify-content-md-center">
+            <div class="col col-md-4 g-4 category_image">
+                <a href="{% url 'shop:item-by-category' 'shirt' %}" class="">
+                    <img src="/media/feature_product/shirt1_square.jpg" class="img-fluid" alt="category1">
+                    <div class="middle_layer">
+                        <button type="button" class="btn btn-primary">Check it out</button>
+                    </div>
+                </a>
+            </div>
+            <div class="col col-md-4 g-4 category_image">
+                <a href="{% url 'shop:item-by-category' 'trousers' %}">
+                    <img src="/media/feature_product/jean1_square.jpg" class="img-fluid" alt="category2">
+                    <div class="middle_layer">
+                        <button type="button" class="btn btn-primary">Check it out</button>
+                    </div>
+                </a>
+            </div>
+            <div class="col col-md-4 g-4 category_image">
+                <a href="{% url 'shop:item-by-category' 'dress' %}">
+                    <img src="/media/feature_product/dress1_square.jpg" class="img-fluid" alt="category2">
+                    <div class="middle_layer">
+                        <button type="button" class="btn btn-primary">Check it out</button>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!--featured productes-->
+        <div class="container mt-5 justify-content-md-center">
+            <p class="h3 text-center">Featured Products</p>
+            <hr class="line_below_feature_middle">
+        </div>
+
+        <div class="row g-2 mt-2 justify-content-md-center">
+            <!--each items-->
+            {% for item in featured %}
+            <div class="col-md-3 product_card">
+                <div class="card shadow">
+                    <a href="{{ item.get_absolute_url }}" class="text-decoration-none">
+                        <img src="{{ item.image.url }}" class="card-img-top h-100" />
+                        <div class="card-body text-center text-primary">
+                            <p class="text-black-50">{{ item.get_product_type_display|capfirst }}</p>
+                            <h5 class="card-title text-dark">{{ item.name|capfirst }}</h5>
+                            {% if item.discounted_price %}
+                            <div>
+                                <span class="card-text">Price: <del>{{ item.price }}</del></span>
+                                <span class="card-text text-danger"> {{ item.discounted_price }}</span>
+                                <span class="badge bg-danger">Sales</span>
+                            </div>
+                            {% else %}
+                            <div><span class="card-text">Price: {{ item.price }}</span></div>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+</div>
+
+
+<div class="container mt-5">
+
+</div>
+
 
 
 {% endblock content %}

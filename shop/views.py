@@ -19,7 +19,9 @@ admin_role_decorator=[login_required, allowed_users(allowed_roles='shop_admin')]
 
 # Create your views here.
 def home(request):
-    return render(request, "home.html")
+    feature_items=Item.objects.filter(label='recom')[:4]
+    context={'featured': feature_items, }
+    return render(request, "home.html", context)
 
 class homePage(ListView):
     model = Item
@@ -34,16 +36,16 @@ class productDetailPage(DetailView):
 class productCategory(ListView):
     model=Item
     paginate_by=8
-    template_name='home.html'
+    template_name='list_view.html'
     def get_queryset(self):
         filter_category=self.kwargs['category']
-        if filter_category in (Item.type_name or Item.type_value):
+        if (filter_category in Item.type_name) or (filter_category in Item.type_value):
             item_type = Item.objects.filter(product_type=filter_category)
             return item_type
-        elif filter_category in (Item.season_name or Item.season_value):
+        elif (filter_category in Item.season_name) or (filter_category in Item.season_value):
             item_season = Item.objects.filter(product_season=filter_category)
             return item_season
-        elif filter_category in (Item.label_name or Item.label_value):
+        elif (filter_category in Item.label_name) or (filter_category in Item.label_value):
             item_label = Item.objects.filter(label=filter_category)
             return item_label
         else:
