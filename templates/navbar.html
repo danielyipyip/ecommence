@@ -65,50 +65,44 @@
             <!--right-->
             <ul class="navbar-nav ms-auto">
                 {% if request.user.is_authenticated %}
-                {% if request.user.groups.all.0.name == 'shop_admin' %}
-                <!--if is admin-->
-                <li class="nav-item d-flex active">
-                    <a href="{% url 'shop:item-list' %}" class="nav-link">
-                        <i class="fas fa-list"></i>
-                        <span class="clearfix d-none d-sm-inline-block"> Manage items </span>
-                    </a>
-                </li>
-                <li class="nav-item d-flex active">
-                    <a href="{% url 'shop:upload-item' %}" class="nav-link">
-                        <i class="far fa-plus-square"></i>
-                        <span class="clearfix d-none d-sm-inline-block"> Add Item </span>
-                    </a>
-                </li>
-                <li class="nav-item d-flex active">
-                    <a href="{% url 'shop:order-list' %}" class="nav-link">
-                        <i class="fas fa-clipboard-list"></i>
-                        <span class="clearfix d-none d-sm-inline-block"> Manage Orders </span>
-                    </a>
-                </li>
-                <!--logout-->
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_logout' %}">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span class="clearfix d-none d-sm-inline-block"> Logout </span>
-                    </a>
-                </li>
-                {% else %}
-                <!--shopping cart, if is NOT admin-->
-                <li class="nav-item d-flex active">
-                    <a href="{% url 'shop:shopping-cart' %}" class="nav-link">
-                        <span class="badge bg-danger">{{ request.user|cart_item_count }}</span>
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="clearfix d-none d-sm-inline-block"> Cart </span>
-                    </a>
-                </li>
-                <!--logout-->
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_logout' %}">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span class="clearfix d-none d-sm-inline-block"> Logout </span>
-                    </a>
-                </li>
-                {% endif %}
+                    {% if request.user.groups.all.0.name == 'shop_admin' %}
+                    <!--if is admin-->
+                    <li class="nav-item d-flex active">
+                        <a href="{% url 'shop:item-list' %}" class="nav-link">
+                            <i class="fas fa-list"></i>
+                            <span class="clearfix d-none d-sm-inline-block"> Manage items </span>
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex active">
+                        <a href="{% url 'shop:upload-item' %}" class="nav-link">
+                            <i class="far fa-plus-square"></i>
+                            <span class="clearfix d-none d-sm-inline-block"> Add Item </span>
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex active">
+                        <a href="{% url 'shop:order-list' %}" class="nav-link">
+                            <span class="badge bg-danger">{{ request.user|order_count }}</span>
+                            <i class="fas fa-clipboard-list"></i>
+                            <span class="clearfix d-none d-sm-inline-block"> Manage Orders </span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <!--shopping cart, if is NOT admin-->
+                    <li class="nav-item d-flex active">
+                        <a href="{% url 'shop:shopping-cart' %}" class="nav-link">
+                            <span class="badge bg-danger">{{ request.user|cart_item_count }}</span>
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <!--logout-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_logout' %}">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="clearfix d-none d-sm-inline-block"> Logout </span>
+                        </a>
+                    </li>
                 {% else %}
                 <!--if NOT login, login-->
                 <li class="nav-item">
