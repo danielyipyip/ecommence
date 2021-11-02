@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block head_append %}
+<meta http-equiv="refresh" content="5;url={% url 'shop:home-page' %}" />
+{% endblock head_append %}
+
+{% block content %}
+You are not authenticated, redirect to home page in 5s
+<a href="{% url 'shop:home-page' %}">Click here if you are not redirected</a>
+{% endblock content %}

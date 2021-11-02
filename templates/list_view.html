@@ -17,9 +17,19 @@
 
 <div class="container">
 
+<!--title and select button-->
+All products 
+<span>
+    <select>
+        <option value="">Select One...</option>
+        <option value="chocolate">Chocolate</option>
+        <option value="sardine">Sardine</option>
+        <option value="vanilla">Vanilla</option>
+    </select>
+</span>
+
     <!--grid of items-->
     <div class="row row-col-md-2 g-3">
-
         <!--each items-->
         {% for item in page_obj %}
         <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">

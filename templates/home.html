@@ -27,7 +27,7 @@
     <div style="padding-right: 10%; padding-left: 10%;">
         <!--featured categories-->
         <div class="row justify-content-md-center">
-            <div class="col col-md-4 g-4 category_image">
+            <div class="col-4 g-4 category_image">
                 <a href="{% url 'shop:item-by-category' 'shirt' %}" class="">
                     <img src="/media/feature_product/shirt1_square.jpg" class="img-fluid" alt="category1">
                     <div class="middle_layer">
@@ -35,7 +35,7 @@
                     </div>
                 </a>
             </div>
-            <div class="col col-md-4 g-4 category_image">
+            <div class="col-4 g-4 category_image">
                 <a href="{% url 'shop:item-by-category' 'trousers' %}">
                     <img src="/media/feature_product/jean1_square.jpg" class="img-fluid" alt="category2">
                     <div class="middle_layer">
@@ -43,7 +43,7 @@
                     </div>
                 </a>
             </div>
-            <div class="col col-md-4 g-4 category_image">
+            <div class="col-4 g-4 category_image">
                 <a href="{% url 'shop:item-by-category' 'dress' %}">
                     <img src="/media/feature_product/dress1_square.jpg" class="img-fluid" alt="category2">
                     <div class="middle_layer">
@@ -59,10 +59,10 @@
             <hr class="line_below_feature_middle">
         </div>
 
-        <div class="row row-cols-lg-1 row-cols-sm-2 g-2 mt-2 justify-content-md-center">
+        <div class="row g-2 mt-2 justify-content-md-center">
             <!--each items-->
             {% for item in featured %}
-            <div class="col-md-3 product_card">
+            <div class="col-md-3 col-6 product_card">
                 <div class="card shadow">
                     <a href="{{ item.get_absolute_url }}" class="text-decoration-none">
                         <img src="{{ item.image.url }}" class="card-img-top h-100" />

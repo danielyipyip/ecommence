@@ -2,7 +2,7 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
 from .views import (
-    payment_sucess, payment_unsucess, 
+    payment_sucess, payment_unsucess, unauthorized_redirect, 
     add_to_cart, add_to_cart_product_detail, add_to_cart_shopping_cart, 
     remove_from_cart, quantity_reduce_shopping_cart, remove_from_cart_shopping_cart, 
     homePage, productDetailPage, shoppingCart, checkout_view, payment_view, productCategory, 
@@ -15,7 +15,7 @@ app_name='shop'
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
-    path('', homePage.as_view(), name='home-page'), 
+    path('', homePage.as_view(), name='list-page'), 
     path('product/<int:pk>', productDetailPage.as_view(), name='product-detail'), 
     path('cart/', shoppingCart.as_view(), name="shopping-cart"), 
     path('checkout/', checkout_view.as_view(), name='checkout'), 
@@ -23,7 +23,9 @@ urlpatterns = [
     path('payment/sucess/', payment_sucess, name="payment-sucess"), 
     path('payment/unsucess/', payment_unsucess, name="payment-unsucess"), 
     path('category/<str:category>/', productCategory.as_view(), name="item-by-category"), 
-    path('home/', home, name='new-home-page'), 
+    path('home/', home, name='home-page'), 
+    path('unauthorized/', unauthorized_redirect, name='unauthorized'), 
+    
 
     #path('add_to_cart/<int:pk>', add_to_cart, name="add_to_cart"), 
     #function rather than page: 

@@ -226,3 +226,5 @@ class OrdersListView(ListView):
             order_not_complete = Order.objects.filter(complete=False)
             return order_not_complete
     
+def unauthorized_redirect(request):
+    return render(request, 'not_authenticated.html')
