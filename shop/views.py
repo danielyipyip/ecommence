@@ -59,9 +59,11 @@ def add_to_cart(request, pk):
     order=Order.objects.get_or_create(user=request.user, paid=False)
     #need extra variable since cannot access .orderitems field directly?
     current_order=order[0]
+    #current_order=order #why this NOT ok???
     orderItem, create_orderItem=OrderItem.objects.get_or_create(item=item, user=request.user, paid=False)
     if create_orderItem:
         current_order.orderitems.add(orderItem)
+        current_order.save()
     else:
         orderItem.quantity+=1
         #need save
@@ -77,8 +79,6 @@ def add_to_cart_product_detail(request, pk):
 def add_to_cart_shopping_cart(request, pk):
     add_to_cart(request, pk)
     return redirect("shop:shopping-cart")
-
-
 
 #only does removing item
 @login_required
@@ -138,7 +138,10 @@ def quantity_reduce_shopping_cart(request,pk):
 class shoppingCart(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         order=Order.objects.filter(user=self.request.user, paid=False)
-        context={'object': order}
+        #this line is needed, because order is queryset, [0] assigned is??
+        #but still why??? 
+        myorder=order[0]
+        context={'object': myorder}
         return render(self.request, 'shopping_cart.html', context)
 
 class checkout_view(LoginRequiredMixin, View):
