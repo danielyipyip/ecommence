@@ -8,7 +8,8 @@ from .views import (
     homePage, productDetailPage, shoppingCart, checkout_view, payment_view, productCategory, 
     home, 
     #owner side
-    itemListView, upload_new_item_view, update_item_view, OrdersListView
+    itemListView, upload_new_item_view, update_item_view, OrdersListView, 
+    remove_item, 
 )
 
 app_name='shop'
@@ -41,4 +42,5 @@ urlpatterns = [
     path('update_item/<int:pk>', upload_new_item_view.as_view(), name='update-item'), 
     path('order_list/', OrdersListView.as_view(), name='order-list'), 
     path('order_list/<str:all>', OrdersListView.as_view(), name='order-list-all'), 
+    path('remove_item/<int:pk>', remove_item, name='remove-item'), 
 ]

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
     <p>Product Name: {{ object.name }}</p>
-    <img src="{{ object.image.url }}" width="300" height="300" />
+    <img src="{{ object.image.url }}" width="225" height="300" />
     {% if object.discounted_price %}
     <p></p>
         <del>Price: {{ object.price }}</del>

@@ -2,9 +2,13 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form method='POST'>
+<!--need enctype='multipart/form-data', so image is sent back; action="" is where the POST is sent to-->
+<form method='POST' enctype='multipart/form-data'>
     {% csrf_token %}
     {{ form|crispy }}
     <button class='btn btn-primary' type="submit">Submit</button>
 </form>
+{% if pk %}
+<a href="{% url 'shop:remove-item' pk %}" class='btn btn-danger' role='button'>Delete</a>
+{% endif %}
 {% endblock content %}

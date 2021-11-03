@@ -209,12 +209,29 @@ class upload_new_item_view(View):
             form=addProductForm(instance=Item.objects.get(pk=my_pk))
         else:
             form=addProductForm()
-        context={'form': form,}
+        context={'form': form, 'pk': my_pk}
         return render(self.request, 'upload_item.html', context)
     def post(self, *args, **kwargs):
-        form=addProductForm(self.request.POST or None)
-        new_item=form.save()
+        #the [0] is needed, from .filter: gives querySet, not just a tuple
+        curr_item = Item.objects.filter(name=self.request.POST['name'])[0]
+        if curr_item:
+        #need to have self.request.FILE: for the image, otherwise use default image
+        #on html side, need enctype='multipart/form-data' so that image files is sent back
+            form=addProductForm(self.request.POST, self.request.FILES, instance=curr_item)
+        else: 
+            form=addProductForm(self.request.POST, self.request.FILES or None)
+        if form.is_valid():
+            form.save()
         return redirect('shop:item-list')
+
+#only does removing item
+@allowed_users(allowed_roles=['shop_admin'])
+def remove_item(request, pk):
+    #get/create item, order, order_item
+    item=get_object_or_404(Item, pk=pk)
+    if item:
+        item.delete()
+    return redirect("shop:item-list")
 
 @method_decorator(admin_role_decorator, name='dispatch')
 class OrdersListView(ListView):
