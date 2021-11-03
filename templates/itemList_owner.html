@@ -58,8 +58,11 @@
                 <td>{{ item.label }}</td>
                 <td>{{ item.stock }}</td>
                 <td>
-                    <a href="{% url 'shop:update-item' pk=item.pk %}">
+                    <a href="{% url 'shop:update-item' pk=item.pk %}" class="me-2">
                         <i class="fas fa-edit"></i>Edit
+                    </a>
+                    <a href="{% url 'shop:remove-item' pk=item.pk %}" class="button">
+                        <i class="fas fa-trash float-right"></i>
                     </a>
                 </td>
             </tr>
