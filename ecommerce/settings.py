@@ -50,6 +50,10 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    #social provider
+    #'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitter', 
     #for country field
     'django_countries',
     #forms
@@ -155,6 +159,14 @@ MEDIA_ROOT=MEDIA_DIR
 MEDIA_URL='/media/'
 
 #authen redirect
+ACCOUNT_EMAIL_VERIFICATION = "none"
 LOGIN_REDIRECT_URL='/shop/'
 ACCOUNT_LOGOUT_REDIRECT_URL ='/shop/'
 #LOGOUT_URL = '/shop/'
+
+SOCIALACCOUNT_PROVIDERS = {
+    #'facebook': {}, 
+    'google':{}, 
+    'twitter':{}}
+#https://www.webforefront.com/django/setupdjangosocialauthentication.html
+#https://testdriven.io/blog/django-social-auth/

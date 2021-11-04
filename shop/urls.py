@@ -6,7 +6,7 @@ from .views import (
     add_to_cart, add_to_cart_product_detail, add_to_cart_shopping_cart, 
     remove_from_cart, quantity_reduce_shopping_cart, remove_from_cart_shopping_cart, 
     homePage, productDetailPage, shoppingCart, checkout_view, payment_view, productCategory, 
-    home, 
+    home, search_result, 
     #owner side
     itemListView, upload_new_item_view, update_item_view, OrdersListView, 
     remove_item, 
@@ -26,6 +26,7 @@ urlpatterns = [
     path('category/<str:category>/', productCategory.as_view(), name="item-by-category"), 
     path('home/', home, name='home-page'), 
     path('unauthorized/', unauthorized_redirect, name='unauthorized'), 
+    path('search/', search_result, name='search'), 
     
 
     #path('add_to_cart/<int:pk>', add_to_cart, name="add_to_cart"), 

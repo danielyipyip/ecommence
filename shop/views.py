@@ -213,7 +213,8 @@ class upload_new_item_view(View):
         return render(self.request, 'upload_item.html', context)
     def post(self, *args, **kwargs):
         #the [0] is needed, from .filter: gives querySet, not just a tuple
-        curr_item = Item.objects.filter(name=self.request.POST['name'])[0]
+        my_pk=self.kwargs.get('pk', None)
+        curr_item = Item.objects.filter(pk=my_pk)[0]
         if curr_item:
         #need to have self.request.FILE: for the image, otherwise use default image
         #on html side, need enctype='multipart/form-data' so that image files is sent back
@@ -248,3 +249,13 @@ class OrdersListView(ListView):
     
 def unauthorized_redirect(request):
     return render(request, 'not_authenticated.html')
+
+def search_result(request):
+    context={}
+    if request.method=='POST':
+        keyword = request.POST.get('searched', None)
+        items=Item.objects.filter(name__contains=keyword)
+        context={'keyword': keyword, 'items': items}
+        return render(request, 'search_result.html', context)
+    else:
+        return render(request, 'search_result.html', context)

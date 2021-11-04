@@ -62,6 +62,13 @@
                     </ul>
                 </li>
             </ul>
+            <!--why it can be kept in middle?-->
+                <!--search -->
+                <form class="d-flex" method=POST action="{% url 'shop:search' %}">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searched">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
             <!--right-->
             <ul class="navbar-nav ms-auto">
                 {% if request.user.is_authenticated %}
