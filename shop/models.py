@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db.models.fields import BooleanField
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
+import os
 
 #things consider to change
 # +discounted price
@@ -33,7 +34,9 @@ class Item(models.Model):
     product_season=models.CharField(choices=season_choice, max_length=10)
     product_type=models.CharField(choices=type_choice, max_length=20)
     price = models.DecimalField(max_digits=20, decimal_places=2)
-    image = models.ImageField(upload_to='product_images', height_field='image_height', width_field='image_width', default="C:/Users/daniel/Workspace/ecommerce/media/product_images/white_tshirt.jpg")
+            #os.path.join, cannot have '/', only '<words>', it will add the '/' for you
+    image = models.ImageField(upload_to='product_images', height_field='image_height', width_field='image_width', 
+        default=os.path.join(settings.MEDIA_DIR,"product_images", "white_tshirt.jpg")) 
     #necessary but with default
     stock=models.IntegerField(default=0)
     #Not necessary
@@ -125,4 +128,20 @@ class UserProfile(models.Model):
         return self.user.username
 
 #class storeConfig(models.Model):
+
+class homepage_config(models.Model):
+    #the banner and its slogan
+    banner_image=models.ImageField(upload_to='homepage_images', default=os.path.join(settings.MEDIA_DIR,"homepage_images", "autum1.jpg"))
+    slogan_line1=models.CharField(max_length=100, default='READY FOR')
+    slogan_line2=models.CharField(max_length=100, blank=True, null=True, default='WINTER?')
+    slogan_line3=models.CharField(max_length=100, blank=True, null=True)
+    #the 3 featured categories
+    category_image1=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "shirt1_square.jpg"))
+    category_image2=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "jean1_square.jpg"))
+    category_image3=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "dress1_square.jpg"))
+    category1=models.CharField(max_length=100, default='shirt')
+    category2=models.CharField(max_length=100, default='trousers')
+    category3=models.CharField(max_length=100, default='dress')
+
+
     

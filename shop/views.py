@@ -214,11 +214,12 @@ class upload_new_item_view(View):
     def post(self, *args, **kwargs):
         #the [0] is needed, from .filter: gives querySet, not just a tuple
         my_pk=self.kwargs.get('pk', None)
-        curr_item = Item.objects.filter(pk=my_pk)[0]
-        if curr_item:
-        #need to have self.request.FILE: for the image, otherwise use default image
-        #on html side, need enctype='multipart/form-data' so that image files is sent back
-            form=addProductForm(self.request.POST, self.request.FILES, instance=curr_item)
+        if my_pk:
+            curr_item = Item.objects.filter(pk=my_pk)[0]
+            if curr_item:
+            #need to have self.request.FILE: for the image, otherwise use default image
+            #on html side, need enctype='multipart/form-data' so that image files is sent back
+                form=addProductForm(self.request.POST, self.request.FILES, instance=curr_item)
         else: 
             form=addProductForm(self.request.POST, self.request.FILES or None)
         if form.is_valid():
@@ -252,6 +253,8 @@ def unauthorized_redirect(request):
 
 def search_result(request):
     context={}
+    # import os
+    # print(os.path.join(settings.MEDIA_DIR,"product_images", "white_tshirt.jpg"))
     if request.method=='POST':
         keyword = request.POST.get('searched', None)
         items=Item.objects.filter(name__contains=keyword)

@@ -4,6 +4,35 @@
 
 {% if keyword %}
 <p class="h2">You searched for {{keyword}}</p>
+<!--grid of items-->
+<div class="row row-col-md-2 g-3">
+    <!--each items-->
+    {% for item in items %}
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
+        <div class="card shadow">
+            <a href="{{ item.get_absolute_url }}" class="text-decoration-none">
+                <img src="{{ item.image.url }}" class="card-img-top" width="200" height="300" />
+                <div class="card-body text-center text-primary">
+                    <p class="text-black-50">{{ item.get_product_type_display|capfirst }}</p>
+                    <h5 class="card-title text-dark">{{ item.name|capfirst }}</h5>
+                    {% if item.label %}
+                    <span class="badge bg-success">{{ item.get_label_display }}</span>
+                    {% endif %}
+                    {% if item.discounted_price %}
+                    <div>
+                        <span class="card-text">Price: <del>{{ item.price }}</del></span>
+                        <span class="card-text text-danger"> {{ item.discounted_price }}</span>
+                        <span class="badge bg-danger">Sales</span>
+                    </div>
+                    {% else %}
+                    <div><span class="card-text">Price: {{ item.price }}</span></div>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% else %}
 {% endif %}
 
