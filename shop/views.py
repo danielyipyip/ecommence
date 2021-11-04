@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 
-from shop.models import Item, Order, OrderItem, Address, UserProfile
+from shop.models import Item, Order, OrderItem, Address, homepage_config
 from.forms import CheckoutForm, addProductForm
 
 from django.utils.decorators import method_decorator
@@ -20,7 +20,9 @@ admin_role_decorator=[login_required, allowed_users(allowed_roles='shop_admin')]
 # Create your views here.
 def home(request):
     feature_items=Item.objects.filter(label='recom')[:4]
-    context={'featured': feature_items, }
+    home_config = homepage_config.objects.get_or_create()[0]
+    context={'featured': feature_items, 'home_config':home_config}
+    #print(home_config.banner_image)
     return render(request, "home.html", context)
 
 class homePage(ListView):

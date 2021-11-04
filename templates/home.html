@@ -12,9 +12,10 @@
 <!--banner-->
 <div class="container-fluid">
     <div class="box banner_container">
-        <img src="/media/homepage_images/autum1.jpg" class="banner_image" alt="Flying Kites">
+        <!--image only: need .url on top of just accessing the iamge-->
+        <img src='{{ home_config.banner_image.url }}' class="banner_image" alt="Banner Image">
         <span class="banner_content">
-            <div class="banner_text">Ready for <br />Winter?<br />
+            <div class="banner_text">{{home_config.slogan_line1}} <br />{{home_config.slogan_line2}}<br />
                 <a class="btn btn-danger banner_button" href="{% url 'shop:list-page' %}" role="button">Explore now
                     &#10132</a>
         </span>
@@ -28,24 +29,26 @@
         <!--featured categories-->
         <div class="row justify-content-md-center">
             <div class="col-4 g-4 category_image">
-                <a href="{% url 'shop:item-by-category' 'shirt' %}" class="">
-                    <img src="/media/feature_product/shirt1_square.jpg" class="img-fluid" alt="category1">
+                <!--seems in {%, no need { -->
+                <a href="{% url 'shop:item-by-category' home_config.category1 %}" class="">
+                    <!--'/media/feature_product/shirt1_square.jpg'-->
+                    <img src="{{ home_config.category_image1.url }}" class="img-fluid" alt="category1">
                     <div class="middle_layer">
                         <button type="button" class="btn btn-primary">Check it out</button>
                     </div>
                 </a>
             </div>
             <div class="col-4 g-4 category_image">
-                <a href="{% url 'shop:item-by-category' 'trousers' %}">
-                    <img src="/media/feature_product/jean1_square.jpg" class="img-fluid" alt="category2">
+                <a href="{% url 'shop:item-by-category' home_config.category2 %}">
+                    <img src="{{ home_config.category_image2.url }}" class="img-fluid" alt="category2">
                     <div class="middle_layer">
                         <button type="button" class="btn btn-primary">Check it out</button>
                     </div>
                 </a>
             </div>
             <div class="col-4 g-4 category_image">
-                <a href="{% url 'shop:item-by-category' 'dress' %}">
-                    <img src="/media/feature_product/dress1_square.jpg" class="img-fluid" alt="category2">
+                <a href="{% url 'shop:item-by-category' home_config.category3 %}">
+                    <img src="{{ home_config.category_image3.url }}" class="img-fluid" alt="category3">
                     <div class="middle_layer">
                         <button type="button" class="btn btn-primary">Check it out</button>
                     </div>

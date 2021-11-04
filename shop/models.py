@@ -137,11 +137,13 @@ class homepage_config(models.Model):
     slogan_line3=models.CharField(max_length=100, blank=True, null=True)
     #the 3 featured categories
     category_image1=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "shirt1_square.jpg"))
-    category_image2=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "jean1_square.jpg"))
-    category_image3=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "dress1_square.jpg"))
     category1=models.CharField(max_length=100, default='shirt')
+    category_image2=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "jean1_square.jpg"))
     category2=models.CharField(max_length=100, default='trousers')
+    category_image3=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "dress1_square.jpg"))
     category3=models.CharField(max_length=100, default='dress')
+    
+    
 
 
     
