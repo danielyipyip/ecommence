@@ -77,7 +77,7 @@
                     <li class="nav-item d-flex active">
                         <a href="{% url 'shop:item-list' %}" class="nav-link">
                             <i class="fas fa-list"></i>
-                            <span class="clearfix d-none d-sm-inline-block"> Manage items </span>
+                            <span class="clearfix d-none d-sm-inline-block">Items </span>
                         </a>
                     </li>
                     <li class="nav-item d-flex active">
@@ -90,7 +90,7 @@
                         <a href="{% url 'shop:order-list' %}" class="nav-link">
                             <span class="badge bg-danger">{{ request.user|order_count }}</span>
                             <i class="fas fa-clipboard-list"></i>
-                            <span class="clearfix d-none d-sm-inline-block"> Manage Orders </span>
+                            <span class="clearfix d-none d-sm-inline-block">Orders </span>
                         </a>
                     </li>
                     {% else %}

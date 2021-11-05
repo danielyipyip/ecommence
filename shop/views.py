@@ -279,4 +279,6 @@ class modify_homepage_config(View):
         if form.is_valid():
             form.save()
         return redirect('shop:home-page')
-        
+
+def about_page(request):
+    return render(request, 'about_us.html')

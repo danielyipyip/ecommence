@@ -10,6 +10,8 @@ from .views import (
     #owner side
     itemListView, upload_new_item_view, update_item_view, OrdersListView, modify_homepage_config, 
     remove_item, 
+    #company pages
+    about_page, 
 )
 
 app_name='shop'
@@ -29,6 +31,8 @@ urlpatterns = [
     path('unauthorized/', unauthorized_redirect, name='unauthorized'), 
     path('search/', search_result, name='search'), 
     
+    #company pages
+    path('about_us/', about_page, name='about-us'), 
 
     #path('add_to_cart/<int:pk>', add_to_cart, name="add_to_cart"), 
     #function rather than page: 
