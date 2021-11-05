@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 
 from shop.models import Item, Order, OrderItem, Address, homepage_config
-from.forms import CheckoutForm, addProductForm
+from.forms import CheckoutForm, addProductForm, homepage_config_form
 
 from django.utils.decorators import method_decorator
 from django.contrib import messages
@@ -264,3 +264,19 @@ def search_result(request):
         return render(request, 'search_result.html', context)
     else:
         return render(request, 'search_result.html', context)
+
+@method_decorator(admin_role_decorator, name='dispatch')
+class modify_homepage_config(View):
+    def get(self, *args, **kwargs):
+        curr_config=homepage_config.objects.get_or_create()[0]
+        form = homepage_config_form(instance=curr_config)
+        context={'form': form}
+        return render(self.request, 'homepage_config.html', context)
+    def post(self, *args, **kwargs):
+        curr_config=homepage_config.objects.get_or_create()[0]
+        form=homepage_config_form(self.request.POST, self.request.FILES, instance=curr_config)
+        print(form)
+        if form.is_valid():
+            form.save()
+        return redirect('shop:home-page')
+        

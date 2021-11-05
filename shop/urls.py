@@ -8,7 +8,7 @@ from .views import (
     homePage, productDetailPage, shoppingCart, checkout_view, payment_view, productCategory, 
     home, search_result, 
     #owner side
-    itemListView, upload_new_item_view, update_item_view, OrdersListView, 
+    itemListView, upload_new_item_view, update_item_view, OrdersListView, modify_homepage_config, 
     remove_item, 
 )
 
@@ -16,7 +16,9 @@ app_name='shop'
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
-    path('', homePage.as_view(), name='list-page'), 
+    path('', home, name='home-page'), 
+    path('home/', home, name='home-page'), 
+    path('items/', homePage.as_view(), name='list-page'), 
     path('product/<int:pk>', productDetailPage.as_view(), name='product-detail'), 
     path('cart/', shoppingCart.as_view(), name="shopping-cart"), 
     path('checkout/', checkout_view.as_view(), name='checkout'), 
@@ -24,7 +26,6 @@ urlpatterns = [
     path('payment/sucess/', payment_sucess, name="payment-sucess"), 
     path('payment/unsucess/', payment_unsucess, name="payment-unsucess"), 
     path('category/<str:category>/', productCategory.as_view(), name="item-by-category"), 
-    path('home/', home, name='home-page'), 
     path('unauthorized/', unauthorized_redirect, name='unauthorized'), 
     path('search/', search_result, name='search'), 
     
@@ -44,4 +45,6 @@ urlpatterns = [
     path('order_list/', OrdersListView.as_view(), name='order-list'), 
     path('order_list/<str:all>', OrdersListView.as_view(), name='order-list-all'), 
     path('remove_item/<int:pk>', remove_item, name='remove-item'), 
+    path('modify_homepage/', modify_homepage_config.as_view(), name='home-config'), 
+    
 ]
