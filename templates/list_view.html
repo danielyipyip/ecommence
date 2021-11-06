@@ -17,16 +17,16 @@
 
 <div class="container">
 
-<!--title and select button-->
-All products 
-<span>
-    <select>
-        <option value="">Select One...</option>
-        <option value="chocolate">Chocolate</option>
-        <option value="sardine">Sardine</option>
-        <option value="vanilla">Vanilla</option>
-    </select>
-</span>
+    <!--title and select button-->
+    All products
+    <span>
+        <select>
+            <option value="">Select One...</option>
+            <option value="chocolate">Chocolate</option>
+            <option value="sardine">Sardine</option>
+            <option value="vanilla">Vanilla</option>
+        </select>
+    </span>
 
     <!--grid of items-->
     <div class="row row-col-md-2 g-3">
@@ -58,25 +58,49 @@ All products
         {% endfor %}
     </div>
 
-    <div class="container m-4">
-        <!--pageination-->
-        <div class="pagination">
-            <span class="step-links">
+    <div class="container mt-5 mb-3">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
                 {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                <!--prev page: logo-->
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <!--1st page-->
+                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
                 {% endif %}
-
-                <span class="current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-
+                {% if page_obj.number|add:'-2' > 1 %}
+                <li class="page-item"><a class="page-link" href="#">&hellip;</a></li>
+                {% endif %}
+<!--need space between '-1' '>' and '1'-->
+                {% if page_obj.number|add:'-1' > 1 %}
+                <!--prev page: number-->
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{page_obj.previous_page_number}}</a></li>
+                {% endif %}
+                <!--curr page-->
+                <li class="page-item"><a class="page-link" href="#">{{page_obj.number}}</a></li>
+                {% if page_obj.paginator.num_pages > page_obj.number|add:'1' %}
+                <!--next page-->
+                <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">{{page_obj.next_page_number}}</a></li>
+                {% endif %}
+                {% if page_obj.paginator.num_pages > page_obj.number|add:'2' %}
+                <li class="page-item"><a class="page-link" href="#">&hellip;</a></li>
+                {% endif %}
                 {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                <!--last page-->
+                <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.num_pages}}">{{page_obj.paginator.num_pages}}</a></li>
+                <!--next page:logo-->
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
                 {% endif %}
-            </span>
-        </div>
+            </ul>
+        </nav>
+
     </div>
 
 </div>
