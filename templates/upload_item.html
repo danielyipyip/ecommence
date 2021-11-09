@@ -1,17 +1,76 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
+{% block head_append %}
+<style>
+    .form_background {
+        background: #63738a;
+    }
+
+    .form_sheet {
+        background: #f2f3f7;
+    }
+    /*how to make a line L,R of word, make a line, then word (middle) set NOT transparent background*/
+    .form_sheet .h2 {
+        color: #636363;
+        text-align: center;
+        border-bottom: 1px solid #636363;
+        line-height: 0.1em;
+        margin: 10px 0 20px;
+    }
+
+    .form_sheet .h2 span {
+        background:#f2f3f7;
+        padding: 0 10px;
+    }
+
+    .form_sheet .btn{
+        font-size: 16px;
+        font-weight: bold;		
+        min-width: 140px;
+        outline: none !important;
+    }
+
+    .form_column{
+        padding-bottom: 15px;
+        /*so the link will wrap*/
+        word-wrap: break-word;
+    }
+</style>
+{% endblock head_append %}
+
 {% block content %}
 <!--need enctype='multipart/form-data', so image is sent back; action="" is where the POST is sent to-->
-<div class="container-fulid offset-lg-2">
-    <form method='POST' enctype='multipart/form-data'>
-        {% csrf_token %}
-        {{form.name.label_tag}}
-        {{form.name}}
-        {{form.error}}
-        {{ form|crispy }}
-        <button class='btn btn-primary' type="submit">Submit</button>
-    </form>
+<div class="container-fulid form_background">
+    <div class="row justify-content-center pt-md-5 pb-md-5 p-3">
+        <!--row -->
+        <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8  pt-5 pb-5 form_sheet shadow-lg">
+            <!--col-xl-7 col-md-10 -->
+            <div>
+            <p class="h2 mb-5"><span>Upload/modify items</span></p>
+            </div>
+            <div>
+                <form method='POST' enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    {% include 'form_style/TwoPerLine.html' with field1=form.name field2=form.price %}
+
+                    {% include 'form_style/TwoPerLine.html' with field1=form.product_season field2=form.product_type %}
+
+                    {% include 'form_style/form_style1.html' with field=form.stock %}
+
+                    {% include 'form_style/form_style1.html' with field=form.image %}
+
+                    {% include 'form_style/TwoPerLine.html' with field1=form.discounted_price field2=form.label %}
+
+                    
+
+                    {% include 'form_style/form_style1.html' with field=form.description %}
+
+                    <button class='btn btn-primary' type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% if pk %}
 <a href="{% url 'shop:remove-item' pk %}" class='btn btn-danger' role='button'>Delete</a>
