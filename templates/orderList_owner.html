@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block head_append %}
+<style>
+    h5 {
+        display: inline-block;
+    }
+
+    .pagination {
+        justify-content: center;
+    }
+</style>
+{% endblock head_append %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <!--grid of items-->
+    <div>
+
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#id</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Items</th>
+                <th scope="col">address</th>
+                <th scope="col">OrderDate</th>
+                <th scope="col">Total price</th>
+                <th scope="col">Paid?</th>
+                <th scope="col">Complete?</th>
+                <!--for edit button-->
+                <th>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <!--each items-->
+            {% for order in page_obj %}
+            <tr>
+                <th>{{ order.pk }}</th>
+                <td>{{ order.user }}</td>
+                <td>
+                    {% for item in order.orderitems.all %}
+                    {{ item.name_for_order }}<br />
+                    {% endfor %}
+                </td>
+                <td>{{ order.ship_addr }}</td>
+                <td>{{ order.orderDate }}</td>
+                <td>{{ order.get_total_price }}</td>
+                <td>{{ order.paid }}</td>
+                <td>{{ order.complete }}</td>
+                <td>
+                    <!--need a page for it-->
+                    <a href="{% url 'shop:update-item' pk=order.pk %}" class="me-2">
+                        <i class="fas fa-edit"></i>Detail
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <td>You have no Items</td>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% include 'pagination.html' with page_obj=page_obj %}
+
+</div>
+
+{% endblock content %}

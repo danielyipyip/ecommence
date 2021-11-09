@@ -241,7 +241,7 @@ def remove_item(request, pk):
 class OrdersListView(ListView):
     model = Order
     paginate_by=20
-    template_name='itemList_owner.html'
+    template_name='orderList_owner.html'
     ordering=['pk']
     def get_queryset(self):
         if 'all' in self.kwargs:

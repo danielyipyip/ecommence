@@ -70,6 +70,9 @@ class OrderItem(models.Model):
     def __str__(self):
         return f'{self.user.username}: {self.quantity} of {self.item.name}'
 
+    def name_for_order(self):
+        return f'{self.item.name} * {self.quantity}'
+
     def get_order_item_price(self):
         if self.item.discounted_price:
             return self.quantity*self.item.discounted_price
