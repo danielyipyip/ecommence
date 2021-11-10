@@ -1,10 +1,50 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
+
 {% block content %}
-<form method='POST' enctype='multipart/form-data'>
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button class='btn btn-primary' type="submit">Save</button>
-</form>
+<div class="container wow fadeIn">
+    <p class="my-5 h2 text-center">Configure Home Page</p>
+    <div class="row">
+        <!--address area-->
+        <div class="col mb-4">
+            <div class="card">
+                <form method='POST' enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    <div class="list-group">
+                        <li class="list-group-item d-flex justify-content-between">
+                            {% include 'form_style/form_style1.html' with field=form.banner_image %}
+                        </li>
+                        <li class="list-group-item justify-content-between">
+                            {% include 'form_style/TwoPerLine.html' with field1=form.slogan_line1 field2=form.slogan_line2 %}
+                            {% include 'form_style/form_style1.html' with field=form.slogan_line3 %}
+                        </li>
+
+                        <li class="list-group-item justify-content-between">
+                            <div>
+                            {% include 'form_style/form_style1.html' with field=form.category1 %}
+                        </div>
+                            {% include 'form_style/form_style1.html' with field=form.category_image1 %}
+                        </li>
+                        <li class="list-group-item justify-content-between">
+                            <div>
+                                {% include 'form_style/form_style1.html' with field=form.category2 %}
+                            </div>
+                            {% include 'form_style/form_style1.html' with field=form.category_image2 %}
+
+                        </li>
+                        <li class="list-group-item justify-content-between">
+                            <div>
+                                {% include 'form_style/form_style1.html' with field=form.category3 %}
+                            </div>
+                            {% include 'form_style/form_style1.html' with field=form.category_image3 %}
+
+                        </li>
+                    </div>
+                    <button class='btn btn-primary mt-3 align-center' type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
