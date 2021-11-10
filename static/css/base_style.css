@@ -116,6 +116,40 @@ body {
     transform: translateY(-5px);
 }
 
+/*******************8style for forms**************************/
+    .form_background {
+        background: #63738a;
+    }
+
+    .form_sheet {
+        background: #f2f3f7;
+    }
+    /*how to make a line L,R of word, make a line, then word (middle) set NOT transparent background*/
+    .form_sheet .h2 {
+        color: #636363;
+        text-align: center;
+        border-bottom: 1px solid #636363;
+        line-height: 0.1em;
+        margin: 10px 0 20px;
+    }
+
+    .form_sheet .h2 span {
+        background:#f2f3f7;
+        padding: 0 10px;
+    }
+
+    .form_sheet .btn{
+        font-size: 16px;
+        font-weight: bold;		
+        min-width: 140px;
+        outline: none !important;
+    }
+
+    .form_column{
+        padding-bottom: 15px;
+        /*so the link will wrap*/
+        word-wrap: break-word;
+    }
 
 /************footer styles************/
 /*

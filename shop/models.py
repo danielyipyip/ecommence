@@ -109,9 +109,9 @@ class Address(models.Model):
     ADDRESS_CHOICE = [('b', 'billing'), ('s', 'shipping')]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     address_type=models.CharField(max_length=10, choices=ADDRESS_CHOICE)
-    addr1=models.CharField(max_length=100)
-    addr2=models.CharField(max_length=100, blank=True, null=True)
-    addr3=models.CharField(max_length=100, blank=True, null=True)
+    address_line1=models.CharField(max_length=100)
+    address_line2=models.CharField(max_length=100, blank=True, null=True)
+    address_line3=models.CharField(max_length=100, blank=True, null=True)
     country=CountryField()
     zip_code=models.CharField(max_length=20)
 

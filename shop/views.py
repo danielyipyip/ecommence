@@ -154,7 +154,7 @@ class checkout_view(LoginRequiredMixin, View):
         return render(self.request, 'checkout.html', context)
     def post(self, *args, **kwargs):
         form=CheckoutForm(self.request.POST or None)
-        try: 
+        try: #check does order exist
             order=Order.objects.get(user=self.request.user, paid=False)
         except ObjectDoesNotExist: 
             messages.info(self.request, "Order not exist")

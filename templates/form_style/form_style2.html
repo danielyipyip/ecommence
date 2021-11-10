@@ -1,0 +1,16 @@
+
+<span class="">
+
+    {{ field.errors }}
+    <div>
+        {{ field.label_tag }} 
+    </div>
+    <div class="form_column">
+        {{ field }}
+    </div>
+    
+    {% if field.help_text %}
+    <p class="help">{{ field.help_text|safe }}</p>
+    {% endif %}
+    
+</span>
