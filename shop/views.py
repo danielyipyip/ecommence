@@ -153,31 +153,19 @@ class checkout_view(LoginRequiredMixin, View):
         context={'form': form, 'object':order}
         return render(self.request, 'checkout.html', context)
     def post(self, *args, **kwargs):
-        form=CheckoutForm(self.request.POST or None)
+        form=CheckoutForm(self.request.POST, self.request or None)
+        #print(form)
         try: #check does order exist
             order=Order.objects.get(user=self.request.user, paid=False)
         except ObjectDoesNotExist: 
             messages.info(self.request, "Order not exist")
         if form.is_valid():
-            ship_addr1=form.cleaned_data.get('ship_addr1')
-            ship_addr2=form.cleaned_data.get('ship_addr2')
-            ship_addr3=form.cleaned_data.get('ship_addr3')
-            ship_country=form.cleaned_data.get('ship_country')
-            ship_zip=form.cleaned_data.get('ship_zip')
-            payment_option=form.cleaned_data.get('payment_option')
-            ship_addr=Address(user=self.request.user, address_type='s', addr1=ship_addr1, 
-            addr2=ship_addr2, addr3=ship_addr3, country=ship_country, zip_code=ship_zip, )
+            ship_addr=form.save()
             print(ship_addr)
-            ship_addr.save()
             order=Order.objects.get(user=self.request.user, paid=False)
             order.ship_addr=ship_addr
             order.save()
-            if payment_option=='C':
-                return redirect('shop:checkout')
-            elif payment_option=='P':
-                return redirect('shop:checkout')
-            else:
-                return redirect('shop:checkout')
+        return redirect('shop:checkout')
 
 class payment_view(LoginRequiredMixin, View):
     def get(self, *args, **kargs):

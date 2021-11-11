@@ -107,8 +107,8 @@ class Order(models.Model):
 class Address(models.Model):
     #2 kinds of addr
     ADDRESS_CHOICE = [('b', 'billing'), ('s', 'shipping')]
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    address_type=models.CharField(max_length=10, choices=ADDRESS_CHOICE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, )
+    address_type=models.CharField(max_length=10, choices=ADDRESS_CHOICE, default='s')
     address_line1=models.CharField(max_length=100)
     address_line2=models.CharField(max_length=100, blank=True, null=True)
     address_line3=models.CharField(max_length=100, blank=True, null=True)
@@ -148,7 +148,14 @@ class homepage_config(models.Model):
     category_image3=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "dress1_square.jpg"))
     category3=models.CharField(max_length=100, choices=type_choice, default='dress')
     
-    
+class navbar_dropdown_category(models.Model):
+    type_choice=Item.type_choice
+    category_name=models.CharField(max_length=100, choices=type_choice, unique=True)
+
+class navbar_dropdown_config(models.Model):
+    name=models.CharField(max_length=20)
+    categories=models.ManyToManyField(navbar_dropdown_category)
+
 
 
     

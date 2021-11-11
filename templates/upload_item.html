@@ -13,7 +13,7 @@
         <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8  pt-5 pb-5 form_sheet shadow-lg">
             <!--col-xl-7 col-md-10 -->
             <div>
-            <p class="h2 mb-5"><span>Upload/modify items</span></p>
+                <p class="h2 mb-5"><span>Upload/modify items</span></p>
             </div>
             <div>
                 <form method='POST' enctype='multipart/form-data'>
@@ -28,17 +28,18 @@
 
                     {% include 'form_style/TwoPerLine.html' with field1=form.discounted_price field2=form.label %}
 
-                    
+
 
                     {% include 'form_style/form_style1.html' with field=form.description %}
 
                     <button class='btn btn-primary' type="submit">Save</button>
+                    {% if pk %}
+                    <a href="{% url 'shop:remove-item' pk %}" class='btn btn-danger' role='button'>Delete</a>
+                    {% endif %}
                 </form>
             </div>
         </div>
     </div>
 </div>
-{% if pk %}
-<a href="{% url 'shop:remove-item' pk %}" class='btn btn-danger' role='button'>Delete</a>
-{% endif %}
+
 {% endblock content %}
