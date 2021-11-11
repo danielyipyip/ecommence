@@ -74,6 +74,9 @@
                 {% if request.user.is_authenticated %}
                     {% if request.user.groups.all.0.name == 'shop_admin' %}
                     <!--if is admin-->
+                    <script>
+                        create_navbar_item("{% url 'shop:item-list' %}", "fas fa-list", "Items ")
+                    </script>
                     <li class="nav-item d-flex active">
                         <a href="{% url 'shop:item-list' %}" class="nav-link">
                             <i class="fas fa-list"></i>
