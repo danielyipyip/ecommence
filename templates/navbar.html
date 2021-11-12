@@ -75,20 +75,9 @@
                     {% if request.user.groups.all.0.name == 'shop_admin' %}
                     <!--if is admin-->
                     <script>
-                        create_navbar_item("{% url 'shop:item-list' %}", "fas fa-list", "Items ")
+                        create_navbar_item("{% url 'shop:item-list' %}", "fas fa-list", "Items")
+                        create_navbar_item("{% url 'shop:upload-item' %}", "far fa-plus-square", "Add Item")
                     </script>
-                    <li class="nav-item d-flex active">
-                        <a href="{% url 'shop:item-list' %}" class="nav-link">
-                            <i class="fas fa-list"></i>
-                            <span class="clearfix d-none d-sm-inline-block">Items </span>
-                        </a>
-                    </li>
-                    <li class="nav-item d-flex active">
-                        <a href="{% url 'shop:upload-item' %}" class="nav-link">
-                            <i class="far fa-plus-square"></i>
-                            <span class="clearfix d-none d-sm-inline-block"> Add Item </span>
-                        </a>
-                    </li>
                     <li class="nav-item d-flex active">
                         <a href="{% url 'shop:order-list' %}" class="nav-link">
                             <span class="badge bg-danger">{{ request.user|order_count }}</span>
@@ -96,6 +85,9 @@
                             <span class="clearfix d-none d-sm-inline-block">Orders </span>
                         </a>
                     </li>
+                    <script>
+                        create_navbar_item("{% url 'shop:order-list' %}", "far fa-object-group", "Layout")
+                    </script>
                     {% else %}
                     <!--shopping cart, if is NOT admin-->
                     <li class="nav-item d-flex active">
@@ -107,27 +99,15 @@
                     </li>
                     {% endif %}
                     <!--logout-->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span class="clearfix d-none d-sm-inline-block"> Logout </span>
-                        </a>
-                    </li>
+                    <script>
+                        create_navbar_item("{% url 'account_logout' %}", "fas fa-sign-out-alt", "Logout")
+                    </script>
                 {% else %}
-                <!--if NOT login, login-->
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_login' %}">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span class="clearfix d-none d-sm-inline-block"> Login </span>
-                    </a>
-                </li>
-                <!--register-->
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_signup' %}">
-                        <i class="fas fa-user-plus"></i>
-                        <span class="clearfix d-none d-sm-inline-block"> SignUp </span>
-                    </a>
-                </li>
+                <!--if NOT login, login, register-->
+                <script>
+                    create_navbar_item("{% url 'account_login' %}", "fas fa-sign-in-alt", "Login")
+                    create_navbar_item("{% url 'account_signup' %}", "fas fa-user-plus", "SignUp")
+                </script>
                 {% endif %}
             </ul>
         </div>
