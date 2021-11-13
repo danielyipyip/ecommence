@@ -31,10 +31,20 @@ class homePage(ListView):
     template_name='list_view.html'
     ordering=['name']
 
-class productDetailPage(DetailView):
-    model=Item
-    template_name="product_detail.html"
+# class productDetailPage(DetailView):
+#     model=Item
+#     template_name="product_detail.html"
 
+class productDetailPage(View):
+    def get(self, *args, **kwargs):
+        my_pk=self.kwargs.get('pk', None)
+        my_item=Item.objects.filter(pk=my_pk)[0]
+        qs=Item.objects.filter(product_type=my_item.product_type, product_season=my_item.product_season)[:3]
+        print(qs)
+        context={'object':my_item, 'qs': qs}
+        # context={'object':my_item,}
+        return render(self.request, 'product_detail.html', context)
+    
 class productCategory(ListView):
     model=Item
     paginate_by=8

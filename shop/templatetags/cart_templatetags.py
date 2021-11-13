@@ -1,5 +1,5 @@
 from django import template
-from shop.models import Order
+from shop.models import Order, Item
 from django.shortcuts import reverse
 
 register = template.Library()
@@ -21,4 +21,10 @@ def order_count(user):
             return querySet.count()
     return 0
 
-
+@register.filter
+def similar_items(): 
+    #gender, type, season
+    querySet = Item.objects.filter()
+    # filter(product_season=season, product_type=type)
+    print(querySet)
+    return querySet
