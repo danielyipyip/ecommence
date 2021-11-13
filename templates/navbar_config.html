@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="container wow fadeIn">
+    <p class="my-5 h2 text-center">Configure NavBar</p>
+    <div class="row">
+        <!--address area-->
+        <div class="col mb-4">
+            <div class="card">
+                <form method='POST' enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    <div class="list-group">
+                        
+                    </div>
+                    <button class='btn btn-primary mt-3 align-center' type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,54 +1,103 @@
+{% extends 'base.html' %}
 
-{% extends 'base.html' %} 
+{% block head_append %}
+<!-- Include the PayPal JavaScript SDK; replace "test" with your own sandbox Business account app client ID -->
+<script
+  src="https://www.paypal.com/sdk/js?&client-id=AR2cF_4O0abi_NVahromFUE2n5ObCgrJUEkSC0PNIatboq11VZsdKDHB0b_L2ob0qVryEIRR1fcF4UwZ"
+  <br>
+    "&merchant-id=sb-l8q7l8219169@business.example.com&currency=USD" ></script>
+
+<!-- Set up a container element for the button -->
+<script>
+    paypal.Buttons({
+      // Sets up the transaction when a payment button is clicked
+      createOrder: function (data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: {{ object.get_total_price }} // Can reference variables or functions. Example: `value: document.getElementById('...').value`
+          }
+    }]
+      });
+    },
+  // Finalize the transaction after payer approval
+  onApprove: function(data, actions) {
+    return actions.order.capture().then(function (orderData) {
+      // Successful capture! For dev/demo purposes:
+      console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+      var transaction = orderData.purchase_units[0].payments.captures[0];
+      alert('Transaction ' + transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+      // When ready to go live, remove the alert and show a success message within this page. For example:
+      // var element = document.getElementById('paypal-button-container');
+      // element.innerHTML = '';
+      // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+      // Or go to another URL:  actions.redirect('thank_you.html');
+
+      //add to redirect, test?
+      window.location.replace("{% url 'shop:payment-sucess' %}")
+    });
+  },
+
+  onCancel: function(data) {
+    window.location.replace("{% url 'shop:payment-unsucess' %}")
+  }
+  }).render('#paypal-button-container');
+
+</script>
+{% endblock head_append %}
 
 
-<html>
-    {% block head_append %}
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
-    {% endblock head_append %}
+{% block content %}
+<div class="container wow fadeIn">
+  <p class="mt-5 h2 text-center">Order Summary</p>
+  <p class="h5 text-muted text-center">Please check your order before payment</p>
+  <div class="row mt-4">
+    <!--address area-->
+    <div class="col-md-8 mb-6">
+      <div class="card">
+        <div class="card-header h3">
+          Order
+        </div>
 
-  <body>
-    {% block content %}
-    <!-- Include the PayPal JavaScript SDK; replace "test" with your own sandbox Business account app client ID -->
-    <script src="https://www.paypal.com/sdk/js?&client-id=AR2cF_4O0abi_NVahromFUE2n5ObCgrJUEkSC0PNIatboq11VZsdKDHB0b_L2ob0qVryEIRR1fcF4UwZ&merchant-id=sb-l8q7l8219169@business.example.com&currency=USD"></script>
+        {% for order_item in object.orderitems.all %}
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+          <div class="row g-2">
+            <div class="col-md-4">
+              <img src='{{ order_item.item.image.url }}' class="img-fluid rounded-start" style="max-height:200px;">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body ms-5">
+                <h5 class="card-title">{{ order_item.item.name }} x {{ order_item.quantity }}</h5>
+                <p class="card-text text-muted">{{ order_item.item.description}}</p>
+                <p>${{ order_item.get_order_item_price }}</p>
+              </div>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
 
-    <!-- Set up a container element for the button -->
-    <div id="paypal-button-container"></div>
+      </div>
 
-    <script>
-      paypal.Buttons({
+      <div class="card mt-5">
+        <div class="card-header h3">Shipping address</div>
 
-        // Sets up the transaction when a payment button is clicked
-        createOrder: function(data, actions) {
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: '77.44' // Can reference variables or functions. Example: `value: document.getElementById('...').value`
-              }
-            }]
-          });
-        },
+        <p>{{object.ship_addr.address_line1}}</p>
+        <p>{{object.ship_addr.address_line2}}</p>
+        <p>{{object.ship_addr.address_line3}}</p>
+        <p>{{object.ship_addr.country}}</p>
+        <p>{{object.ship_addr.zip_code}}</p>
+      </div>
 
-        // Finalize the transaction after payer approval
-        onApprove: function(data, actions) {
-          return actions.order.capture().then(function(orderData) {
-            // Successful capture! For dev/demo purposes:
-                console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-                var transaction = orderData.purchase_units[0].payments.captures[0];
-                alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+    </div>
 
-            // When ready to go live, remove the alert and show a success message within this page. For example:
-            // var element = document.getElementById('paypal-button-container');
-            // element.innerHTML = '';
-            // element.innerHTML = '<h3>Thank you for your payment!</h3>';
-            // Or go to another URL:  actions.redirect('thank_you.html');
-          });
-        }
-      }).render('#paypal-button-container');
+    <!--order summary & paypal(moved to payment page)-->
+    <div class="col-md-4 mb-4">
+      {% include 'order_snippet.html' with order=object %}
+      <div id="paypal-button-container"></div>
+    </div>
+  </div>
+</div>
 
-    </script>
-    {% endblock content %}
-  </body>
-</html>
+
+
+{% endblock content %}

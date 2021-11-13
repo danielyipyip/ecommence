@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 
-from shop.models import Item, Order, OrderItem, Address, homepage_config
+from shop.models import Item, Order, OrderItem, Address, homepage_config, navbar_dropdown_config
 from.forms import CheckoutForm, addProductForm, homepage_config_form
 
 from django.utils.decorators import method_decorator
@@ -150,10 +150,18 @@ class checkout_view(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         form=CheckoutForm()
         order=Order.objects.get(user=self.request.user, paid=False) 
+        #get address
+        address=order.ship_addr
+        if address: #if there is existing addr (load in form if it does)
+            form=CheckoutForm(instance=address)
         context={'form': form, 'object':order}
         return render(self.request, 'checkout.html', context)
     def post(self, *args, **kwargs):
-        form=CheckoutForm(self.request.POST, self.request or None)
+        if Order.objects.get(user=self.request.user, paid=False).ship_addr:
+            address=Order.objects.get(user=self.request.user, paid=False).ship_addr
+            form=CheckoutForm(self.request.POST, self.request, instance=address or None)
+        else:
+            form=CheckoutForm(self.request.POST, self.request or None)
         #print(form)
         try: #check does order exist
             order=Order.objects.get(user=self.request.user, paid=False)
@@ -165,7 +173,9 @@ class checkout_view(LoginRequiredMixin, View):
             order=Order.objects.get(user=self.request.user, paid=False)
             order.ship_addr=ship_addr
             order.save()
-        return redirect('shop:checkout')
+            return redirect('shop:payment')
+        else: 
+            return redirect('shop:checkout')
 
 class payment_view(LoginRequiredMixin, View):
     def get(self, *args, **kargs):
@@ -174,6 +184,17 @@ class payment_view(LoginRequiredMixin, View):
         return render(self.request, 'payment.html', context)
     
 def payment_sucess(request):
+    order=Order.objects.filter(user=request.user, paid=False)[0]
+    #turn to paid
+    order.paid=True
+    order.save()
+    #reduce stock
+    for order_item in order.orderitems:
+        if order_item.item.stock > order_item.quantity:
+            order_item.item.stock -= order_item.quantity
+        else: 
+            pass
+            #Not enough error
     return render(request, 'payment_sucess.html')
 
 def payment_unsucess(request):
@@ -268,5 +289,25 @@ class modify_homepage_config(View):
             form.save()
         return redirect('shop:home-page')
 
+#thinking how to do
+@method_decorator(admin_role_decorator, name='dispatch')
+class modify_narbar_config(View):
+    def get(self, *args, **kwargs):
+        #get all instead
+        curr_config=navbar_dropdown_config.objects.filter()
+
+
+        form = homepage_config_form(instance=curr_config)
+        context={'form': form}
+        return render(self.request, 'homepage_config.html', context)
+    def post(self, *args, **kwargs):
+        curr_config=homepage_config.objects.get_or_create()[0]
+        form=homepage_config_form(self.request.POST, self.request.FILES, instance=curr_config)
+        print(form)
+        if form.is_valid():
+            form.save()
+        return redirect('shop:home-page')
+
 def about_page(request):
     return render(request, 'about_us.html')
+
