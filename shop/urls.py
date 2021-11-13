@@ -37,6 +37,7 @@ urlpatterns = [
     #path('add_to_cart/<int:pk>', add_to_cart, name="add_to_cart"), 
     #function rather than page: 
     path('product/add_to_cart/<int:pk>', add_to_cart_product_detail, name="add_to_cart_product_detail"), 
+    #path('product/add_to_cart/<int:pk>/<int:amount>/', add_to_cart_product_detail, name="add_to_cart_product_detail"), 
     path('cart/add_to_cart/<int:pk>', add_to_cart_shopping_cart, name="add_to_cart_shopping_cart"), 
     path('remove_from_cart/<int:pk>', remove_from_cart, name="remove_from_cart"), 
     path('cart/remove_from_cart/<int:pk>', remove_from_cart_shopping_cart, name="remove_from_cart_shopping_cart"), 

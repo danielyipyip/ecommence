@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 
 from shop.models import Item, Order, OrderItem, Address, homepage_config, navbar_dropdown_config
-from.forms import CheckoutForm, addProductForm, homepage_config_form
+from.forms import CheckoutForm, addProductForm, homepage_config_form, item_quantity
 
 from django.utils.decorators import method_decorator
 from django.contrib import messages
@@ -55,7 +55,7 @@ class productCategory(ListView):
 
 #does 2 things: (1)add to cart (2)quantity+1
 @login_required
-def add_to_cart(request, pk):
+def add_to_cart(request, pk, amount=1):
     #get/create item, order, order_item
     item=get_object_or_404(Item, pk=pk)
     order=Order.objects.get_or_create(user=request.user, paid=False)
@@ -64,18 +64,31 @@ def add_to_cart(request, pk):
     #current_order=order #why this NOT ok???
     orderItem, create_orderItem=OrderItem.objects.get_or_create(item=item, user=request.user, paid=False)
     if create_orderItem:
+        orderItem.quantity=int(amount)
+        orderItem.save()
         current_order.orderitems.add(orderItem)
         current_order.save()
     else:
-        orderItem.quantity+=1
+        orderItem.quantity+=int(amount)
         #need save
         orderItem.save()
     #return redirect("shop:home-page")
 
 @login_required
 def add_to_cart_product_detail(request, pk):
-    add_to_cart(request, pk)
-    return redirect("shop:product-detail", pk=pk)
+    if request.method=='POST':
+        quantity = request.POST.get('quantity', None)
+        print(quantity)
+        add_to_cart(request, pk, quantity)
+        return redirect("shop:product-detail", pk=pk)
+    else:
+        return redirect("shop:product-detail", pk=pk)
+    
+
+# @login_required
+# def add_to_cart_product_detail(request, pk, amount=1):
+#     add_to_cart(request, pk, amount)
+#     return redirect("shop:product-detail", pk=pk)
 
 @login_required
 def add_to_cart_shopping_cart(request, pk):

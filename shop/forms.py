@@ -27,4 +27,5 @@ class navbar_dropdown_form(forms.ModelForm):
         model=navbar_dropdown_config
         fields=['name', 'categories']
 
-        
+class item_quantity(forms.Form):
+    quantity= forms.IntegerField()

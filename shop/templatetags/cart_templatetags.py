@@ -1,5 +1,6 @@
 from django import template
 from shop.models import Order
+from django.shortcuts import reverse
 
 register = template.Library()
 
@@ -19,3 +20,5 @@ def order_count(user):
             querySet = Order.objects.filter(complete=False)
             return querySet.count()
     return 0
+
+
