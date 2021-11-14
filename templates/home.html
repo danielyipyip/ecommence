@@ -67,9 +67,9 @@
             <!--each items-->
             {% for item in featured %}
             <div class="col-md-3 col-6 product_card">
-                <div class="card shadow">
+                <div class="card shadow h-100">
                     <a href="{{ item.get_absolute_url }}" class="text-decoration-none">
-                        <img src="{{ item.image.url }}" class="card-img-top h-100" />
+                        <img src="{{ item.image.url }}" class="card-img-top" />
                         <div class="card-body text-center text-primary">
                             <p class="text-black-50">{{ item.get_product_type_display|capfirst }}</p>
                             <h5 class="card-title text-dark">{{ item.name|capfirst }}</h5>

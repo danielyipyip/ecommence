@@ -49,15 +49,42 @@
             </div>
         </div>
     </div>
-    <div>
-        
+
+
+
+    <div class="container mt-5 justify-content-md-center">
+        <p class="h3 text-center">Similar Items</p>
+        <hr class="line_below_feature_middle">
+    </div>
+    <div class="row g-2 mt-2 justify-content-md-center">
+        <!--each items-->
         {% for item in qs %}
-            {{item.name}}
+        <div class="col-md-3 col-6 product_card">
+            <div class="card shadow h-100">
+                <a href="{{ item.get_absolute_url }}" class="text-decoration-none">
+                    <img src="{{ item.image.url }}" class="card-img-top"/>
+                    <div class="card-body text-center text-primary">
+                        <p class="text-black-50">{{ item.get_product_type_display|capfirst }}</p>
+                        <h5 class="card-title text-dark">{{ item.name|capfirst }}</h5>
+                        {% if item.discounted_price %}
+                        <div>
+                            <span class="card-text">Price: <del>{{ item.price }}</del></span>
+                            <span class="card-text text-danger"> {{ item.discounted_price }}</span>
+                            <span class="badge bg-danger">Sales</span>
+                        </div>
+                        {% else %}
+                        <div><span class="card-text">Price: {{ item.price }}</span></div>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <p class='h5'>Coming Soon</p>
         {% endfor %}
-    
     </div>
 
-</div>
 
 </div>
+
 {% endblock content %}
