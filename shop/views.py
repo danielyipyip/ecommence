@@ -14,6 +14,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 from django.shortcuts import redirect
 from .decorators import allowed_users
+from django.core.mail import send_mail
+from django.db.models import Q
 
 admin_role_decorator=[login_required, allowed_users(allowed_roles='shop_admin')]
 
@@ -29,7 +31,39 @@ class homePage(ListView):
     model = Item
     paginate_by=8
     template_name='list_view.html'
-    ordering=['name']
+    # ordering=['name']
+    def get_queryset(self):
+        season = self.request.GET.get("season", "")
+        gender = self.request.GET.get("gender", "")
+        type = self.request.GET.get("type", "")
+        order_by = self.request.GET.get("orderby", "pk")
+        #(1a)get qs
+        item = Item.objects.all()
+        #(1b): filter qs by each condition
+        if type!="":
+            item = item.filter(product_type=type)
+        if season!="": 
+            item = item.filter(product_season=season)
+        if gender!="":
+            item = item.filter(product_gender=gender)
+        #(1c) sort qs
+        item=item.order_by(order_by)
+        #(2) return defalt qs
+        if type=="" and season=="" and gender=="":
+            item=Item.objects.all().order_by(order_by)
+        return item
+    def get_context_data(self, **kwargs):
+        # I think is trying to pass more field in the context var
+        context = super(homePage, self).get_context_data(**kwargs)
+        context["season"]=self.request.GET.get("season", "")
+        context["gender"]=self.request.GET.get("gender", "")
+        context["type"]=self.request.GET.get("type", "")
+        context["orderby"]=self.request.GET.get("orderby", "")
+        context["all_fields"]=Item._meta.get_fields()        
+        context["gender_choice"] = Item.gender_choice
+        context["season_choice"] = Item.season_choice
+        context["type_choice"] = Item.type_choice
+        return context
 
 # class productDetailPage(DetailView):
 #     model=Item
@@ -291,7 +325,7 @@ def search_result(request):
     # print(os.path.join(settings.MEDIA_DIR,"product_images", "white_tshirt.jpg"))
     if request.method=='POST':
         keyword = request.POST.get('searched', None)
-        items=Item.objects.filter(name__contains=keyword)
+        items=Item.objects.filter(Q(name__contains=keyword) | Q(description__contains=keyword)) 
         context={'keyword': keyword, 'items': items}
         return render(request, 'search_result.html', context)
     else:

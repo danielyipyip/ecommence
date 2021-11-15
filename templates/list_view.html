@@ -10,55 +10,148 @@
         justify-content: center;
     }
 </style>
+<script>
+
+    var selectElement = document.querySelector('.sortmethod');
+    var selectElement = document.getElementsByClassName('sortmethod');
+    console.log(selectElement);
+    selectElement.addEventListener('change', (event) => {
+        window.location.replace("{% url 'shop:payment-sucess' %}");
+    });
+</script>
 {% endblock head_append %}
 
 
 {% block content %}
-
 <div class="container">
-
     <!--title and select button-->
-    All products
-    <span>
-        <select>
-            <option value="">Select One...</option>
-            <option value="chocolate">Chocolate</option>
-            <option value="sardine">Sardine</option>
-            <option value="vanilla">Vanilla</option>
-        </select>
-    </span>
-
-    <!--grid of items-->
-    <div class="row row-col-md-2 g-3">
-        <!--each items-->
-        {% for item in page_obj %}
-        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-            <div class="card shadow">
-                <a href="{{ item.get_absolute_url }}" class="text-decoration-none">
-                    <img src="{{ item.image.url }}" class="card-img-top" width="200" height="300" />
-                    <div class="card-body text-center text-primary">
-                        <p class="text-black-50">{{ item.get_product_type_display|capfirst }}</p>
-                        <h5 class="card-title text-dark">{{ item.name|capfirst }}</h5>
-                        {% if item.label %}
-                        <span class="badge bg-success">{{ item.get_label_display }}</span>
-                        {% endif %}
-                        {% if item.discounted_price %}
-                        <div>
-                            <span class="card-text">Price: <del>{{ item.price }}</del></span>
-                            <span class="card-text text-danger"> {{ item.discounted_price }}</span>
-                            <span class="badge bg-danger">Sales</span>
-                        </div>
-                        {% else %}
-                        <div><span class="card-text">Price: {{ item.price }}</span></div>
-                        {% endif %}
-                    </div>
-                </a>
-            </div>
-        </div>
-        {% endfor %}
+    <p class="h2 text-center mt-4 mb-3">All products</p>
+    <div class="d-flex justify-content-end mb-2">
+            <b>Sort By: -</b>
+            <a href="{% url 'shop:list-page' %}?season={{season}}&gender={{gender}}&type={{type}}&orderby=pk">Default</a> | 
+            <a href="{% url 'shop:list-page' %}?season={{season}}&gender={{gender}}&type={{type}}&orderby=price">Price</a> | 
+            <a href="{% url 'shop:list-page' %}?season={{season}}&gender={{gender}}&type={{type}}&orderby=name">Name</a>
     </div>
 
-    {% include 'pagination.html' with page_obj=page_obj %}
+    <div class="row">
+        <div class="col-2">
+            <ul class="nav flex-column">
+                {% if gender_choice %}
+                <li class="nav-item"><b>Gender/Age</b></li>
+                <li class="nav-item">
+                    {% for gender_name, gender_value in gender_choice %}
+                    <a class="nav-link" aria-current="page" href="{% url 'shop:list-page' %}?season={{season}}&gender={{gender_name}}&type={{type}}&orderby=pk">
+                        {{gender_value|capfirst}}
+                      </a>
+                    {% endfor %}
+                </li>
+                {% endif %}
+                {% if season_choice %}
+                <li class="nav-item"><b>Season</b></li>
+                <li class="nav-item">
+                    {% for season_name, season_value in season_choice %}
+                    <a class="nav-link" aria-current="page" href="{% url 'shop:list-page' %}?season={{season_name}}&gender={{gender}}&type={{type}}&orderby=pk">
+                        {{season_value|capfirst}}
+                      </a>
+                    {% endfor %}
+                </li>
+                {% endif %}
+                {% if type_choice %}
+                <li class="nav-item"><b>Type</b></li>
+                <li class="nav-item">
+                    {% for type_name, type_value in type_choice %}
+                    <a class="nav-link" aria-current="page" href="{% url 'shop:list-page' %}?season={{season}}&gender={{gender}}&type={{type_name}}&orderby=pk">
+                        {{type_value|capfirst}}
+                      </a>
+                    {% endfor %}
+                </li>
+                {% endif %}
+
+              </ul>
+        </div>
+        
+
+        <div class='col'>
+
+            <!--grid of items-->
+            <div class="row row-col-md-2 g-3">
+                <!--each items-->
+                {% for item in page_obj %}
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
+                    <div class="card shadow">
+                        <a href="{{ item.get_absolute_url }}" class="text-decoration-none">
+                            <img src="{{ item.image.url }}" class="card-img-top" width="200" height="300" />
+                            <div class="card-body text-center text-primary">
+                                <p class="text-black-50">{{ item.get_product_type_display|capfirst }}</p>
+                                <h5 class="card-title text-dark">{{ item.name|capfirst }}</h5>
+                                {% if item.label %}
+                                <span class="badge bg-success">{{ item.get_label_display }}</span>
+                                {% endif %}
+                                {% if item.discounted_price %}
+                                <div>
+                                    <span class="card-text">Price: <del>{{ item.price }}</del></span>
+                                    <span class="card-text text-danger"> {{ item.discounted_price }}</span>
+                                    <span class="badge bg-danger">Sales</span>
+                                </div>
+                                {% else %}
+                                <div><span class="card-text">Price: {{ item.price }}</span></div>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+<!--special pagination, with filter and sort, so hard code by now-->
+    <div class="container mt-5 mb-3">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <!--prev page: logo-->
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}&season={{season}}&gender={{gender}}&type={{type}}&orderby={{orderby}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <!--1st page-->
+                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                {% endif %}
+                {% if page_obj.number|add:'-2' > 1 %}
+                <li class="page-item"><a class="page-link" href="#">&hellip;</a></li>
+                {% endif %}
+        <!--need space between '-1' '>' and '1'-->
+                {% if page_obj.number|add:'-1' > 1 %}
+                <!--prev page: number-->
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&season={{season}}&gender={{gender}}&type={{type}}&orderby={{orderby}}">{{page_obj.previous_page_number}}</a></li>
+                {% endif %}
+                <!--curr page-->
+                <li class="page-item"><a class="page-link" href="#">{{page_obj.number}}</a></li>
+                {% if page_obj.paginator.num_pages > page_obj.number|add:'1' %}
+                <!--next page-->
+                <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}&season={{season}}&gender={{gender}}&type={{type}}&orderby={{orderby}}">{{page_obj.next_page_number}}</a></li>
+                {% endif %}
+                {% if page_obj.paginator.num_pages > page_obj.number|add:'2' %}
+                <li class="page-item"><a class="page-link" href="#">&hellip;</a></li>
+                {% endif %}
+                {% if page_obj.has_next %}
+                <!--last page-->
+                <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.num_pages}}&season={{season}}&gender={{gender}}&type={{type}}&orderby={{orderby}}">{{page_obj.paginator.num_pages}}</a></li>
+                <!--next page:logo-->
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&season={{season}}&gender={{gender}}&type={{type}}&orderby={{orderby}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    
+    </div>
+
 </div>
 
 

@@ -87,8 +87,9 @@
         <p>{{object.ship_addr.country}}</p>
         <p>{{object.ship_addr.zip_code}}</p>
       </div>
-
+      <a class="btn btn-primary mt-4" href="{% url 'shop:shopping-cart' %}" role="button">back to cart</a>
     </div>
+    
 
     <!--order summary & paypal(moved to payment page)-->
     <div class="col-md-4 mb-4">

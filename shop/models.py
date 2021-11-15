@@ -23,6 +23,10 @@ class Item(models.Model):
     type_value=['t-shirt', 'shirt', 'jeans', 'dresses', 'trousers', 'coats and jackets', ]
     type_choice=list(zip(type_name, type_value))
 
+    gender_name=['female', 'male', 'neutral','kid']
+    gender_value=['female', 'male', 'neutral', 'kids']
+    gender_choice=list(zip(gender_name, gender_value))
+
     #label is like hit, new-arrival, best seller...
     label_name=['new','best','recom','sales',]
     label_value=['new-arrival','best-seller','recommended','sales',]
@@ -33,6 +37,7 @@ class Item(models.Model):
     name = models.CharField(max_length=120)
     product_season=models.CharField(choices=season_choice, max_length=10)
     product_type=models.CharField(choices=type_choice, max_length=20)
+    product_gender=models.CharField(choices=gender_choice, max_length=20, default='female')
     price = models.DecimalField(max_digits=20, decimal_places=2)
             #os.path.join, cannot have '/', only '<words>', it will add the '/' for you
     image = models.ImageField(upload_to='product_images', height_field='image_height', width_field='image_width', 
