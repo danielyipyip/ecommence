@@ -15,52 +15,56 @@
         <div class="collapse navbar-collapse" id="navbarHomepageTop">
             <!--bar items-->
             <!--left-->
+
+            <!--setting up variables only-->
+            {% gender_categories as genders %}
+            {% type_categories as types %}
+            {% season_categories as seasons %}
+
+            <!--the real content-->
             <ul class="navbar-nav me-auto">
+
+                {% for gender in genders %}
                 <li class="nav-item dropdown">
+                    <!--nav item name-->
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Woman
+                    aria-expanded="false">
+                    {{gender.name}}
                     </a>
+                    <!--drop down thing-->
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'shop:item-by-category' 'dress' %}">Dresses</a></li>
-                        <li><a class="dropdown-item" href="#">Shirts</a></li>
-                        <li><a class="dropdown-item" href="#">Trousers</a></li>
-                        <li><a class="dropdown-item" href="#">Skirts</a></li>
+                    {% for type in types %}     
+                        {% if type.product_gender|capfirst == gender.name|capfirst  %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'shop:list-page' %}?season=&gender={{gender}}&type={{type}}">
+                                {{type.name}}
+                            </a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
                     </ul>
                 </li>
+                {% endfor %}    
+
+                <!--for season-->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Man
+                    <!--nav item name-->
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Season
                     </a>
+                    <!--drop down thing-->
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Shirts</a></li>
-                        <li><a class="dropdown-item" href="#">T-shirts</a></li>
-                        <li><a class="dropdown-item" href="#">Jeans</a></li>
-                        <li><a class="dropdown-item" href="#">Trousers</a></li>
+                    {% for season in seasons %}     
+                        <li>
+                            <a class="dropdown-item" href="{% url 'shop:list-page' %}?season={{season.name}}&gender=&type=">
+                                {{season.name}}
+                            </a>
+                        </li>
+                    {% endfor %}
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Kids
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">T-shirts</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Sales
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Shirts</a></li>
-                        <li><a class="dropdown-item" href="#">T-shirts</a></li>
-                        <li><a class="dropdown-item" href="#">Jeans</a></li>
-                        <li><a class="dropdown-item" href="#">Trousers</a></li>
-                    </ul>
-                </li>
+
             </ul>
             <!--why it can be kept in middle?-->
                 <!--search -->

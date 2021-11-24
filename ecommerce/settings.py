@@ -170,3 +170,14 @@ SOCIALACCOUNT_PROVIDERS = {
     'twitter':{}}
 #https://www.webforefront.com/django/setupdjangosocialauthentication.html
 #https://testdriven.io/blog/django-social-auth/
+
+#email stuffs (trying)
+DEFAULT_FROM_EMAIL = 'p674dd@gmail.com'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'p674dd@gmail.com'
+EMAIL_HOST_PASSWORD = 'uogsme_1'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+

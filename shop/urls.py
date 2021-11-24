@@ -2,14 +2,14 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
 from .views import (
-    payment_sucess, payment_unsucess, unauthorized_redirect, 
+    payment_success, payment_unsuccess, unauthorized_redirect, 
     add_to_cart, add_to_cart_product_detail, add_to_cart_shopping_cart, 
     remove_from_cart, quantity_reduce_shopping_cart, remove_from_cart_shopping_cart, 
     homePage, productDetailPage, shoppingCart, checkout_view, payment_view, productCategory, 
     home, search_result, 
     #owner side
     itemListView, upload_new_item_view, update_item_view, OrdersListView, modify_homepage_config, 
-    remove_item, 
+    remove_item, remove_category, 
     #company pages
     about_page, 
 )
@@ -25,8 +25,8 @@ urlpatterns = [
     path('cart/', shoppingCart.as_view(), name="shopping-cart"), 
     path('checkout/', checkout_view.as_view(), name='checkout'), 
     path('payment/', payment_view.as_view(), name='payment'),
-    path('payment/sucess/', payment_sucess, name="payment-sucess"), 
-    path('payment/unsucess/', payment_unsucess, name="payment-unsucess"), 
+    path('payment/success/', payment_success, name="payment-success"), 
+    path('payment/unsucess/', payment_unsuccess, name="payment-unsuccess"), 
     path('category/<str:category>/', productCategory.as_view(), name="item-by-category"), 
     path('unauthorized/', unauthorized_redirect, name='unauthorized'), 
     path('search/', search_result, name='search'), 
@@ -42,6 +42,7 @@ urlpatterns = [
     path('remove_from_cart/<int:pk>', remove_from_cart, name="remove_from_cart"), 
     path('cart/remove_from_cart/<int:pk>', remove_from_cart_shopping_cart, name="remove_from_cart_shopping_cart"), 
     path('cart/quantity_reduce/<int:pk>', quantity_reduce_shopping_cart, name="quantity_reduce_shopping_cart"), 
+    path('product/remove_category/<str:type>/<str:name>', remove_category, name="remove_category"), 
 
     #owner side
     path('item_list/', itemListView.as_view(), name='item-list'), 

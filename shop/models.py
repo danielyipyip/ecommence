@@ -12,6 +12,25 @@ import os
 # store how the format to be of label (e.g. primary, ...)
 # #use <del> for orig price
 
+class Season_choice(models.Model):
+    name=models.CharField(max_length=30, blank=True, null=True, unique=True)
+    def __str__(self):
+        return self.name
+
+class Type_choice(models.Model):
+    gender_name=['Woman', 'Man', 'Both','Kid', 'All']
+    gender_value=['Woman', 'Man', 'Both', 'Kids', 'All']
+    gender_choice=list(zip(gender_name, gender_value))
+    name=models.CharField(max_length=30, blank=True, null=True, unique=True)
+    product_gender=models.CharField(max_length=20, choices=gender_choice, default='woman')
+    def __str__(self):
+        return self.name
+
+class Gender_choice(models.Model):
+    name=models.CharField(max_length=30, blank=True, null=True, unique=True)
+    def __str__(self):
+        return self.name
+
 #products to be sold in the website
 class Item(models.Model):
     #choices
@@ -35,9 +54,12 @@ class Item(models.Model):
 
     #necessary
     name = models.CharField(max_length=120)
-    product_season=models.CharField(choices=season_choice, max_length=10)
-    product_type=models.CharField(choices=type_choice, max_length=20)
-    product_gender=models.CharField(choices=gender_choice, max_length=20, default='female')
+    product_season=models.ForeignKey(Season_choice, on_delete=models.CASCADE)
+    product_type=models.ForeignKey(Type_choice, on_delete=models.CASCADE)
+    product_gender=models.ForeignKey(Gender_choice, on_delete=models.CASCADE)
+    # product_season=models.CharField(choices=season_choice, max_length=10)
+    # product_type=models.CharField(choices=type_choice, max_length=20)
+    # product_gender=models.CharField(choices=gender_choice, max_length=20, default='female')
     price = models.DecimalField(max_digits=20, decimal_places=2)
             #os.path.join, cannot have '/', only '<words>', it will add the '/' for you
     image = models.ImageField(upload_to='product_images', height_field='image_height', width_field='image_width', 
@@ -63,6 +85,7 @@ class Item(models.Model):
 
     def get_remove_from_cart_url(self):
         return reverse('shop:remove_from_cart', kwargs={'pk': self.id})
+
 
 #item in an order (split because of M:M relationship)
 class OrderItem(models.Model):

@@ -10,15 +10,6 @@
         justify-content: center;
     }
 </style>
-<script>
-
-    var selectElement = document.querySelector('.sortmethod');
-    var selectElement = document.getElementsByClassName('sortmethod');
-    console.log(selectElement);
-    selectElement.addEventListener('change', (event) => {
-        window.location.replace("{% url 'shop:payment-sucess' %}");
-    });
-</script>
 {% endblock head_append %}
 
 
@@ -39,34 +30,54 @@
                 {% if gender_choice %}
                 <li class="nav-item"><b>Gender/Age</b></li>
                 <li class="nav-item">
-                    {% for gender_name, gender_value in gender_choice %}
-                    <a class="nav-link" aria-current="page" href="{% url 'shop:list-page' %}?season={{season}}&gender={{gender_name}}&type={{type}}&orderby=pk">
-                        {{gender_value|capfirst}}
+                    {% for gender_name in gender_choice %}
+                    {% if gender_name.name == gender %}
+                    <a class="nav-link disabled" aria-current="page" href="{% url 'shop:list-page' %}?season={{season}}&gender={{gender_name.name}}&type={{type}}&orderby=pk">
+                        {{gender_name.name|capfirst}}
                       </a>
+                    {% else %}
+                    <a class="nav-link" aria-current="page" href="{% url 'shop:list-page' %}?season={{season}}&gender={{gender_name.name}}&type={{type}}&orderby=pk">
+                        {{gender_name.name|capfirst}}
+                      </a>
+                    {% endif %}
                     {% endfor %}
                 </li>
                 {% endif %}
                 {% if season_choice %}
                 <li class="nav-item"><b>Season</b></li>
                 <li class="nav-item">
-                    {% for season_name, season_value in season_choice %}
-                    <a class="nav-link" aria-current="page" href="{% url 'shop:list-page' %}?season={{season_name}}&gender={{gender}}&type={{type}}&orderby=pk">
-                        {{season_value|capfirst}}
+                    {% for season_name in season_choice %}
+                    {% if season_name.name == season %}
+                    <a class="nav-link disabled" aria-current="page" href="{% url 'shop:list-page' %}?season={{season_name.name}}&gender={{gender}}&type={{type}}&orderby=pk">
+                        {{season_name.name|capfirst}}
                       </a>
+                    {% else %}
+                    <a class="nav-link" aria-current="page" href="{% url 'shop:list-page' %}?season={{season_name.name}}&gender={{gender}}&type={{type}}&orderby=pk">
+                        {{season_name.name|capfirst}}
+                      </a>
+                    {% endif %}
                     {% endfor %}
                 </li>
                 {% endif %}
                 {% if type_choice %}
                 <li class="nav-item"><b>Type</b></li>
                 <li class="nav-item">
-                    {% for type_name, type_value in type_choice %}
-                    <a class="nav-link" aria-current="page" href="{% url 'shop:list-page' %}?season={{season}}&gender={{gender}}&type={{type_name}}&orderby=pk">
-                        {{type_value|capfirst}}
+                    {% for type_name in type_choice %}
+                    {% if type_name.name == type %}
+                    <a class="nav-link disabled" aria-current="page" href="{% url 'shop:list-page' %}?season={{season}}&gender={{gender}}&type={{type_name.name}}&orderby=pk">
+                        {{type_name.name|capfirst}}
                       </a>
+                    {% else %}
+                    <a class="nav-link" aria-current="page" href="{% url 'shop:list-page' %}?season={{season}}&gender={{gender}}&type={{type_name.name}}&orderby=pk">
+                        {{type_name.name|capfirst}}
+                      </a>
+                    {% endif %}
                     {% endfor %}
                 </li>
                 {% endif %}
-
+                <li class="nav-item">
+                    <a class="btn btn-outline-success" href="{% url 'shop:list-page' %}" role="button">Clear filters</a>
+                </li>
               </ul>
         </div>
         
