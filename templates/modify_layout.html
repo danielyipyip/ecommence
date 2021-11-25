@@ -7,8 +7,8 @@
     <!--1st: HomePage-->
     <div class="accordion-item">
         <h2 class="accordion-header" id="Homepage">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                aria-expanded="true" aria-controls="collapseOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                aria-expanded="false" aria-controls="collapseOne">
                 Homepage:
             </button>
         </h2>
@@ -27,8 +27,8 @@
     <!--2: category-->
     <div class="accordion-item">
         <h2 class="accordion-header" id="Categories">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-                aria-expanded="true" aria-controls="collapseTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                aria-expanded="false" aria-controls="collapseTwo">
                 Categories:
             </button>
         </h2>
@@ -45,26 +45,28 @@
     <!--3: contact us-->
     <div class="accordion-item">
         <h2 class="accordion-header" id="Categories">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
-                aria-expanded="true" aria-controls="collapseThree">
-                Categories:
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                aria-expanded="false" aria-controls="collapseThree">
+                Contact us:
             </button>
         </h2>
         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
             data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class="mb-3">
-                    <a class="btn btn-outline-primary btn-lg ms-4" href="{% url 'shop:home-config' %}" role="button">
+                    <span class="h3"> <strong>Modify contact us page below or </strong></span>
+                    <a class="btn btn-outline-primary btn-lg ms-4" href="{% url 'shop:contact-config' %}" role="button">
                         Go to dedicated form</a>
                 </div>
+                {% include 'contact_config_form.html' with form=contact_form %}
             </div>
         </div>
     </div>
     <!--4: link of the shop-->
     <div class="accordion-item">
         <h2 class="accordion-header" id="Categories">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour"
-                aria-expanded="true" aria-controls="collapseFour">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                aria-expanded="false" aria-controls="collapseFour">
                 Links:
             </button>
         </h2>

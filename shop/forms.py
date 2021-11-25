@@ -30,7 +30,8 @@ class navbar_dropdown_form(forms.ModelForm):
 class contact_us_config_form(forms.ModelForm):
     class Meta:
         model=contact_us_config
-        fields=['profile_image','title','text']
+        fields=['profile_image','title','text', 'portal1_image', 'portal1_link', 
+        'portal2_image', 'portal2_link', 'portal3_image', 'portal3_link', ]
 
 class page_link_form(forms.ModelForm):
     class Meta:

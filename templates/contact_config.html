@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="container wow fadeIn">
+    <p class="my-5 h2 text-center">Configure Coutact Us Page</p>
+    <div class="row">
+        <!--address area-->
+        <div class="col mb-4">
+            <div class="card">
+                {% include 'contact_config_form.html' with form=form %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

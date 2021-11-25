@@ -1,0 +1,23 @@
+<form method='POST' enctype='multipart/form-data' action="{% url 'shop:home-config' %}">
+    {% csrf_token %}
+    <div class="list-group">
+        <li class="list-group-item d-flex justify-content-between">
+            {% include 'form_style/form_style1.html' with field=form.profile_image %}
+        </li>
+        <li class="list-group-item justify-content-between">
+            {% include 'form_style/form_style1.html' with field=form.title %}
+            {% include 'form_style/form_style1.html' with field=form.text %}
+        </li>
+
+        <li class="list-group-item justify-content-between">
+            {% include 'form_style/TwoPerLine.html' with field1=form.portal1_image field2=form.portal1_link %}
+        </li>
+        <li class="list-group-item justify-content-between">
+            {% include 'form_style/TwoPerLine.html' with field1=form.portal2_image field2=form.portal2_link %}
+        </li>        
+        <li class="list-group-item justify-content-between">
+            {% include 'form_style/TwoPerLine.html' with field1=form.portal3_image field2=form.portal3_link %}
+        </li>
+    </div>
+    <button class='btn btn-primary mt-3 align-center' type="submit">Save</button>
+</form>

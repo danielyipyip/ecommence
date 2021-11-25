@@ -393,24 +393,21 @@ class modify_shop_config(View):
 
 # thinking how to do
 
-# @method_decorator(admin_role_decorator, name='dispatch')
-# class modify_contact_us(View):
-#     def get(self, *args, **kwargs):
-#         curr_config = contact_us_config.objects.get_or_create()[0]
-#         form = contact_us_config_form(instance=curr_config)
-#         curr_pages = page_link.objects.all()
-#         form = page_link_form(instance=curr_config)
-#         context = {'form': form}
-#         return render(self.request, 'homepage_config.html', context)
+@method_decorator(admin_role_decorator, name='dispatch')
+class modify_contact_us(View):
+    def get(self, *args, **kwargs):
+        curr_config = contact_us_config.objects.get_or_create()[0]
+        form = contact_us_config_form(instance=curr_config)
+        context = {'form': form}
+        return render(self.request, 'contact_config.html', context)
 
-#     def post(self, *args, **kwargs):
-#         curr_config = homepage_config.objects.get_or_create()[0]
-#         form = homepage_config_form(
-#             self.request.POST, self.request.FILES, instance=curr_config)
-#         print(form)
-#         if form.is_valid():
-#             form.save()
-#         return redirect('shop:config-all')
+    def post(self, *args, **kwargs):
+        curr_config = contact_us_config.objects.get_or_create()[0]
+        form = contact_us_config_form(
+            self.request.POST, self.request.FILES, instance=curr_config)
+        if form.is_valid():
+            form.save()
+        return redirect('shop:config-all')
 
 
 #NOT done
@@ -514,6 +511,9 @@ class modify_layout(View):
         #shop links
         curr_shop_link = shop_config.objects.get_or_create()[0]
         link_form = shop_config_form(instance=curr_shop_link)
-        context = {'homepage_form': form, 'link_form': link_form}
+        #contact us
+        contact_config = contact_us_config.objects.get_or_create()[0]
+        contact_form = contact_us_config_form(instance=contact_config)
+        context = {'homepage_form': form, 'link_form': link_form, 'contact_form': contact_form}
         return render(self.request, 'modify_layout.html', context)
 

@@ -182,6 +182,12 @@ class contact_us_config(models.Model):
     profile_image = models.ImageField(upload_to='contact_us', default=os.path.join(settings.MEDIA_DIR,"contact_us", "shirt1_square.jpg"))
     title = models.CharField(max_length=100)
     text = models.TextField()
+    portal1_image=models.ImageField(upload_to='contact_us', blank=True, null=True)
+    portal1_link=models.URLField(max_length=200, blank=True, null=True)
+    portal2_image=models.ImageField(upload_to='contact_us', blank=True, null=True)
+    portal2_link=models.URLField(max_length=200, blank=True, null=True)
+    portal3_image=models.ImageField(upload_to='contact_us', blank=True, null=True)
+    portal3_link=models.URLField(max_length=200, blank=True, null=True)
     def __str__(self):
         return self.title
 
