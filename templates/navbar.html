@@ -34,7 +34,7 @@
                     <!--drop down thing-->
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     {% for type in types %}     
-                        {% if type.product_gender|capfirst == gender.name|capfirst  %}
+                        {% if type.product_gender|capfirst == gender.name|capfirst or type.show_in_all_category %}
                         <li>
                             <a class="dropdown-item" href="{% url 'shop:list-page' %}?season=&gender={{gender}}&type={{type}}">
                                 {{type.name}}
@@ -90,7 +90,7 @@
                         </a>
                     </li>
                     <script>
-                        create_navbar_item("{% url 'shop:order-list' %}", "far fa-object-group", "Layout")
+                        create_navbar_item("{% url 'shop:config-all' %}", "far fa-object-group", "Layout")
                     </script>
                     {% else %}
                     <!--shopping cart, if is NOT admin-->

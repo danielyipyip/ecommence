@@ -17,19 +17,21 @@ class Season_choice(models.Model):
     def __str__(self):
         return self.name
 
+class Gender_choice(models.Model):
+    name=models.CharField(max_length=30, blank=True, null=True, unique=True)
+    def __str__(self):
+        return self.name
+
 class Type_choice(models.Model):
     gender_name=['Woman', 'Man', 'Both','Kid', 'All']
     gender_value=['Woman', 'Man', 'Both', 'Kids', 'All']
     gender_choice=list(zip(gender_name, gender_value))
     name=models.CharField(max_length=30, blank=True, null=True, unique=True)
-    product_gender=models.CharField(max_length=20, choices=gender_choice, default='woman')
+    product_gender=models.ForeignKey(Gender_choice, on_delete=models.SET_NULL, null=True, blank=True)
+    show_in_all_category=models.BooleanField(default=False)
+    # product_gender=models.CharField(max_length=20, choices=Gender_choice, default='woman')
     def __str__(self):
-        return self.name
-
-class Gender_choice(models.Model):
-    name=models.CharField(max_length=30, blank=True, null=True, unique=True)
-    def __str__(self):
-        return self.name
+        return f'{self.name} - {self.product_gender.name}'
 
 #products to be sold in the website
 class Item(models.Model):
@@ -176,6 +178,23 @@ class homepage_config(models.Model):
     category_image3=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "dress1_square.jpg"))
     category3=models.CharField(max_length=100, choices=type_choice, default='dress')
     
+class contact_us_config(models.Model):
+    profile_image = models.ImageField(upload_to='contact_us', default=os.path.join(settings.MEDIA_DIR,"contact_us", "shirt1_square.jpg"))
+    title = models.CharField(max_length=100)
+    text = models.TextField()
+    def __str__(self):
+        return self.title
+
+#it is the link with cover photo in contact us page
+class page_link(models.Model):
+    title = models.CharField(max_length=50)
+    cover_image = models.ImageField(upload_to='contact_us')
+    link = models.URLField(max_length=200)
+    description = models.TextField()
+    contact_us = models.ForeignKey(contact_us_config, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.title
+
 class navbar_dropdown_category(models.Model):
     type_choice=Item.type_choice
     category_name=models.CharField(max_length=100, choices=type_choice, unique=True)

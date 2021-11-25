@@ -1,0 +1,34 @@
+<form method='POST' enctype='multipart/form-data' action="{% url 'shop:home-config' %}">
+    {% csrf_token %}
+    <div class="list-group">
+        <li class="list-group-item d-flex justify-content-between">
+            {% include 'form_style/form_style1.html' with field=form.banner_image %}
+        </li>
+        <li class="list-group-item justify-content-between">
+            {% include 'form_style/TwoPerLine.html' with field1=form.slogan_line1 field2=form.slogan_line2 %}
+            {% include 'form_style/form_style1.html' with field=form.slogan_line3 %}
+        </li>
+
+        <li class="list-group-item justify-content-between">
+            <div>
+            {% include 'form_style/form_style1.html' with field=form.category1 %}
+        </div>
+            {% include 'form_style/form_style1.html' with field=form.category_image1 %}
+        </li>
+        <li class="list-group-item justify-content-between">
+            <div>
+                {% include 'form_style/form_style1.html' with field=form.category2 %}
+            </div>
+            {% include 'form_style/form_style1.html' with field=form.category_image2 %}
+
+        </li>
+        <li class="list-group-item justify-content-between">
+            <div>
+                {% include 'form_style/form_style1.html' with field=form.category3 %}
+            </div>
+            {% include 'form_style/form_style1.html' with field=form.category_image3 %}
+
+        </li>
+    </div>
+    <button class='btn btn-primary mt-3 align-center' type="submit">Save</button>
+</form>

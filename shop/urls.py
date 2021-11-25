@@ -8,8 +8,8 @@ from .views import (
     homePage, productDetailPage, shoppingCart, checkout_view, payment_view, productCategory, 
     home, search_result, 
     #owner side
-    itemListView, upload_new_item_view, update_item_view, OrdersListView, modify_homepage_config, 
-    remove_item, remove_category, 
+    itemListView, upload_new_item_view, update_item_view, OrdersListView, modify_homepage_config, modify_layout, modify_category, 
+    remove_item, remove_Season, remove_Type, remove_Gender, edit_Season, edit_Type, edit_Gender, 
     #company pages
     about_page, 
 )
@@ -42,7 +42,13 @@ urlpatterns = [
     path('remove_from_cart/<int:pk>', remove_from_cart, name="remove_from_cart"), 
     path('cart/remove_from_cart/<int:pk>', remove_from_cart_shopping_cart, name="remove_from_cart_shopping_cart"), 
     path('cart/quantity_reduce/<int:pk>', quantity_reduce_shopping_cart, name="quantity_reduce_shopping_cart"), 
-    path('product/remove_category/<str:type>/<str:name>', remove_category, name="remove_category"), 
+
+    path('modify/remove_season/<int:pk>', remove_Season, name="remove_season"), 
+    path('modify/remove_type/<int:pk>', remove_Type, name="remove_type"), 
+    path('modify/remove_gender/<int:pk>', remove_Gender, name="remove_gender"), 
+    path('modify/edit_season/<int:pk>', edit_Season, name="edit_season"), 
+    path('modify/edit_type/<int:pk>', edit_Type, name="edit_type"), 
+    path('modify/edit_gender/<int:pk>', edit_Gender, name="edit_gender"), 
 
     #owner side
     path('item_list/', itemListView.as_view(), name='item-list'), 
@@ -51,6 +57,8 @@ urlpatterns = [
     path('order_list/', OrdersListView.as_view(), name='order-list'), 
     path('order_list/<str:all>', OrdersListView.as_view(), name='order-list-all'), 
     path('remove_item/<int:pk>', remove_item, name='remove-item'), 
-    path('modify_homepage/', modify_homepage_config.as_view(), name='home-config'), 
+    path('modify/', modify_layout.as_view(), name='config-all'), 
+    path('modify/homepage/', modify_homepage_config.as_view(), name='home-config'), 
+    path('modify/category/', modify_category.as_view(), name='category-config'), 
     
 ]

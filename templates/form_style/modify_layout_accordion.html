@@ -1,0 +1,21 @@
+
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="Homepage">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                aria-expanded="true" aria-controls="collapseOne">
+                Title
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="mb-3">
+                    <span class="h3"> <strong>Modify below or </strong></span>
+                    <a class="btn btn-outline-primary btn-lg ms-4" href="{% url 'shop:home-config' %}" role="button">
+                        Go to dedicated form</a>
+                </div>
+                {% include 'homepage_config_form.html' with form=homepage_form %}
+            </div>
+        </div>
+    </div>

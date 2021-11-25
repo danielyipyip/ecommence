@@ -13,14 +13,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 
-from shop.models import Item, Order, OrderItem, Address, homepage_config, navbar_dropdown_config, Season_choice, Type_choice, Gender_choice
-from.forms import CheckoutForm, addProductForm, homepage_config_form, item_quantity
+from shop.models import Item, Order, OrderItem, Address, homepage_config, navbar_dropdown_config, Season_choice, Type_choice, Gender_choice, contact_us_config, page_link
+from.forms import CheckoutForm, addProductForm, homepage_config_form, item_quantity, contact_us_config_form, page_link_form, season_choice_form, type_choice_form, gender_choice_form
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-admin_role_decorator = [login_required,
-                        allowed_users(allowed_roles='shop_admin')]
-
-# Create your views here.
+admin_role_decorator = [login_required, allowed_users(allowed_roles='shop_admin')]
 
 
 def home(request):
@@ -29,7 +26,6 @@ def home(request):
     context = {'featured': feature_items, 'home_config': home_config}
     # print(home_config.banner_image)
     return render(request, "home.html", context)
-
 
 class homePage(ListView):
     model = Item
@@ -53,7 +49,6 @@ class homePage(ListView):
         if gender != "":
             item = item.filter(product_gender__name=gender)
             # item = item.filter(product_gender=gender)
-            # print('sth3')
         # (1c) sort qs
         item = item.order_by(order_by)
         # (2) return defalt qs
@@ -74,34 +69,6 @@ class homePage(ListView):
         context["type_choice"] = Type_choice.objects.all()
         return context
 
-@allowed_users(allowed_roles=['shop_admin'])
-def add_category(request, type, name):
-    if type=='season':
-        category=get_object_or_404(Season_choice, name=name)
-    if type=='gender':
-        category=get_object_or_404(Gender_choice, name=name)
-    if type=='type':
-        category=get_object_or_404(Type_choice, name=name)
-    if category:
-        category.delete()
-    return redirect('shop:list-page')
-
-@allowed_users(allowed_roles=['shop_admin'])
-def remove_category(request, type, name):
-    if type=='season':
-        category=Season_choice.objects.get_or_create(name=name)
-    if type=='gender':
-        category=Gender_choice.objects.get_or_create(name=name)
-    if type=='type':
-        category=Type_choice.objects.get_or_create(name=name)
-    category.save()
-    return redirect('shop:list-page')
-
-# class productDetailPage(DetailView):
-#     model=Item
-#     template_name="product_detail.html"
-
-
 class productDetailPage(View):
     def get(self, *args, **kwargs):
         my_pk = self.kwargs.get('pk', None)
@@ -111,7 +78,6 @@ class productDetailPage(View):
         context = {'object': my_item, 'qs': qs}
         # context={'object':my_item,}
         return render(self.request, 'product_detail.html', context)
-
 
 class productCategory(ListView):
     model = Item
@@ -132,9 +98,8 @@ class productCategory(ListView):
         else:
             return Item.objects.all()
 
+###########################           shopping cart         #######################################
 # does 2 things: (1)add to cart (2)quantity+1
-
-
 @login_required
 def add_to_cart(request, pk, amount=1):
     # get/create item, order, order_item
@@ -156,7 +121,6 @@ def add_to_cart(request, pk, amount=1):
         orderItem.save()
     # return redirect("shop:home-page")
 
-
 @login_required
 def add_to_cart_product_detail(request, pk):
     if request.method == 'POST':
@@ -166,7 +130,6 @@ def add_to_cart_product_detail(request, pk):
         return redirect("shop:product-detail", pk=pk)
     else:
         return redirect("shop:product-detail", pk=pk)
-
 
 # @login_required
 # def add_to_cart_product_detail(request, pk, amount=1):
@@ -179,8 +142,6 @@ def add_to_cart_shopping_cart(request, pk):
     return redirect("shop:shopping-cart")
 
 # only does removing item
-
-
 @login_required
 def remove_from_cart(request, pk):
     # get/create item, order, order_item
@@ -201,15 +162,12 @@ def remove_from_cart(request, pk):
         pass
     return redirect("shop:home-page")
 
-
 @login_required
 def remove_from_cart_shopping_cart(request, pk):
     remove_from_cart(request, pk)
     return redirect("shop:shopping-cart")
 
 #quantity -1
-
-
 @login_required
 def quantity_reduce(request, pk):
     # get/create item, order, order_item
@@ -235,12 +193,10 @@ def quantity_reduce(request, pk):
         # no order
         pass
 
-
 @login_required
 def quantity_reduce_shopping_cart(request, pk):
     quantity_reduce(request, pk)
     return redirect("shop:shopping-cart")
-
 
 class shoppingCart(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
@@ -251,7 +207,7 @@ class shoppingCart(LoginRequiredMixin, View):
         context = {'object': myorder}
         return render(self.request, 'shopping_cart.html', context)
 
-
+###########################           checkout         #######################################
 class checkout_view(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         form = CheckoutForm()
@@ -286,14 +242,13 @@ class checkout_view(LoginRequiredMixin, View):
         else:
             return redirect('shop:checkout')
 
-
 class payment_view(LoginRequiredMixin, View):
     def get(self, *args, **kargs):
         order = Order.objects.get(user=self.request.user, paid=False)
         context = {'object': order}
         return render(self.request, 'payment.html', context)
 
-
+###########################           after payment         #######################################
 def payment_success(request):
     # order = Order.objects.filter(user=request.user, paid=False)[0]
     # # turn to paid
@@ -313,18 +268,16 @@ def payment_success(request):
     # send_mail(email_subject,email_message,'p674dd@gmail.com',['p674dd@gmail.com'],fail_silently=False,)
     return render(request, 'payment_success.html')
 
-
 def payment_unsuccess(request):
     return render(request, 'payment_unsuccess.html')
 
-
+###########################           shop owner         #######################################
 @method_decorator(admin_role_decorator, name='dispatch')
 class itemListView(ListView):
     model = Item
     paginate_by = 20
     template_name = 'itemList_owner.html'
     ordering = ['pk']
-
 
 @method_decorator(admin_role_decorator, name='dispatch')
 class update_item_view(DetailView):
@@ -361,8 +314,6 @@ class upload_new_item_view(View):
         return redirect('shop:item-list')
 
 # only does removing item
-
-
 @allowed_users(allowed_roles=['shop_admin'])
 def remove_item(request, pk):
     # get/create item, order, order_item
@@ -370,7 +321,6 @@ def remove_item(request, pk):
     if item:
         item.delete()
     return redirect("shop:item-list")
-
 
 @method_decorator(admin_role_decorator, name='dispatch')
 class OrdersListView(ListView):
@@ -404,7 +354,7 @@ def search_result(request):
     else:
         return render(request, 'search_result.html', context)
 
-
+###########################           modify pages         #######################################
 @method_decorator(admin_role_decorator, name='dispatch')
 class modify_homepage_config(View):
     def get(self, *args, **kwargs):
@@ -417,36 +367,152 @@ class modify_homepage_config(View):
         curr_config = homepage_config.objects.get_or_create()[0]
         form = homepage_config_form(
             self.request.POST, self.request.FILES, instance=curr_config)
-        print(form)
         if form.is_valid():
             form.save()
-        return redirect('shop:home-page')
+        return redirect('shop:config-all')
 
 # thinking how to do
 
+# @method_decorator(admin_role_decorator, name='dispatch')
+# class modify_contact_us(View):
+#     def get(self, *args, **kwargs):
+#         curr_config = contact_us_config.objects.get_or_create()[0]
+#         form = contact_us_config_form(instance=curr_config)
+#         curr_pages = page_link.objects.all()
+#         form = page_link_form(instance=curr_config)
+#         context = {'form': form}
+#         return render(self.request, 'homepage_config.html', context)
 
+#     def post(self, *args, **kwargs):
+#         curr_config = homepage_config.objects.get_or_create()[0]
+#         form = homepage_config_form(
+#             self.request.POST, self.request.FILES, instance=curr_config)
+#         print(form)
+#         if form.is_valid():
+#             form.save()
+#         return redirect('shop:config-all')
+
+
+#NOT done
 @method_decorator(admin_role_decorator, name='dispatch')
-class modify_narbar_config(View):
+class modify_category(View):
+    pass
     def get(self, *args, **kwargs):
-        # get all instead
-        curr_config = navbar_dropdown_config.objects.filter()
+        context=self.get_all_context()
+        #change form if asking for edit
+        season = self.request.GET.get("season", "")
+        gender = self.request.GET.get("gender", "")
+        type = self.request.GET.get("type", "")
+        if type != "":
+            curr_type = Type_choice.objects.filter(name=type).first()
+            curr_form = type_choice_form(instance=curr_type)
+            context['curr_type_form']=curr_form
+            context['type_edit']=type
+        if season != "":
+            curr_season = Season_choice.objects.filter(name=season).first()
+            curr_form = season_choice_form(instance=curr_season)
+            context['curr_season_form']=curr_form
+            context['season_edit']=season
+        if gender != "":
+            curr_gender = Gender_choice.objects.filter(name=gender).first()
+            curr_form = gender_choice_form(instance=curr_gender)
+            context['curr_gender_form']=curr_form
+            context['gender_edit']=gender
 
-        form = homepage_config_form(instance=curr_config)
-        context = {'form': form}
-        return render(self.request, 'homepage_config.html', context)
-
+        return render(self.request, 'modify_category.html', context)
     def post(self, *args, **kwargs):
-        curr_config = homepage_config.objects.get_or_create()[0]
-        form = homepage_config_form(
-            self.request.POST, self.request.FILES, instance=curr_config)
-        print(form)
-        if form.is_valid():
-            form.save()
-        return redirect('shop:home-page')
+        if 'season' in self.request.POST:
+            new_form = season_choice_form(self.request.POST)
+        if 'type' in self.request.POST:
+            new_form = type_choice_form(self.request.POST)
+        if 'gender' in self.request.POST:
+            new_form = gender_choice_form(self.request.POST)
+        if new_form.is_valid():
+            new_form.save()
+        context=self.get_all_context()
+        return render(self.request, 'modify_category.html', context)
+    #helper function
+    def get_all_context(self):
+        seasons = Season_choice.objects.all()
+        types = Type_choice.objects.all()
+        genders = Gender_choice.objects.all()
+        season_form = season_choice_form()
+        type_form = type_choice_form()
+        gender_form = gender_choice_form()
+        context = {'seasons':seasons, 'types':types, 'genders':genders, 'season_form':season_form, 'type_form':type_form, 'gender_form':gender_form}
+        return context
 
+#helper fx for removing category
+def remove_category(Model, pk):
+    category = get_object_or_404(Model, pk=pk)
+    if category:
+        category.delete()
+
+@allowed_users(allowed_roles=['shop_admin'])
+def remove_Season(request, pk):
+    remove_category(Season_choice, pk)
+    return redirect("shop:category-config")
+@allowed_users(allowed_roles=['shop_admin'])
+def remove_Type(request, pk):
+    remove_category(Type_choice, pk)
+    return redirect("shop:category-config")
+@allowed_users(allowed_roles=['shop_admin'])
+def remove_Gender(request, pk):
+    remove_category(Gender_choice, pk)
+    return redirect("shop:category-config")
+
+#helper fx for edit category
+def edit_category(request, Model, Form, pk):
+    category = get_object_or_404(Model, pk=pk)
+    curr_form = Form(request.POST, instance=category)
+    if curr_form.is_valid():
+        curr_form.save()
+
+@allowed_users(allowed_roles=['shop_admin'])
+def edit_Season(request, pk):
+    edit_category(request, Season_choice, season_choice_form, pk)
+    return redirect("shop:category-config")
+@allowed_users(allowed_roles=['shop_admin'])
+def edit_Type(request, pk):
+    edit_category(request, Type_choice, type_choice_form, pk)
+    return redirect("shop:category-config")
+@allowed_users(allowed_roles=['shop_admin'])
+def edit_Gender(request, pk):
+    edit_category(request, Gender_choice, gender_choice_form, pk)
+    return redirect("shop:category-config")
 
 def about_page(request):
     return render(request, 'about_us.html')
 
-def modify_layout(request):
-    return render(request, 'modify_layout.html')
+
+@method_decorator(admin_role_decorator, name='dispatch')
+class modify_layout(View):
+    def get(self, *args, **kwargs):
+        curr_homepage_config = homepage_config.objects.get_or_create()[0]
+        form = homepage_config_form(instance=curr_homepage_config)
+        context = {'homepage_form': form}
+        return render(self.request, 'modify_layout.html', context)
+
+
+# @allowed_users(allowed_roles=['shop_admin'])
+# def add_category(request, type, name):
+#     if type=='season':
+#         category=get_object_or_404(Season_choice, name=name)
+#     if type=='gender':
+#         category=get_object_or_404(Gender_choice, name=name)
+#     if type=='type':
+#         category=get_object_or_404(Type_choice, name=name)
+#     if category:
+#         category.delete()
+#     return redirect('shop:list-page')
+
+# @allowed_users(allowed_roles=['shop_admin'])
+# def remove_category(request, type, name):
+#     if type=='season':
+#         category=Season_choice.objects.get_or_create(name=name)
+#     if type=='gender':
+#         category=Gender_choice.objects.get_or_create(name=name)
+#     if type=='type':
+#         category=Type_choice.objects.get_or_create(name=name)
+#     category.save()
+#     return redirect('shop:list-page')
