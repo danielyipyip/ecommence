@@ -1,26 +1,37 @@
 <!--these template NO need to extend base (recurrsion)-->
-
+{% load cart_templatetags %}
 
 
 {% block content %}
+{% get_shop_links as links %}
 <div class='container m-5 footer_container'>
     <div class='footer'>
         <div class="row  text-center">
+            
             <div class="col-md-4">
+                {% if links.google_play %}
                 <p class="h5">Download our App</p>
                 <div>
-                <img src='/media/icons_badges/google-play-badge.png' alt='google-play-badge' width='140px'>
+                    <img src='/media/icons_badges/google-play-badge.png' alt='google-play-badge' width='140px'>
+                </div>
+                {% endif %}
             </div>
-            </div>
+           
             <div class="col-md-4 text-center">
                 <p class="h5">Need Help?</p>
                 <a href="{% url 'shop:about-us' %}">About Us</a>
             </div>
             <div class="col-md-4 text-center">
                 <p class="h5">Follow us</p>
-                <i class="fab fa-instagram fa-2x me-2"></i>
-                <i class="fab fa-facebook fa-2x me-2"></i>
-                <i class="fab fa-twitter-square fa-2x"></i>
+                {% if links.instagram %}
+                <a href="{{links.instagram}}"><i class="fab fa-instagram fa-2x me-2"></i></a>
+                {% endif %}
+                {% if links.facebook %}
+                <a href="{{links.facebook}}"><i class="fab fa-facebook fa-2x me-2"></i></a>
+                {% endif %}
+                {% if links.twitter %}
+                <a href="{{links.twitter}}"><i class="fab fa-twitter-square fa-2x"></i></a>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -1,0 +1,21 @@
+<form method='POST' enctype='multipart/form-data'>
+    {% csrf_token %}
+    <div class="list-group">
+        <li class="list-group-item d-flex justify-content-between">
+            {% include 'form_style/form_style1.html' with field=form.instagram %}
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+            {% include 'form_style/form_style1.html' with field=form.twitter %}
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+            {% include 'form_style/form_style1.html' with field=form.facebook %}
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+            {% include 'form_style/form_style1.html' with field=form.google_play %}
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+            {% include 'form_style/form_style1.html' with field=form.paypal_account %}
+        </li>
+    </div>
+    <button class='btn btn-primary mt-3 align-center' type="submit">Save</button>
+</form>

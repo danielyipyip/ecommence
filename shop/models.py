@@ -185,6 +185,16 @@ class contact_us_config(models.Model):
     def __str__(self):
         return self.title
 
+class shop_config (models.Model):
+    instagram = models.URLField(max_length=200, blank=True, null=True)
+    twitter = models.URLField(max_length=200, blank=True, null=True)
+    facebook = models.URLField(max_length=200, blank=True, null=True)
+    google_play = models.URLField(max_length=200, blank=True, null=True)
+    paypal_account = models.CharField(max_length=200, blank=True, null=True)
+    def __str__(self):
+        return self.paypal_account
+
+
 #it is the link with cover photo in contact us page
 class page_link(models.Model):
     title = models.CharField(max_length=50)

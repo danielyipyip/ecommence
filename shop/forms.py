@@ -1,7 +1,7 @@
 import re
 from django import forms
 from django.forms.widgets import Textarea
-from .models import Item, OrderItem, Order, homepage_config, Address, navbar_dropdown_category, navbar_dropdown_config, contact_us_config, page_link, Season_choice, Type_choice, Gender_choice
+from .models import Item, OrderItem, Order, homepage_config, Address, navbar_dropdown_category, navbar_dropdown_config, contact_us_config, page_link, Season_choice, Type_choice, Gender_choice,shop_config
 from django_countries.fields import CountryField
 
 class CheckoutForm(forms.ModelForm):
@@ -54,3 +54,8 @@ class gender_choice_form(forms.ModelForm):
 
 class item_quantity(forms.Form):
     quantity= forms.IntegerField()
+
+class shop_config_form(forms.ModelForm):
+    class Meta:
+        model=shop_config
+        fields=['instagram', 'twitter', 'facebook', 'google_play', 'paypal_account']

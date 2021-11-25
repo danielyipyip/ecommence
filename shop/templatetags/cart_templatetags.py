@@ -1,5 +1,5 @@
 from django import template
-from shop.models import Order, Item, Gender_choice, Type_choice, Season_choice
+from shop.models import Order, Item, Gender_choice, Type_choice, Season_choice, shop_config
 from django.shortcuts import reverse
 
 register = template.Library()
@@ -35,6 +35,12 @@ def type_categories():
 def season_categories(): 
     season_qs = Season_choice.objects.all()
     return season_qs
+
+
+@register.simple_tag
+def get_shop_links(): 
+    links_qs = shop_config.objects.all()[0]
+    return links_qs
 
 # @register.filter
 # def similar_items(): 

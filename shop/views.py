@@ -13,8 +13,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 
-from shop.models import Item, Order, OrderItem, Address, homepage_config, navbar_dropdown_config, Season_choice, Type_choice, Gender_choice, contact_us_config, page_link
-from.forms import CheckoutForm, addProductForm, homepage_config_form, item_quantity, contact_us_config_form, page_link_form, season_choice_form, type_choice_form, gender_choice_form
+from shop.models import (
+    Item, Order, OrderItem, Address, homepage_config, navbar_dropdown_config, Season_choice, Type_choice, 
+    Gender_choice, contact_us_config, page_link, shop_config)
+from.forms import (CheckoutForm, addProductForm, homepage_config_form, item_quantity, contact_us_config_form, 
+page_link_form, season_choice_form, type_choice_form, gender_choice_form, shop_config_form)
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 admin_role_decorator = [login_required, allowed_users(allowed_roles='shop_admin')]
@@ -371,6 +374,23 @@ class modify_homepage_config(View):
             form.save()
         return redirect('shop:config-all')
 
+@method_decorator(admin_role_decorator, name='dispatch')
+class modify_shop_config(View):
+    def get(self, *args, **kwargs):
+        curr_config = shop_config.objects.get_or_create()[0]
+        form = shop_config_form(instance=curr_config)
+        context = {'form': form}
+        
+        return render(self.request, 'shop_config.html', context)
+
+    def post(self, *args, **kwargs):
+        curr_config = shop_config.objects.get_or_create()[0]
+        form = shop_config_form(self.request.POST, instance=curr_config)
+        if form.is_valid():
+            form.save()
+        return redirect('shop:config-all')
+
+
 # thinking how to do
 
 # @method_decorator(admin_role_decorator, name='dispatch')
@@ -488,31 +508,12 @@ def about_page(request):
 @method_decorator(admin_role_decorator, name='dispatch')
 class modify_layout(View):
     def get(self, *args, **kwargs):
+        #homepage
         curr_homepage_config = homepage_config.objects.get_or_create()[0]
         form = homepage_config_form(instance=curr_homepage_config)
-        context = {'homepage_form': form}
+        #shop links
+        curr_shop_link = shop_config.objects.get_or_create()[0]
+        link_form = shop_config_form(instance=curr_shop_link)
+        context = {'homepage_form': form, 'link_form': link_form}
         return render(self.request, 'modify_layout.html', context)
 
-
-# @allowed_users(allowed_roles=['shop_admin'])
-# def add_category(request, type, name):
-#     if type=='season':
-#         category=get_object_or_404(Season_choice, name=name)
-#     if type=='gender':
-#         category=get_object_or_404(Gender_choice, name=name)
-#     if type=='type':
-#         category=get_object_or_404(Type_choice, name=name)
-#     if category:
-#         category.delete()
-#     return redirect('shop:list-page')
-
-# @allowed_users(allowed_roles=['shop_admin'])
-# def remove_category(request, type, name):
-#     if type=='season':
-#         category=Season_choice.objects.get_or_create(name=name)
-#     if type=='gender':
-#         category=Gender_choice.objects.get_or_create(name=name)
-#     if type=='type':
-#         category=Type_choice.objects.get_or_create(name=name)
-#     category.save()
-#     return redirect('shop:list-page')

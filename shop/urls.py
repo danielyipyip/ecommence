@@ -9,6 +9,7 @@ from .views import (
     home, search_result, 
     #owner side
     itemListView, upload_new_item_view, update_item_view, OrdersListView, modify_homepage_config, modify_layout, modify_category, 
+    modify_shop_config, 
     remove_item, remove_Season, remove_Type, remove_Gender, edit_Season, edit_Type, edit_Gender, 
     #company pages
     about_page, 
@@ -60,5 +61,7 @@ urlpatterns = [
     path('modify/', modify_layout.as_view(), name='config-all'), 
     path('modify/homepage/', modify_homepage_config.as_view(), name='home-config'), 
     path('modify/category/', modify_category.as_view(), name='category-config'), 
+    path('modify/links/', modify_shop_config.as_view(), name='link-config'), 
+
     
 ]
