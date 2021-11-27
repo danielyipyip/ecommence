@@ -13,28 +13,54 @@
 <div class="container-fluid grey-container bg-gradient">
     <div class="row mb-4"></div>
     <div class="row text-center">
-        <p class="h2">About us</p>
+        <p class="h1"><b>About us</b></p>
     </div>
     <div class="row">
         
         <div class="col-md-3 ms-lg-5">
-            <img src="/media/feature_product/shirt1_square.jpg" width=100%>
+            <img src="{{contact_us.profile_image.url}}" width=100%>
         </div>
         <div class="col-md-7">
-            <p class="h5 title">Title</p>
+            <p class="h3 title m-3"><strong>{{contact_us.title}}</strong></p>
             <!--descriptions-->
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
-                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit 
-                anim id est laborum.</p>
+            <p>{{contact_us.text}}</p>
         </div>
     </div>
     <div class="row mt-5"></div>
     
     <!--place to put cover for links-->
-
+    <div class="row justify-content-md-center">
+        {% if contact_us.portal1_link %}
+        <div class="col-4 g-4 category_image">
+            <a href="{{contact_us.portal1_link}}" class="">
+                <img src="{{contact_us.portal1_image.url}}" class="img-fluid" alt="category1">
+                <div class="middle_layer">
+                    <button type="button" class="btn btn-primary">Check it out</button>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+        {% if contact_us.portal2_link %}
+        <div class="col-4 g-4 category_image">
+            <a href="{{contact_us.portal2_link}}">
+                <img src="{{contact_us.portal2_image.url}}" class="img-fluid" alt="category2">
+                <div class="middle_layer">
+                    <button type="button" class="btn btn-primary">Check it out</button>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+        {% if contact_us.portal3_link %}
+        <div class="col-4 g-4 category_image">
+            <a href="{{contact_us.portal3_link}}">
+                <img src="{{contact_us.portal3_image.url}}" class="img-fluid" alt="category3">
+                <div class="middle_layer">
+                    <button type="button" class="btn btn-primary">Check it out</button>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+    </div>
     
 </div>
 </div>

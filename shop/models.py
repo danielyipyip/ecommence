@@ -98,7 +98,7 @@ class OrderItem(models.Model):
     paid = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.user.username}: {self.quantity} of {self.item.name}'
+        return f'{self.user.username}: {self.quantity} of {self.item.name} - {self.paid}'
 
     def name_for_order(self):
         return f'{self.item.name} * {self.quantity}'
@@ -126,7 +126,7 @@ class Order(models.Model):
     ship_addr=models.ForeignKey('Address', on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
-        return self.user.username
+        return f'{self.user.username}: order {self.pk}'
 
     def get_total_price(self):
         total_price=0

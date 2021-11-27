@@ -253,11 +253,22 @@ class payment_view(LoginRequiredMixin, View):
 
 ###########################           after payment         #######################################
 def payment_success(request):
-    # order = Order.objects.filter(user=request.user, paid=False)[0]
-    # # turn to paid
-    # order.paid = True
-    # order.save()
-    # # reduce stock
+    order = Order.objects.filter(user=request.user, paid=False)[0]
+    # turn to paid
+    order.paid = True
+    order.save()
+    # reduce stock
+    for order_item in order.orderitems.all():
+        #have enough
+        order_item.paid=paid=True
+        order_item.item.stock -= order_item.quantity
+        order_item.save()
+        order_item.item.save()
+        #if not enough -> need special handle of item
+        if order_item.item.stock < order_item.quantity:
+            pass 
+
+    # email
     # email_subject='New Order for '+order.user
     # email_message='Order Item: \n'
     # for order_item in order.orderitems:
@@ -499,7 +510,9 @@ def edit_Gender(request, pk):
     return redirect("shop:category-config")
 
 def about_page(request):
-    return render(request, 'about_us.html')
+    contact_config = contact_us_config.objects.get_or_create()[0]
+    context={'contact_us': contact_config}
+    return render(request, 'about_us.html', context)
 
 
 @method_decorator(admin_role_decorator, name='dispatch')

@@ -172,12 +172,14 @@ SOCIALACCOUNT_PROVIDERS = {
 #https://testdriven.io/blog/django-social-auth/
 
 #email stuffs (trying)
-DEFAULT_FROM_EMAIL = 'p674dd@gmail.com'
+# DEFAULT_FROM_EMAIL = 'p674dd@gmail.com'
 
+#https://dev.to/abderrahmanemustapha/how-to-send-email-with-django-and-gmail-in-production-the-right-way-24ab
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'p674dd@gmail.com'
-EMAIL_HOST_PASSWORD = 'uogsme_1'
+EMAIL_HOST_PASSWORD = 'vbsdgruqxkjtekkr' #past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'default from email'
 
