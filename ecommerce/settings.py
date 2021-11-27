@@ -28,7 +28,7 @@ SECRET_KEY = '@pbkh!#w%u-g7(k2newq1gt_2$yg#h#1qit6-+@5oloa!wh-#8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # going to deploy -> change to False
-DEBUG = False
+DEBUG = True
 
 #heroku: the online server (host), 127: local host, 
 ALLOWED_HOSTS = ['danielyip-ecommerce.herokuapp.com', '127.0.0.1']
@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     'django_countries',
     #forms
     'crispy_forms',
+    #for AWS S3 online static file storage
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -186,4 +188,21 @@ EMAIL_HOST_PASSWORD = 'vbsdgruqxkjtekkr' #past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'default from email'
+
+#amazon AWS s3
+AWS_ACCESS_KEY_ID='AKIA2QIALSNW4Y5LR47T'
+AWS_SECRET_ACCESS_KEY='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'
+AWS_STORAGE_BUCKET_NAME='danielyip-ecommerce'
+
+#django storages
+AWS_S3_FILE_OVERWRITE=False #overwirte file if same name? default=True
+AWS_DEFAULT_ACL=None
+DEFAULT_FILE_STORAGE='storages.backends.s3boto3.S3Boto3Storage'
+#prioritize the s3 storage
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'#use this one (in API) does not work
+
+#add by comments suggestion
+AWS_S3_REGION_NAME ="us-east-2"
+AWS_S3_ADDRESSING_STYLE = "virtual" #it said need if you're us-east-2 server
 
