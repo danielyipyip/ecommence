@@ -36,7 +36,7 @@
                     {% for type in types %}     
                         {% if type.product_gender|capfirst == gender.name|capfirst or type.show_in_all_category %}
                         <li>
-                            <a class="dropdown-item" href="{% url 'shop:list-page' %}?season=&gender={{gender}}&type={{type}}">
+                            <a class="dropdown-item" href="{% url 'shop:list-page' %}?season=&gender={{gender.name}}&type={{type.name}}">
                                 {{type.name}}
                             </a>
                         </li>
