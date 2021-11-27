@@ -12,13 +12,18 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 from django.shortcuts import reverse
-
+from pathlib import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
-MEDIA_DIR = os.path.join(BASE_DIR, 'media/')
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+# STATIC_DIR = os.path.join(BASE_DIR, 'static')
+# MEDIA_DIR = os.path.join(BASE_DIR, 'media/')
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+TEMPLATE_DIRS = [BASE_DIR / 'templates',]
+STATIC_DIRS = [BASE_DIR / 'static',]
+MEDIA_DIR = [BASE_DIR / 'media',]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -81,7 +86,8 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR+'/templates')],
+        # 'DIRS': [os.path.join(BASE_DIR+'/templates')],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,7 +112,8 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -147,10 +154,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT=str(BASE_DIR / 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_DIRS = [BASE_DIR / 'static']
+# STATICFILES_DIRS = [(os.path.join(BASE_DIR, 'static'),)]
+
+#media root: hold user upload files
+MEDIA_ROOT=MEDIA_DIR
+MEDIA_URL='/media/'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -158,10 +171,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
-
-#media root: hold user upload files
-MEDIA_ROOT=MEDIA_DIR
-MEDIA_URL='/media/'
 
 #authen redirect
 ACCOUNT_EMAIL_VERIFICATION = "none"
@@ -205,3 +214,5 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_S3_REGION_NAME ="us-east-2"
 AWS_S3_ADDRESSING_STYLE = "virtual" #it said need if you're us-east-2 server
 
+#after update django, it complained for default setup PK
+DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
