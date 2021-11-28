@@ -14,6 +14,23 @@ import os
 from django.shortcuts import reverse
 from pathlib import Path
 import django_heroku
+import logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+        },
+    },
+}
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,9 +52,12 @@ SECRET_KEY = '@pbkh!#w%u-g7(k2newq1gt_2$yg#h#1qit6-+@5oloa!wh-#8'
 # SECURITY WARNING: don't run with debug turned on in production!
 # going to deploy -> change to False
 DEBUG = False
+#add to fix whitenise, suggested by: 
+#https://stackoverflow.com/questions/51107962/static-file-issue-causing-django-500-error
+DEBUG_PROPAGATE_EXCEPTIONS = True
 
 #heroku: the online server (host), 127: local host, 
-ALLOWED_HOSTS = ['danielyip-ecommerce.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['danielyip-ecommerce.herokuapp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -158,10 +178,25 @@ USE_TZ = True
 
 # STATIC_ROOT=str(BASE_DIR / 'staticfiles')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# STATIC_URL = 'https://xxxxxxxxxxxxxx.cloudfront.net'
 STATIC_URL = '/static/'
 
 # STATICFILES_DIRS = [BASE_DIR / 'static']
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),
+   ]
+
+#https://stackoverflow.com/questions/59332225/hitting-500-error-on-django-with-debug-false-even-with-allowed-hosts
+# STATICFILES_STORAGE = '.storage.WhiteNoiseStaticFilesStorage' # Read point 3 for details about this
+#change to this one, it says after v4
+#https://stackoverflow.com/questions/44160666/valueerror-missing-staticfiles-manifest-entry-for-favicon-ico
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'ecommerce.storage.WhiteNoiseStaticFilesStorage'
+from whitenoise.storage import CompressedManifestStaticFilesStorage
+class WhiteNoiseStaticFilesStorage(CompressedManifestStaticFilesStorage):
+    manifest_strict = False
 
 #media root: hold user upload files
 MEDIA_ROOT=MEDIA_DIR
@@ -222,3 +257,4 @@ DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 #just try to add?
 django_heroku.settings(locals())
+

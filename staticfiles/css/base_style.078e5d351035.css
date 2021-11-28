@@ -1,0 +1,169 @@
+/********* general style *********/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/*overwirte, deciding*/
+.container-fluid{
+    margin: 0;
+    padding: 0;
+}
+
+/********* home page banner style *********/
+
+.banner_container {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    display: inline-block;
+}
+
+.banner_content {
+    position: absolute;
+    margin: 0 auto;
+    text-align: center;
+    /* Adjust hori */
+    left: 45%;
+    right: 0;
+    /* Adjust vert */
+    top: 25%;
+    /*may delete*/
+    z-index: 999;
+}
+
+.banner_image {
+    /*set responsive size*/
+    width: 100%;
+    height: auto;
+}
+
+.banner_text {
+    text-transform: uppercase;
+    background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* move to body
+        font-family: 'Poppins', sans-serif;
+        */
+    font-size: 6.5vw;
+}
+
+.banner_button {
+    /*
+        display: inline-block;
+        background: #fc4229;
+        margin: 30px 0; 
+        */
+    /*set button text color (NOT follow above to be transparent)*/
+    color: #fff;
+    -webkit-text-fill-color: white;
+    /*change to cirle shaped*/
+    padding: 9px 30px;
+    border-radius: 30px;
+}
+
+/*it is the line below the "Feature Products" in home page*/
+.line_below_feature_middle {
+    width: 15%;
+    margin: auto;
+    border-top: 5px solid red
+}
+
+/*hover overlay image effect for images*/
+.category_image{
+    position: relative;
+
+}
+.category_image img{
+    opacity: 1;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+
+.middle_layer {
+    transition: .5s ease;
+    opacity: 0;
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
+
+.category_image:hover img{
+    opacity: 0.5;
+}
+
+.category_image:hover .middle_layer{
+    opacity: 1;
+}
+
+/*hover slowly shift up for product images*/
+.product_card{
+    transition: transform 0.5s;
+}
+.product_card:hover{
+    transform: translateY(-5px);
+}
+
+/*******************8style for forms**************************/
+    .form_background {
+        background: #63738a;
+    }
+
+    .form_sheet {
+        background: #f2f3f7;
+    }
+    /*how to make a line L,R of word, make a line, then word (middle) set NOT transparent background*/
+    .form_sheet .h2 {
+        color: #636363;
+        text-align: center;
+        border-bottom: 1px solid #636363;
+        line-height: 0.1em;
+        margin: 10px 0 20px;
+    }
+
+    .form_sheet .h2 span {
+        background:#f2f3f7;
+        padding: 0 10px;
+    }
+
+    .form_sheet .btn{
+        font-size: 16px;
+        font-weight: bold;		
+        min-width: 140px;
+        outline: none !important;
+    }
+
+    .form_column{
+        padding-bottom: 15px;
+        /*so the link will wrap*/
+        word-wrap: break-word;
+    }
+
+
+
+/************footer styles************/
+/*
+.footer_container{
+    background-color: black;
+}
+*/
+
+
+
+.fabutton {
+    background: none;
+    padding: 0px;
+    border: none;
+}
