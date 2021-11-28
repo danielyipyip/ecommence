@@ -33,7 +33,7 @@ SECRET_KEY = '@pbkh!#w%u-g7(k2newq1gt_2$yg#h#1qit6-+@5oloa!wh-#8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # going to deploy -> change to False
-DEBUG = True
+DEBUG = False
 
 #heroku: the online server (host), 127: local host, 
 ALLOWED_HOSTS = ['danielyip-ecommerce.herokuapp.com', '127.0.0.1']
