@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 from django.shortcuts import reverse
 from pathlib import Path
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -160,7 +161,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 # STATICFILES_DIRS = [BASE_DIR / 'static']
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 #media root: hold user upload files
 MEDIA_ROOT=MEDIA_DIR
@@ -217,3 +218,7 @@ AWS_S3_ADDRESSING_STYLE = "virtual" #it said need if you're us-east-2 server
 
 #after update django, it complained for default setup PK
 DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
+
+
+#just try to add?
+django_heroku.settings(locals())
