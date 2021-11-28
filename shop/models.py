@@ -65,9 +65,9 @@ class Item(models.Model):
     # product_gender=models.CharField(choices=gender_choice, max_length=20, default='female')
     price = models.DecimalField(max_digits=20, decimal_places=2)
             #os.path.join, cannot have '/', only '<words>', it will add the '/' for you
-    # image = models.ImageField(upload_to='product_images', height_field='image_height', width_field='image_width', 
-    #     default=os.path.join(settings.MEDIA_DIR,"product_images", "white_tshirt.jpg")) 
-    image = models.ImageField(upload_to='product_images', height_field='image_height', width_field='image_width', ) 
+    image = models.ImageField(upload_to='product_images', height_field='image_height', width_field='image_width', 
+        default=os.path.join(settings.MEDIA_DIR,"product_images", "white_tshirt.jpg")) 
+    # image = models.ImageField(upload_to='product_images', height_field='image_height', width_field='image_width', ) 
     #necessary but with default
     stock=models.IntegerField(default=0)
     #Not necessary
@@ -168,30 +168,30 @@ class homepage_config(models.Model):
     type_choice=Item.type_choice
 
     #the banner and its slogan
-    # banner_image=models.ImageField(upload_to='homepage_images', default=os.path.join(settings.MEDIA_DIR,"homepage_images", "autum1.jpg"))
-    banner_image=models.ImageField(upload_to='homepage_images', blank=True, null=True)   
+    banner_image=models.ImageField(upload_to='homepage_images', default=os.path.join(settings.MEDIA_DIR,"homepage_images", "autum1.jpg"))
+    # banner_image=models.ImageField(upload_to='homepage_images', blank=True, null=True)   
     slogan_line1=models.CharField(max_length=100, default='READY FOR')
     slogan_line2=models.CharField(max_length=100, blank=True, null=True, default='WINTER?')
     slogan_line3=models.CharField(max_length=100, blank=True, null=True)
     #the 3 featured categories
-    # category_image1=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "shirt1_square.jpg"))
-    category_image1=models.ImageField(upload_to='feature_product', blank=True, null=True)
+    category_image1=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "shirt1_square.jpg"))
+    # category_image1=models.ImageField(upload_to='feature_product', blank=True, null=True)
     # category1=models.CharField(max_length=100, choices=type_choice, default='shirt')
     category1=models.ForeignKey(Type_choice, on_delete=models.SET_NULL, null=True, blank=True, related_name='cate1_type')
     
-    # category_image2=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "jean1_square.jpg"))
-    category_image2=models.ImageField(upload_to='feature_product', blank=True, null=True)
+    category_image2=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "jean1_square.jpg"))
+    # category_image2=models.ImageField(upload_to='feature_product', blank=True, null=True)
     # category2=models.CharField(max_length=100, choices=type_choice,default='trousers')
     category2=models.ForeignKey(Type_choice, on_delete=models.SET_NULL, null=True, blank=True, related_name='cate2_type')
 
-    # category_image3=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "dress1_square.jpg"))
-    category_image3=models.ImageField(upload_to='feature_product', blank=True, null=True)
+    category_image3=models.ImageField(upload_to='feature_product', default=os.path.join(settings.MEDIA_DIR,"feature_product", "dress1_square.jpg"))
+    # category_image3=models.ImageField(upload_to='feature_product', blank=True, null=True)
     # category3=models.CharField(max_length=100, choices=type_choice, default='dress')
     category3=models.ForeignKey(Type_choice, on_delete=models.SET_NULL, null=True, blank=True, related_name='cate3_type')
 
 class contact_us_config(models.Model):
-    # profile_image = models.ImageField(upload_to='contact_us', default=os.path.join(settings.MEDIA_DIR,"contact_us", "shirt1_square.jpg"))
-    profile_image = models.ImageField(upload_to='contact_us', blank=True, null=True)
+    profile_image = models.ImageField(upload_to='contact_us', default=os.path.join(settings.MEDIA_DIR,"contact_us", "shirt1_square.jpg"))
+    # profile_image = models.ImageField(upload_to='contact_us', blank=True, null=True)
     title = models.CharField(max_length=100)
     text = models.TextField()
     portal1_image=models.ImageField(upload_to='contact_us', blank=True, null=True)
