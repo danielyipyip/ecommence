@@ -1,3 +1,4 @@
+from typing import Sized
 from django.db import models
 from django.db.models.aggregates import Max
 from django.db.models.base import Model
@@ -77,6 +78,10 @@ class Item(models.Model):
     #place holder?
     image_height=models.PositiveIntegerField(default=1200)
     image_width=models.PositiveIntegerField(default=900)
+
+    #newly added
+    size=models.CharField(max_length=10, default='M')
+    color=models.CharField(max_length=7, default="#000000")
 
     def __str__(self):
         return self.name

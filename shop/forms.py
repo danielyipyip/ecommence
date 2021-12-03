@@ -1,8 +1,10 @@
 import re
 from django import forms
-from django.forms.widgets import Textarea
+from django.forms.widgets import Textarea,  TextInput
 from .models import Item, OrderItem, Order, homepage_config, Address, navbar_dropdown_category, navbar_dropdown_config, contact_us_config, page_link, Season_choice, Type_choice, Gender_choice,shop_config
 from django_countries.fields import CountryField
+
+#fields='__all__' then is all, no need write 1 by 1
 
 class CheckoutForm(forms.ModelForm):
     class Meta:
@@ -14,8 +16,11 @@ class CheckoutForm(forms.ModelForm):
 class addProductForm(forms.ModelForm):
     class Meta:
         model=Item
-        fields=['name', 'product_season', 'product_type', 'price', 'discounted_price', 'label', 'description', 'image', 'stock']
-
+        fields='__all__' 
+        # fields=['name', 'product_season', 'product_type', 'price', 'discounted_price', 'label', 'description', 'image', 'stock']
+        widgets = {
+            'color': TextInput(attrs={'type': 'color'}),
+        }
 class homepage_config_form(forms.ModelForm):
     class Meta:
         model=homepage_config
@@ -64,4 +69,5 @@ class item_quantity(forms.Form):
 class shop_config_form(forms.ModelForm):
     class Meta:
         model=shop_config
-        fields=['instagram', 'twitter', 'facebook', 'google_play', 'paypal_account','shop_icon']
+        fields='__all__'
+        # fields=['instagram', 'twitter', 'facebook', 'google_play', 'paypal_account','shop_icon']

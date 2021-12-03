@@ -1,6 +1,20 @@
 {% extends "base.html" %}
 {% load cart_templatetags %}
 
+{% block head_append %}
+<style>
+    .colorbox {
+    /*background-color: #cfc ;*/
+    width: 10px;
+    height: 10px;
+    padding: 0.3rem 1.1rem;
+    /*padding: 10px;*/
+    border: 1px solid black ;
+  }
+</style>
+{% endblock head_append %}
+
+
 {% block content %}
 <div class="container">
 
@@ -21,8 +35,8 @@
             <div class="col-md-6">
                 <div class="card-body">
                     <div class='ms-3'>
-                        <h5 class="card-title">{{ object.name }}</h5>
-                        <h3 class="card-subtitle mb-2 mt-3">
+                        <h3 class="card-title">{{ object.name }}</h3>
+                        <h1 class="card-subtitle mb-2 mt-3">
                             {% if object.discounted_price %}
                             <span>USD $ </span>
                             <del>{{ object.price }}</del>
@@ -30,10 +44,11 @@
                             {% else %}
                             <p><b>USD $ {{ object.price }}</b></p>
                             {% endif %}
-                            </h6>
+                        </h1>
+                        <div class='h4 mt-5'>
                             <p class="card-text">{{ object.description }}</p>
-                            <p class="card-text"> size: </p>
-                            <p class="card-text"> color: </p>
+                            <p class="card-text"> size: {{object.size}}</p>
+                            <p class="card-text"> color: <span class="colorbox ms-2" style="background-color:{{object.color}}"> </span></p>
                             <form method='POST' action='{{ object.get_add_to_cart_url }}'>
                                 {% csrf_token %}
                                 <label for="quantity">Amount: </label>
@@ -43,6 +58,7 @@
                                         Cart</button>
                                 </div>
                             </form>
+                        </div>
                     </div>
 
                 </div>
@@ -80,7 +96,7 @@
             </div>
         </div>
         {% empty %}
-        <p class='h5'>Coming Soon</p>
+        <p class='h5 text-center mb-3'>Coming Soon !</p>
         {% endfor %}
     </div>
 
