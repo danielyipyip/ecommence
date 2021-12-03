@@ -39,7 +39,8 @@ def season_categories():
 
 @register.simple_tag
 def get_shop_links(): 
-    links_qs = shop_config.objects.all()[0]
+    links_qs = shop_config.objects.get_or_create()[0]
+    # links_qs = shop_config.objects.all()[0]
     return links_qs
 
 # @register.filter

@@ -203,7 +203,8 @@ def quantity_reduce_shopping_cart(request, pk):
 
 class shoppingCart(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
-        order = Order.objects.filter(user=self.request.user, paid=False)
+        order = Order.objects.get_or_create(user=self.request.user, paid=False)
+        # order = Order.objects.filter(user=self.request.user, paid=False)
         # this line is needed, because order is queryset, [0] assigned is??
         # but still why???
         myorder = order[0]
@@ -252,36 +253,41 @@ class payment_view(LoginRequiredMixin, View):
         return render(self.request, 'payment.html', context)
 
 ###########################           after payment         #######################################
+@login_required
 def payment_success(request):
-    order = Order.objects.filter(user=request.user, paid=False)[0]
-    # turn to paid
-    order.paid = True
-    order.save()
-    # reduce stock
-    for order_item in order.orderitems.all():
-        #have enough
-        order_item.paid=paid=True
-        order_item.item.stock -= order_item.quantity
-        order_item.save()
-        order_item.item.save()
-        #if not enough -> need special handle of item
-        if order_item.item.stock < order_item.quantity:
-            pass 
+    try:
+        order = Order.objects.get(user=request.user, paid=False)
+        # turn to paid
+        order.paid = True
+        order.save()
+        # reduce stock
+        for order_item in order.orderitems.all():
+            #have enough
+            order_item.paid=paid=True
+            order_item.item.stock -= order_item.quantity
+            order_item.save()
+            order_item.item.save()
+            #if not enough -> need special handle of item
+            if order_item.item.stock < order_item.quantity:
+                pass 
+        # email
+        # email_subject='New Order for '+order.user
+        # email_message='Order Item: \n'
+        # for order_item in order.orderitems:
+        #     if order_item.item.stock > order_item.quantity:
+        #         order_item.item.stock -= order_item.quantity
+        #         email_message+=order_item.item.name +' * '+order_item.quantity+'\n'
+        #     else:
+        #         pass
+        #         # Not enough error
+        # email_message+="address: "+order.ship_addr
+        # send_mail(email_subject,email_message,'p674dd@gmail.com',['p674dd@gmail.com'],fail_silently=False,)
+        return render(request, 'payment_success.html')
+    except ObjectDoesNotExist:
+        messages.info(request, "Order not exist, paymeny was NOT sucessful")
+        return redirect('shop:home-page')
 
-    # email
-    # email_subject='New Order for '+order.user
-    # email_message='Order Item: \n'
-    # for order_item in order.orderitems:
-    #     if order_item.item.stock > order_item.quantity:
-    #         order_item.item.stock -= order_item.quantity
-    #         email_message+=order_item.item.name +' * '+order_item.quantity+'\n'
-    #     else:
-    #         pass
-    #         # Not enough error
-    # email_message+="address: "+order.ship_addr
-    # send_mail(email_subject,email_message,'p674dd@gmail.com',['p674dd@gmail.com'],fail_silently=False,)
-    return render(request, 'payment_success.html')
-
+@login_required
 def payment_unsuccess(request):
     return render(request, 'payment_unsuccess.html')
 
@@ -350,15 +356,11 @@ class OrdersListView(ListView):
             order_not_complete = Order.objects.filter(complete=False)
             return order_not_complete
 
-
 def unauthorized_redirect(request):
     return render(request, 'not_authenticated.html')
 
-
 def search_result(request):
     context = {}
-    # import os
-    # print(os.path.join(settings.MEDIA_DIR,"product_images", "white_tshirt.jpg"))
     if request.method == 'POST':
         keyword = request.POST.get('searched', None)
         items = Item.objects.filter(
@@ -471,6 +473,7 @@ class modify_category(View):
         return context
 
 #helper fx for removing category
+@allowed_users(allowed_roles=['shop_admin'])
 def remove_category(Model, pk):
     category = get_object_or_404(Model, pk=pk)
     if category:
@@ -490,6 +493,7 @@ def remove_Gender(request, pk):
     return redirect("shop:category-config")
 
 #helper fx for edit category
+@allowed_users(allowed_roles=['shop_admin'])
 def edit_category(request, Model, Form, pk):
     category = get_object_or_404(Model, pk=pk)
     curr_form = Form(request.POST, instance=category)

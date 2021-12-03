@@ -31,11 +31,8 @@ urlpatterns = [
     path('category/<str:category>/', productCategory.as_view(), name="item-by-category"), 
     path('unauthorized/', unauthorized_redirect, name='unauthorized'), 
     path('search/', search_result, name='search'), 
-    
-    #company pages
     path('about_us/', about_page, name='about-us'), 
-
-    #path('add_to_cart/<int:pk>', add_to_cart, name="add_to_cart"), 
+ 
     #function rather than page: 
     path('product/add_to_cart/<int:pk>', add_to_cart_product_detail, name="add_to_cart_product_detail"), 
     #path('product/add_to_cart/<int:pk>/<int:amount>/', add_to_cart_product_detail, name="add_to_cart_product_detail"), 
