@@ -33,6 +33,11 @@ class contact_us_config_form(forms.ModelForm):
         fields=['profile_image','title','text', 'portal1_image', 'portal1_link', 
         'portal2_image', 'portal2_link', 'portal3_image', 'portal3_link', ]
 
+class modify_order_form(forms.ModelForm):
+    class Meta:
+        model=Order
+        fields=['user', 'paid', 'orderitems', 'orderDate', 'complete', 'ship_addr']
+
 class page_link_form(forms.ModelForm):
     class Meta:
         model=page_link

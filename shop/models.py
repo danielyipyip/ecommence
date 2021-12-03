@@ -146,6 +146,8 @@ class Address(models.Model):
     address_line3=models.CharField(max_length=100, blank=True, null=True)
     country=CountryField()
     zip_code=models.CharField(max_length=20)
+    def __str__(self): 
+        return f'zip:{self.zip_code}, country:{self.country},{self.address_line1},{self.address_line2},{self.address_line3}'
 
 #for shop owner access to store, is meant to NOT open to register (only admin can set)
 class UserProfile(models.Model):

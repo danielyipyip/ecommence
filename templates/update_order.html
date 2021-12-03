@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block head_append %}
+
+{% endblock head_append %}
+
+{% block content %}
+<!--need enctype='multipart/form-data', so image is sent back; action="" is where the POST is sent to-->
+<div class="container-fulid form_background">
+    <div class="row justify-content-center pt-md-5 pb-md-5 p-3">
+        <!--row -->
+        <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8  pt-5 pb-5 form_sheet shadow-lg">
+            <!--col-xl-7 col-md-10 -->
+            <div>
+                <p class="h2 mb-5"><span>View/Modify items</span></p>
+            </div>
+            <div>
+                <form method='POST' enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    {{form.as_p}}
+
+                    <button class='btn btn-primary' type="submit">Save</button>
+                    <a href="{% url 'shop:order-list'%}" class='btn btn-dark' role='button'>Cancel</a>
+                    {% if pk %}
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#complete{{order.pk}}">
+                        Delete
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="complete{{order.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Deleting order</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">You are going to delete an order, do you want to continue?</div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                                    <a class="btn btn-danger" href="{% url 'shop:remove-order' pk %}"
+                                        role="button">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

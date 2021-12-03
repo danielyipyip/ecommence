@@ -8,9 +8,10 @@ from .views import (
     homePage, productDetailPage, shoppingCart, checkout_view, payment_view, productCategory, 
     home, search_result, 
     #owner side
-    itemListView, upload_new_item_view, update_item_view, OrdersListView, modify_homepage_config, modify_layout, modify_category, 
-    modify_shop_config, modify_contact_us, 
-    remove_item, remove_Season, remove_Type, remove_Gender, edit_Season, edit_Type, edit_Gender, 
+    itemListView, upload_new_item_view, OrdersListView, modify_homepage_config, modify_layout, modify_category, 
+    modify_shop_config, modify_contact_us, update_order, 
+    remove_item, remove_Season, remove_Type, remove_Gender, edit_Season, edit_Type, edit_Gender, complete_order,
+    remove_order,  
     #company pages
     about_page, 
 )
@@ -48,6 +49,8 @@ urlpatterns = [
     path('modify/edit_type/<int:pk>', edit_Type, name="edit_type"), 
     path('modify/edit_gender/<int:pk>', edit_Gender, name="edit_gender"), 
 
+
+
     #owner side
     path('item_list/', itemListView.as_view(), name='item-list'), 
     path('upload_item/', upload_new_item_view.as_view(), name='upload-item'), 
@@ -61,5 +64,8 @@ urlpatterns = [
     path('modify/links/', modify_shop_config.as_view(), name='link-config'), 
     path('modify/contactUs/', modify_contact_us.as_view(), name='contact-config'), 
 
+    path('complete_order/<int:pk>', complete_order, name="complete-order"), 
+    path('update_order/<int:pk>', update_order.as_view(), name="update-order"), 
+    path('remove_order/<int:pk>', remove_order, name="remove-order"), 
     
 ]

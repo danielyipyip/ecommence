@@ -17,7 +17,7 @@ from shop.models import (
     Item, Order, OrderItem, Address, homepage_config, navbar_dropdown_config, Season_choice, Type_choice, 
     Gender_choice, contact_us_config, page_link, shop_config)
 from.forms import (CheckoutForm, addProductForm, homepage_config_form, item_quantity, contact_us_config_form, 
-page_link_form, season_choice_form, type_choice_form, gender_choice_form, shop_config_form)
+page_link_form, season_choice_form, type_choice_form, gender_choice_form, shop_config_form, modify_order_form)
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 admin_role_decorator = [login_required, allowed_users(allowed_roles='shop_admin')]
@@ -300,12 +300,6 @@ class itemListView(ListView):
     ordering = ['pk']
 
 @method_decorator(admin_role_decorator, name='dispatch')
-class update_item_view(DetailView):
-    model = Item
-    template_name = "product_detail.html"
-
-
-@method_decorator(admin_role_decorator, name='dispatch')
 class upload_new_item_view(View):
     def get(self, *args, **kwargs):
         my_pk = self.kwargs.get('pk', None)
@@ -348,13 +342,75 @@ class OrdersListView(ListView):
     paginate_by = 20
     template_name = 'orderList_owner.html'
     ordering = ['pk']
-
     def get_queryset(self):
-        if 'all' in self.kwargs:
-            return Order.objects.all
+        display_paid = self.request.GET.get("paid", "")
+        display_complete = self.request.GET.get("complete", "")
+        all_order=Order.objects.all()
+        if display_paid=='all':
+            myorder=all_order
         else:
-            order_not_complete = Order.objects.filter(complete=False)
-            return order_not_complete
+            myorder=all_order.filter(paid=True)
+        if display_complete:
+            myorder=myorder
+        else:
+            myorder=myorder.filter(complete=False)
+        return myorder
+    def get_context_data(self, **kwargs):
+        context = super(OrdersListView, self).get_context_data(**kwargs)
+        context["paid"] = self.request.GET.get("paid", "")
+        context["complete"] = self.request.GET.get("complete", "")
+        return context
+
+@allowed_users(allowed_roles=['shop_admin'])
+def complete_order(request, pk):
+    try:
+        myorder = Order.objects.get(pk=pk)
+        if myorder.complete:
+            myorder.complete=False
+            messages.info(request, "Order id="+str(pk)+" is now marked as incomplete")
+        else:
+            myorder.complete=True
+            messages.info(request, "Order id="+str(pk)+" is now marked as complete")
+        myorder.save()
+    except ObjectDoesNotExist:
+        messages.info(request, "Order does not exist!")
+    return redirect('shop:order-list')
+
+@method_decorator(admin_role_decorator, name='dispatch')
+class update_order(View):
+    def get(self, *args, **kwargs):
+        my_pk = self.kwargs.get('pk', None)
+        if my_pk:
+            form = modify_order_form(instance=Order.objects.get(pk=my_pk))
+        else:
+            form = modify_order_form()
+        context = {'form': form, 'pk': my_pk}
+        return render(self.request, 'update_order.html', context)
+
+    def post(self, *args, **kwargs):
+        # the [0] is needed, from .filter: gives querySet, not just a tuple
+        my_pk = self.kwargs.get('pk', None)
+        if my_pk:
+            curr_item = Order.objects.filter(pk=my_pk)[0]
+            if curr_item:
+                # need to have self.request.FILE: for the image, otherwise use default image
+                # on html side, need enctype='multipart/form-data' so that image files is sent back
+                form = modify_order_form(
+                    self.request.POST, self.request.FILES, instance=curr_item)
+        else:
+            form = modify_order_form(
+                self.request.POST, self.request.FILES or None)
+        if form.is_valid():
+            form.save()
+        return redirect('shop:order-list')
+
+@allowed_users(allowed_roles=['shop_admin'])
+def remove_order(request, pk):
+    # get/create item, order, order_item
+    order = get_object_or_404(Order, pk=pk)
+    if order:
+        order.delete()
+    return redirect("shop:order-list")
 
 def unauthorized_redirect(request):
     return render(request, 'not_authenticated.html')
