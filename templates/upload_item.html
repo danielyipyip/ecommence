@@ -16,13 +16,15 @@
                 <p class="h2 mb-5"><span>Upload/modify items</span></p>
             </div>
             <div>
+                {% if form.pk %}
+                {% endif %}
                 <form method='POST' enctype='multipart/form-data'>
                     {% csrf_token %}
                     {% include 'form_style/TwoPerLine.html' with field1=form.name field2=form.price %}
 
                     {% include 'form_style/TwoPerLine.html' with field1=form.product_season field2=form.product_type %}
 
-                    {% include 'form_style/form_style1.html' with field=form.stock %}
+                    {% include 'form_style/TwoPerLine.html' with field1=form.product_gender field2=form.stock %}
 
                     {% include 'form_style/form_style1.html' with field=form.image %}
 

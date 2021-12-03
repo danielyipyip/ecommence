@@ -31,7 +31,7 @@
         <div class="row justify-content-md-center">
             <div class="col-4 g-4 category_image">
                 <!--seems in {%, no need { -->
-                <a href="{% url 'shop:list-page' %}?season=&gender={{home_config.category1.product_gender.name}}&type={{home_config.category1.name}}" class="">
+                <a href="{% url 'shop:list-page' %}?season=&gender={{home_config.category1.product_gender.name}}&type={{home_config.category1.name}}">
                     <!--'/media/feature_product/shirt1_square.jpg'-->
                     <img src="{{ home_config.category_image1.url }}" class="img-fluid" alt="category1">
                     <div class="middle_layer">
@@ -48,7 +48,7 @@
                 </a>
             </div>
             <div class="col-4 g-4 category_image">
-                <a href="{% url 'shop:list-page' %}?season=&gender={{home_config.category3.product_gender.name}}&type={{home_config.category3.name}} %}">
+                <a href="{% url 'shop:list-page' %}?season=&gender={{home_config.category3.product_gender.name}}&type={{home_config.category3.name}}">
                     <img src="{{ home_config.category_image3.url }}" class="img-fluid" alt="category3">
                     <div class="middle_layer">
                         <button type="button" class="btn btn-primary">Check it out</button>

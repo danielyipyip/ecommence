@@ -16,7 +16,8 @@ class CheckoutForm(forms.ModelForm):
 class addProductForm(forms.ModelForm):
     class Meta:
         model=Item
-        fields='__all__' 
+        exclude=['image_height', 'image_width']
+        # fields='__all__' 
         # fields=['name', 'product_season', 'product_type', 'price', 'discounted_price', 'label', 'description', 'image', 'stock']
         widgets = {
             'color': TextInput(attrs={'type': 'color'}),
