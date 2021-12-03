@@ -4,12 +4,20 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
     <!--container-->
     <div class="container-fluid">
+        {% get_shop_links as links %} <!--for shop icon in the links thing-->
         <!--brnad-->
-        <a class="navbar-brand" href="{% url 'shop:home-page' %}">My Shop</a>
+        {% if links.shop_icon %}
+        <a class="navbar-brand" href="{% url 'shop:home-page' %}">
+            <img src="{{links.shop_icon.url}}" alt="" width="30" height="24" class="d-inline-block align-text-top">
+        </a>
+        {% else %}
+            <a class="navbar-brand" href="{% url 'shop:home-page' %}">Shop icon</a>
+        {% endif %}
         <!--toggler-->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHomepageTop"
             arial-controls="navbarHomepageTop" arial-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <!-- <span class="navbar-toggler-icon"></span> need to use mdboostrap ver-->
+            <i class="fas fa-bars"></i>
         </button>
         <!--collapse-->
         <div class="collapse navbar-collapse" id="navbarHomepageTop">
@@ -20,7 +28,7 @@
             {% gender_categories as genders %}
             {% type_categories as types %}
             {% season_categories as seasons %}
-
+        
             <!--the real content-->
             <ul class="navbar-nav me-auto">
 
@@ -28,84 +36,86 @@
                 <li class="nav-item dropdown">
                     <!--nav item name-->
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    {{gender.name}}
+                        aria-expanded="false">
+                        {{gender.name}}
                     </a>
                     <!--drop down thing-->
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    {% for type in types %}     
+                        {% for type in types %}
                         {% if type.product_gender|capfirst == gender.name|capfirst or type.show_in_all_category %}
                         <li>
-                            <a class="dropdown-item" href="{% url 'shop:list-page' %}?season=&gender={{gender.name}}&type={{type.name}}">
+                            <a class="dropdown-item"
+                                href="{% url 'shop:list-page' %}?season=&gender={{gender.name}}&type={{type.name}}">
                                 {{type.name}}
                             </a>
                         </li>
                         {% endif %}
-                    {% endfor %}
+                        {% endfor %}
                     </ul>
                 </li>
-                {% endfor %}    
+                {% endfor %}
 
                 <!--for season-->
                 <li class="nav-item dropdown">
                     <!--nav item name-->
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Season
+                        aria-expanded="false">
+                        Season
                     </a>
                     <!--drop down thing-->
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    {% for season in seasons %}     
+                        {% for season in seasons %}
                         <li>
-                            <a class="dropdown-item" href="{% url 'shop:list-page' %}?season={{season.name}}&gender=&type=">
+                            <a class="dropdown-item"
+                                href="{% url 'shop:list-page' %}?season={{season.name}}&gender=&type=">
                                 {{season.name}}
                             </a>
                         </li>
-                    {% endfor %}
+                        {% endfor %}
                     </ul>
                 </li>
 
             </ul>
             <!--why it can be kept in middle?-->
-                <!--search -->
-                <form class="d-flex" method=POST action="{% url 'shop:search' %}">
-                    {% csrf_token %}
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searched">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+            <!--search -->
+            <form class="d-flex" method=POST action="{% url 'shop:search' %}">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searched">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
             <!--right-->
             <ul class="navbar-nav ms-auto">
                 {% if request.user.is_authenticated %}
-                    {% if request.user.groups.all.0.name == 'shop_admin' %}
-                    <!--if is admin-->
-                    <script>
-                        create_navbar_item("{% url 'shop:item-list' %}", "fas fa-list", "Items")
-                        create_navbar_item("{% url 'shop:upload-item' %}", "far fa-plus-square", "Add Item")
-                    </script>
-                    <li class="nav-item d-flex active">
-                        <a href="{% url 'shop:order-list' %}" class="nav-link">
-                            <span class="badge bg-danger">{{ request.user|order_count }}</span>
-                            <i class="fas fa-clipboard-list"></i>
-                            <span class="clearfix d-none d-sm-inline-block">Orders </span>
-                        </a>
-                    </li>
-                    <script>
-                        create_navbar_item("{% url 'shop:config-all' %}", "far fa-object-group", "Layout")
-                    </script>
-                    {% else %}
-                    <!--shopping cart, if is NOT admin-->
-                    <li class="nav-item d-flex active">
-                        <a href="{% url 'shop:shopping-cart' %}" class="nav-link">
-                            <span class="badge bg-danger">{{ request.user|cart_item_count }}</span>
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="clearfix d-none d-sm-inline-block"> Cart </span>
-                        </a>
-                    </li>
-                    {% endif %}
-                    <!--logout-->
-                    <script>
-                        create_navbar_item("{% url 'account_logout' %}", "fas fa-sign-out-alt", "Logout")
-                    </script>
+                {% if request.user.groups.all.0.name == 'shop_admin' %}
+                <!--if is admin-->
+                <script>
+                    create_navbar_item("{% url 'shop:item-list' %}", "fas fa-list", "Items")
+                    create_navbar_item("{% url 'shop:upload-item' %}", "far fa-plus-square", "Add Item")
+                </script>
+                <li class="nav-item d-flex active">
+                    <a href="{% url 'shop:order-list' %}" class="nav-link">
+                        <span class="badge bg-danger">{{ request.user|order_count }}</span>
+                        <i class="fas fa-clipboard-list"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Orders </span>
+                    </a>
+                </li>
+                <script>
+                    create_navbar_item("{% url 'shop:config-all' %}", "far fa-object-group", "Layout")
+                </script>
+                {% else %}
+                <!--shopping cart, if is NOT admin-->
+                <li class="nav-item d-flex active">
+                    <a href="{% url 'shop:shopping-cart' %}" class="nav-link">
+                        <span class="badge bg-danger">{{ request.user|cart_item_count }}</span>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+                    </a>
+                </li>
+                {% endif %}
+                <!--logout-->
+                <script>
+                    create_navbar_item("{% url 'account_logout' %}", "fas fa-sign-out-alt", "Logout")
+                </script>
                 {% else %}
                 <!--if NOT login, login, register-->
                 <script>

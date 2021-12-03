@@ -211,6 +211,7 @@ class shop_config (models.Model):
     facebook = models.URLField(max_length=200, blank=True, null=True)
     google_play = models.URLField(max_length=200, blank=True, null=True)
     paypal_account = models.CharField(max_length=200, blank=True, null=True)
+    shop_icon = models.ImageField(upload_to='contact_us', blank=True, null=True)
     def __str__(self):
         return self.paypal_account
 

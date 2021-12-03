@@ -21,3 +21,4 @@ function create_navbar_item (link, icon, text){
     element=document.getElementsByClassName("navbar-nav ms-auto").item(0);
     element.appendChild(nav_item);
 };
+

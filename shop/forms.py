@@ -64,4 +64,4 @@ class item_quantity(forms.Form):
 class shop_config_form(forms.ModelForm):
     class Meta:
         model=shop_config
-        fields=['instagram', 'twitter', 'facebook', 'google_play', 'paypal_account']
+        fields=['instagram', 'twitter', 'facebook', 'google_play', 'paypal_account','shop_icon']

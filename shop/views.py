@@ -449,12 +449,14 @@ class modify_shop_config(View):
         curr_config = shop_config.objects.get_or_create()[0]
         form = shop_config_form(instance=curr_config)
         context = {'form': form}
-        
+        print('ok ar0')
         return render(self.request, 'shop_config.html', context)
 
     def post(self, *args, **kwargs):
+        print('ok ar1')
         curr_config = shop_config.objects.get_or_create()[0]
-        form = shop_config_form(self.request.POST, instance=curr_config)
+        form = shop_config_form(self.request.POST, self.request.FILES, instance=curr_config)
+        print('ok ar2')
         if form.is_valid():
             form.save()
         return redirect('shop:config-all')
