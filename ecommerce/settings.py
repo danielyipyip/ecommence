@@ -57,7 +57,7 @@ DEBUG = False
 DEBUG_PROPAGATE_EXCEPTIONS = True
 
 #heroku: the online server (host), 127: local host, 
-ALLOWED_HOSTS = ['danielyip-ecommerce.herokuapp.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['danielyip-ecommerce.herokuapp.com', '127.0.0.1', 'localhost', 'www.jsblings.com', 'jsblings.com']
 
 
 # Application definition
