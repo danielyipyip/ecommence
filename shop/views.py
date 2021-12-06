@@ -532,22 +532,22 @@ class modify_category(View):
 
 #helper fx for removing category
 @allowed_users(allowed_roles=['shop_admin'])
-def remove_category(Model, pk):
+def remove_category(request, Model, pk):
     category = get_object_or_404(Model, pk=pk)
     if category:
         category.delete()
 
 @allowed_users(allowed_roles=['shop_admin'])
 def remove_Season(request, pk):
-    remove_category(Season_choice, pk)
+    remove_category(request,Season_choice, pk)
     return redirect("shop:category-config")
 @allowed_users(allowed_roles=['shop_admin'])
 def remove_Type(request, pk):
-    remove_category(Type_choice, pk)
+    remove_category(request,Type_choice, pk)
     return redirect("shop:category-config")
 @allowed_users(allowed_roles=['shop_admin'])
 def remove_Gender(request, pk):
-    remove_category(Gender_choice, pk)
+    remove_category(request,Gender_choice, pk)
     return redirect("shop:category-config")
 
 #helper fx for edit category
