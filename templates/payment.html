@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
+{% load cart_templatetags %}
+
 
 {% block head_append %}
 <!-- Include the PayPal JavaScript SDK; replace "test" with your own sandbox Business account app client ID -->
+{% get_shop_links as links %}
+<script
+  src="https://www.paypal.com/sdk/js?&client-id={{links.paypal_account}}"
+  <br>
+    "&merchant-id=C9R5N8TXQW3NG&currency=USD" ></script>
+<!-- older version
 <script
   src="https://www.paypal.com/sdk/js?&client-id=AR2cF_4O0abi_NVahromFUE2n5ObCgrJUEkSC0PNIatboq11VZsdKDHB0b_L2ob0qVryEIRR1fcF4UwZ"
   <br>
     "&merchant-id=C9R5N8TXQW3NG&currency=USD" ></script>
+    -->
 
 <!-- Set up a container element for the button -->
 <script>
