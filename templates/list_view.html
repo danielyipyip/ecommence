@@ -1,43 +1,8 @@
 {% extends "base.html" %}
 
-{% block head_append %}
-<style>
-    h5 {
-        display: inline-block;
-    }
-
-    .pagination {
-        justify-content: center;
-    }
-
-    #btn-back-to-top {
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        display: none;
-    }
-</style>
-<script defer>
-    window.onload = init;
-    function init() {
-        window.onscroll = function () { scrollFunction(); };
-        //Get the button
-        let mybutton = document.getElementById("btn-back-to-top");
-        mybutton.addEventListener("click", backToTop);
-        // When the user scrolls down 20px from the top of the document, show the button
-        function scrollFunction() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                mybutton.style.display = "block";
-            } else { mybutton.style.display = "none"; }
-        }
-         // When the user clicks on the button, scroll to the top of the document
-        function backToTop() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        }
-    }
-</script>
-{% endblock head_append %}
+{% block title %}
+All products
+{% endblock title %}
 
 
 {% block content %}
@@ -206,11 +171,6 @@
         </nav>
 
     </div>
-
-    <!--from md bootstrap, back to top button-->
-    <button type="button" class="btn btn-danger btn-floating btn-lg" id="btn-back-to-top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
 
 </div>
 

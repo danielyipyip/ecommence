@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block title %}
+NOT authenticated
+{% endblock title %}
+
 {% block head_append %}
 <meta http-equiv="refresh" content="5;url={% url 'shop:home-page' %}" />
 {% endblock head_append %}
