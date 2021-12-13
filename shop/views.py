@@ -12,6 +12,8 @@ from typing import Tuple
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
+import json
+from django.http import JsonResponse
 
 from shop.models import (
     Item, Order, OrderItem, Address, homepage_config, navbar_dropdown_config, Season_choice, Type_choice, 
@@ -256,38 +258,56 @@ class payment_view(LoginRequiredMixin, View):
 @login_required
 def payment_success(request):
     try:
-        order = Order.objects.get(user=request.user, paid=False)
-        # turn to paid
-        order.paid = True
-        order.save()
-        # reduce stock
-        for order_item in order.orderitems.all():
-            #have enough
-            order_item.paid=paid=True
-            order_item.item.stock -= order_item.quantity
-            order_item.save()
-            order_item.item.save()
-            #if not enough -> need special handle of item
-            if order_item.item.stock < order_item.quantity:
-                pass 
-        # email
-        # email_subject='New Order for '+order.user
-        # email_message='Order Item: \n'
-        # for order_item in order.orderitems:
-        #     if order_item.item.stock > order_item.quantity:
-        #         order_item.item.stock -= order_item.quantity
-        #         email_message+=order_item.item.name +' * '+order_item.quantity+'\n'
-        #     else:
-        #         pass
-        #         # Not enough error
-        # email_message+="address: "+order.ship_addr
-        # send_mail(email_subject,email_message,'p674dd@gmail.com',['p674dd@gmail.com'],fail_silently=False,)
-        messages.info(request, "Payment successful!")
-        return render(request, 'payment_success.html')
+        data = json.loads(request.body)
+        print(data)
+        order = Order.objects.get(user=request.user, paid=False, pk=data['orderID'])
+        if float(data['total']) == order.get_total_price():
+            print('Im here3')
+            # turn to paid
+            order.paid = True
+            order.save()
+            # reduce stock
+            for order_item in order.orderitems.all():
+                #have enough
+                order_item.paid=paid=True
+                order_item.item.stock -= order_item.quantity
+                order_item.save()
+                order_item.item.save()
+                #if not enough -> need special handle of item
+                if order_item.item.stock < order_item.quantity:
+                    pass 
+            # email
+            # email_subject='New Order for '+order.user
+            # email_message='Order Item: \n'
+            # for order_item in order.orderitems:
+            #     if order_item.item.stock > order_item.quantity:
+            #         order_item.item.stock -= order_item.quantity
+            #         email_message+=order_item.item.name +' * '+order_item.quantity+'\n'
+            #     else:
+            #         pass
+            #         # Not enough error
+            # email_message+="address: "+order.ship_addr
+            # send_mail(email_subject,email_message,'p674dd@gmail.com',['p674dd@gmail.com'],fail_silently=False,)
+            print('Im here1')
+            return JsonResponse({'response':'Payment submitted..'}, safe=False)
+            messages.info(request, "Payment successful!")
+            return render(request, 'payment_success.html')
+        else: #payment amount NOT correct
+            print('Im here2')
+            messages.info(request, "Error, payment amount NOT correct")
+            return render(request, 'payment_unsuccess.html')
     except ObjectDoesNotExist:
         messages.info(request, "Order not exist, paymeny was NOT sucessful")
         return redirect('shop:home-page')
+    except Exception as e:
+        # print(repr(e))
+        # messages.info(request, "Error in payment")
+        return redirect('shop:home-page')  
 
+@login_required
+def payment_success_page(request):
+    messages.info(request, "Payment successful!")
+    return render(request, 'payment_success.html')
 @login_required
 def payment_unsuccess(request):
     messages.info(request, "Payment NOT successful, returning to shopping cart")

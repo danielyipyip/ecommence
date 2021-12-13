@@ -52,7 +52,7 @@ class Item(models.Model):
 
     #label is like hit, new-arrival, best seller...
     label_name=['new','best','recom','sales',]
-    label_value=['new-arrival','best-seller','recommended','sales',]
+    label_value=['New-Arrival','Best-Seller','Recommend','Sales',]
     label_choice=list(zip(label_name,label_value))
     #primary, secondary, danger???
 

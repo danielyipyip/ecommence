@@ -2,7 +2,7 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
 from .views import (
-    payment_success, payment_unsuccess, unauthorized_redirect, 
+    payment_success, payment_unsuccess, unauthorized_redirect, payment_success_page, 
     add_to_cart, add_to_cart_product_detail, add_to_cart_shopping_cart, 
     remove_from_cart, quantity_reduce_shopping_cart, remove_from_cart_shopping_cart, 
     homePage, productDetailPage, shoppingCart, checkout_view, payment_view, productCategory, 
@@ -27,6 +27,7 @@ urlpatterns = [
     path('cart/', shoppingCart.as_view(), name="shopping-cart"), 
     path('checkout/', checkout_view.as_view(), name='checkout'), 
     path('payment/', payment_view.as_view(), name='payment'),
+    path('payment/success_page/', payment_success, name="payment-success-page"), 
     path('payment/success/', payment_success, name="payment-success"), 
     path('payment/unsucess/', payment_unsuccess, name="payment-unsuccess"), 
     path('category/<str:category>/', productCategory.as_view(), name="item-by-category"), 
