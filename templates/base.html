@@ -31,9 +31,13 @@
 
     {% block head_append %}
     {% endblock head_append %}
-    {% block title %}
-    <title>My Shop</title>
-    {% endblock title %}
+   
+    <title>
+        {% block title %}
+        My Shop
+        {% endblock title %}
+    </title>
+  
     <script>
         /*need modification (timeout disappear the alert)
         var alertList = document.querySelectorAll('.alert')

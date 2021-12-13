@@ -130,6 +130,7 @@ def add_to_cart_product_detail(request, pk):
         quantity = request.POST.get('quantity', None)
         print(quantity)
         add_to_cart(request, pk, quantity)
+        messages.info(request, "Item added to cart")
         return redirect("shop:product-detail", pk=pk)
     else:
         return redirect("shop:product-detail", pk=pk)
@@ -157,17 +158,16 @@ def remove_from_cart(request, pk):
                 item=item, user=request.user, paid=False)[0]
             current_order.orderitems.remove(orderItem)
             orderItem.delete()
-        else:
-            # no item
-            pass
-    else:
-        # no order
-        pass
+        else:# no item
+            messages.info(request, "Error: Item does not exist!")
+    else:# no order
+        messages.info(request, "Error: Order does not exist")
     return redirect("shop:home-page")
 
 @login_required
 def remove_from_cart_shopping_cart(request, pk):
     remove_from_cart(request, pk)
+    messages.info(request, "Item removed from cart")
     return redirect("shop:shopping-cart")
 
 #quantity -1
@@ -282,6 +282,7 @@ def payment_success(request):
         #         # Not enough error
         # email_message+="address: "+order.ship_addr
         # send_mail(email_subject,email_message,'p674dd@gmail.com',['p674dd@gmail.com'],fail_silently=False,)
+        messages.info(request, "Payment successful!")
         return render(request, 'payment_success.html')
     except ObjectDoesNotExist:
         messages.info(request, "Order not exist, paymeny was NOT sucessful")
@@ -289,6 +290,7 @@ def payment_success(request):
 
 @login_required
 def payment_unsuccess(request):
+    messages.info(request, "Payment NOT successful, returning to shopping cart")
     return render(request, 'payment_unsuccess.html')
 
 ###########################           shop owner         #######################################
@@ -324,6 +326,7 @@ class upload_new_item_view(View):
             form = addProductForm(
                 self.request.POST, self.request.FILES or None)
         if form.is_valid():
+            messages.info(self.request, "Item uploaded/updated")
             form.save()
         return redirect('shop:item-list')
 
@@ -334,6 +337,7 @@ def remove_item(request, pk):
     item = get_object_or_404(Item, pk=pk)
     if item:
         item.delete()
+        messages.info(request, "Item removed")
     return redirect("shop:item-list")
 
 @method_decorator(admin_role_decorator, name='dispatch')
@@ -402,6 +406,7 @@ class update_order(View):
                 self.request.POST, self.request.FILES or None)
         if form.is_valid():
             form.save()
+            messages.info(self.request, "Order updated")
         return redirect('shop:order-list')
 
 @allowed_users(allowed_roles=['shop_admin'])
@@ -410,6 +415,7 @@ def remove_order(request, pk):
     order = get_object_or_404(Order, pk=pk)
     if order:
         order.delete()
+        messages.info(request, "Order removed")
     return redirect("shop:order-list")
 
 def unauthorized_redirect(request):
@@ -441,6 +447,7 @@ class modify_homepage_config(View):
             self.request.POST, self.request.FILES, instance=curr_config)
         if form.is_valid():
             form.save()
+            messages.info(self.request, "Update saved!")
         return redirect('shop:config-all')
 
 @method_decorator(admin_role_decorator, name='dispatch')
@@ -459,6 +466,7 @@ class modify_shop_config(View):
         print('ok ar2')
         if form.is_valid():
             form.save()
+            messages.info(self.request, "Update saved!")
         return redirect('shop:config-all')
 
 
@@ -478,6 +486,7 @@ class modify_contact_us(View):
             self.request.POST, self.request.FILES, instance=curr_config)
         if form.is_valid():
             form.save()
+            messages.info(self.request, "Update saved!")
         return redirect('shop:config-all')
 
 
@@ -517,6 +526,7 @@ class modify_category(View):
             new_form = gender_choice_form(self.request.POST)
         if new_form.is_valid():
             new_form.save()
+            messages.info(self.request, "Update saved!")
         context=self.get_all_context()
         return render(self.request, 'modify_category.html', context)
     #helper function
@@ -536,6 +546,7 @@ def remove_category(request, Model, pk):
     category = get_object_or_404(Model, pk=pk)
     if category:
         category.delete()
+        messages.info(request, "successful removed")
 
 @allowed_users(allowed_roles=['shop_admin'])
 def remove_Season(request, pk):
@@ -557,6 +568,7 @@ def edit_category(request, Model, Form, pk):
     curr_form = Form(request.POST, instance=category)
     if curr_form.is_valid():
         curr_form.save()
+        messages.info(request, "Update saved!")
 
 @allowed_users(allowed_roles=['shop_admin'])
 def edit_Season(request, pk):
