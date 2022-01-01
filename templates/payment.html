@@ -8,8 +8,7 @@ Payment
 {% block head_append %}
 <!-- Include the PayPal JavaScript SDK; replace "test" with your own sandbox Business account app client ID -->
 {% get_shop_links as links %}
-<script src="https://www.paypal.com/sdk/js?&client-id={{links.paypal_account}}" <br>
-  "&merchant-id=C9R5N8TXQW3NG&currency=USD" ></script>
+<script src="https://www.paypal.com/sdk/js?&client-id={{links.paypal_account}}&currency=USD" ></script>
 <!-- older version
 <script
   src="https://www.paypal.com/sdk/js?&client-id=AR2cF_4O0abi_NVahromFUE2n5ObCgrJUEkSC0PNIatboq11VZsdKDHB0b_L2ob0qVryEIRR1fcF4UwZ"
@@ -19,8 +18,8 @@ Payment
 
 <!-- Set up a container element for the button -->
 <script>
-  // create CSRF token ourselves, since the complete Order send data ourselve, but Django always require CSRF
-  //from https://docs.djangoproject.com/en/3.0/ref/csrf/
+    // create CSRF token ourselves, since the complete Order send data ourselve, but Django always require CSRF
+    //from https://docs.djangoproject.com/en/3.0/ref/csrf/
     function getCookie(name) {
       let cookieValue = null;
       if (document.cookie && document.cookie !== '') {
@@ -48,26 +47,26 @@ Payment
     fetch(url, {
       method: 'POST',
       headers: {
-        'Content-type': 'application/json', 
-        'X-CSRFToken': csrftoken, 
+        'Content-type': 'application/json',
+        'X-CSRFToken': csrftoken,
       },
-      body: JSON.stringify({ 'orderID': orderID, 'total':total, }),
+      body: JSON.stringify({ 'orderID': orderID, 'total': total, }),
     }).then((response) => response.json())
-	    	.then((data) => {
-				console.log('Success:', data);
-				alert('Transaction completed');  
-				cart = {}
-				document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
-				window.location.href = "{% url 'shop:payment-success-page' %}"
-				})
+      .then((data) => {
+        console.log('Success:', data);
+        alert('Transaction completed');
+        cart = {}
+        document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+        window.location.href = "{% url 'shop:payment-success-page' %}"
+      })
   };
 
   paypal.Buttons({
-    style: {shape: 'pill',},
+    style: { shape: 'pill', },
 
     // Sets up the transaction when a payment button is clicked
     createOrder: function (data, actions) {
-      return actions.order.create({purchase_units: [{amount: {value: total} }]   });
+      return actions.order.create({ purchase_units: [{ amount: { value: total } }] });
     },
     // Finalize the transaction after payer approval
     onApprove: function (data, actions) {
@@ -79,15 +78,39 @@ Payment
         //window.location.replace("{% url 'shop:payment-success' %}")
       });
     },
-
-    onCancel: function (data) {window.location.replace("{% url 'shop:payment-unsuccess' %}") }
+    onCancel: function (data) { window.location.replace("{% url 'shop:payment-unsuccess' %}") }
   }).render('#paypal-button-container');
-
 </script>
 
-<script type="text/javascript">
-
+<!--paystack-->
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script defer>
+  window.onload = init();
+  function init() {
+    var paymentForm = document.getElementById('paymentForm').addEventListener("submit", payWithPaystack, false);
+    console.log(paymentForm)
+    function payWithPaystack() {
+      var handler = PaystackPop.setup({
+        key: 'pk_test_46e09ab397a3cc6fbbe4160bfe469f4a9663af28', // Replace with your public key
+        email: document.getElementById("email-address").value,
+        amount: document.getElementById("amount").value * 100,
+        currency: 'USD', 
+        ref: '{{object.pk}}', // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+        // label: "Optional string that replaces customer email"
+        onClose: function () {
+          alert('Transaction was not completed, window closed.');
+        },
+        callback: function (response) {
+          var reference = response.reference;
+          alert(message);
+          completeOrder()
+        }
+      });
+      handler.openIframe();
+    }
+  }
 </script>
+
 {% endblock head_append %}
 
 
@@ -139,6 +162,27 @@ Payment
     <div class="col-md-4 mb-4">
       {% include 'order_snippet.html' with order=object %}
       <div id="paypal-button-container"></div>
+      <form id="paymentForm">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email-address" required />
+        </div>
+        <div class="form-group">
+          <label for="amount">Amount</label>
+          <input type="tel" id="amount" disabled value="{{ object.get_total_price }}" />
+        </div>
+        <div class="form-group">
+          <label for="first-name">First Name</label>
+          <input type="text" id="first-name" />
+        </div>
+        <div class="form-group">
+          <label for="last-name">Last Name</label>
+          <input type="text" id="last-name" />
+        </div>
+        <div class="form-submit">
+          <button type="submit" onclick="payWithPaystack()"> Pay </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

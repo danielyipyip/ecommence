@@ -260,7 +260,7 @@ django_heroku.settings(locals())
 
 # # force SSL rediect (may need paid dyno in Heroku)
 # #from https://www.youtube.com/watch?v=CxrzD73r6Rw
-# if os.getcwd() == '/app': #if site is live
-#     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-#     SECURE_SSL_REDIRECT = True
-#     DEBUG = False
+if os.getcwd() == '/app': #if site is live
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True #forced redirect
+    DEBUG = False
