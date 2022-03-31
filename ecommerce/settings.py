@@ -223,21 +223,15 @@ SOCIALACCOUNT_PROVIDERS = {
 #https://testdriven.io/blog/django-social-auth/
 
 #email stuffs (trying)
-# DEFAULT_FROM_EMAIL = 'p674dd@gmail.com'
+
 
 #https://dev.to/abderrahmanemustapha/how-to-send-email-with-django-and-gmail-in-production-the-right-way-24ab
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'p674dd@gmail.com'
-EMAIL_HOST_PASSWORD = 'vbsdgruqxkjtekkr' #past the key or password app here
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'default from email'
+
 
 #amazon AWS s3
-AWS_ACCESS_KEY_ID='AKIA2QIALSNW4Y5LR47T'
-AWS_SECRET_ACCESS_KEY='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'
-AWS_STORAGE_BUCKET_NAME='danielyip-ecommerce'
+AWS_ACCESS_KEY_ID=process.env.AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY=process.env.AWS_SECRET_KEY
+AWS_STORAGE_BUCKET_NAME=process.env.AWS_BUCKET_NAME
 
 #django storages
 AWS_S3_FILE_OVERWRITE=False #overwirte file if same name? default=True
