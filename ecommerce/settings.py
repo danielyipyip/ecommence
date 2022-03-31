@@ -15,6 +15,7 @@ from django.shortcuts import reverse
 from pathlib import Path
 import django_heroku
 import logging
+# from boto.s3.connection import S3Connection
 
 LOGGING = {
     'version': 1,
@@ -229,9 +230,10 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 #amazon AWS s3
-AWS_ACCESS_KEY_ID=process.env.AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY=process.env.AWS_SECRET_KEY
-AWS_STORAGE_BUCKET_NAME=process.env.AWS_BUCKET_NAME
+# conn = S3Connection(os.environ['AWS_ACCESS_KEY_ID'], os.environ['AWS_SECRET_KEY'])
+AWS_ACCESS_KEY_ID=os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY=os.environ['AWS_SECRET_KEY']
+AWS_STORAGE_BUCKET_NAME=os.environ['AWS_BUCKET_NAME']
 
 #django storages
 AWS_S3_FILE_OVERWRITE=False #overwirte file if same name? default=True
